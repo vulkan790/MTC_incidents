@@ -1,0 +1,152 @@
+[
+  {
+    "api_source": "id",
+    "description": "Уникальный идентификатор массового инцидента (номер МИ). Иницдент- зафиксированный сбой",
+    "possible_values": "INC000021095531"
+  },
+  {
+    "api_source": "productName",
+    "description": "Название продукта, к которому относится инцидент",
+    "possible_values": ""
+  },
+  {
+    "api_source": "productMasterId",
+    "description": "идентификатор продукта (код продукта)",
+    "possible_values": "BI_xxx"
+  },
+  {
+    "api_source": "service",
+    "description": "Сервис, затронутый инцидентом",
+    "possible_values": ""
+  },
+  {
+    "api_source": "scenarioName",
+    "description": "Сценарий использования",
+    "possible_values": ""
+  },
+  {
+    "api_source": "submitDate",
+    "description": "Время регистрации инцидента",
+    "possible_values": "YYYY-MM-DD HH:MM:SS"
+  },
+  {
+    "api_source": "completionDate",
+    "description": "Время закрытия инцидента",
+    "possible_values": "YYYY-MM-DD HH:MM:SS"
+  },
+  {
+    "api_source": "deadline",
+    "description": "Дедлайн решения инцидента",
+    "possible_values": "YYYY-MM-DD HH:MM:SS"
+  },
+  {
+    "api_source": "priorityId",
+    "description": "Приоритет инцидента Наивысший-4, Высокий-3, Средний-2, Низкий-1",
+    "possible_values": "1, 2, 3, 4"
+  },
+  {
+    "api_source": "impactId",
+    "description": "ID влияния иницдента Наивысший-4...и т.д",
+    "possible_values": "1, 2, 3, 4"
+  },
+  {
+    "api_source": "urgencyId",
+    "description": "ID срочности",
+    "possible_values": "1, 2, 3, 4"
+  },
+  {
+    "api_source": "priority",
+    "description": "Текстовое значение приоритета",
+    "possible_values": "Наивысший, Высокий, Средний, Низкий"
+  },
+  {
+    "api_source": "impact",
+    "description": "Текстовое значение влияния",
+    "possible_values": "Наивысший, Высокий, Средний, Низкий"
+  },
+  {
+    "api_source": "urgency",
+    "description": "Текстовое значение срочности",
+    "possible_values": "Наивысший, Высокий, Средний, Низкий"
+  },
+  {
+    "api_source": "header",
+    "description": "Заголовок инцидента",
+    "possible_values": ""
+  },
+  {
+    "api_source": "description",
+    "description": "Описание проблемы с которой зарегистрирвоан иницдент",
+    "possible_values": ""
+  },
+  {
+    "api_source": "solution",
+    "description": "Описание решения",
+    "possible_values": ""
+  },
+  {
+    "api_source": "stateId",
+    "description": "ID статуса инцидента 0-Назначен, 2-Выполняется, 7-Закрыт, 10-Заверешен",
+    "possible_values": "0, 2, 7, 10"
+  },
+  {
+    "api_source": "state",
+    "description": "Текстовый статус инцидента",
+    "possible_values": "Назначен, Выполняется, Закрыт, Завершен"
+  },
+  {
+    "api_source": "stateReason",
+    "description": "Подстатус с которым решен инцидент",
+    "possible_values": ""
+  },
+  {
+    "api_source": "isNeedUp",
+    "description": "Требуется ли устранение последствий после решения инцидента. Когда проблема решена, но требуется обработка накопившихся заявок и т.п.",
+    "possible_values": "Да, Нет"
+  },
+  {
+    "api_source": "isEffect",
+    "description": "Является ли инцидент Причиной возникновения дочерних инциентов",
+    "possible_values": "true, false"
+  },
+  {
+    "api_source": "isReason",
+    "description": "Является ли дочерним инцидентом",
+    "possible_values": "true, false"
+  },
+  {
+    "api_source": "isDouble",
+    "description": "Является ли дублем, означает что иницдент с такой причиной уже зарегистрирован",
+    "possible_values": "true, false"
+  },
+  {
+    "api_source": "isMaster",
+    "description": "Является ли мастер-инцидентом (тип иницдента к которому привязаны дубли)",
+    "possible_values": "true, false"
+  },
+  {
+    "api_source": "serviceType",
+    "description": "Тип сервиса, обозначает круг влияния на клиентов или пользователй, или нет влияния- технологический ",
+    "possible_values": "Клиенткий, Пользователький, Технологичесикй"
+  },
+  {
+    "api_source": "assignedGroupName",
+    "description": "Название назначенной группы для решения иницдента",
+    "possible_values": ""
+  },
+  {
+    "api_source": "receivingChannel",
+    "description": "Канал регистрации инцидента, откуда пришла заявка",
+    "possible_values": ""
+  },
+  {
+    "api_source": "initiatorLogin",
+    "description": "Логин инициатора инцидента",
+    "possible_values": ""
+  },
+  {
+    "api_source": "initiatorName",
+    "description": "ФИО инициатора инцидента",
+    "possible_values": ""
+  }
+]

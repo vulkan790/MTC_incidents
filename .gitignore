@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# Секреты и окружение
+.env
+.env.*
+*.key
+
+# ML-артефакты (обученная риск-модель)
+*.joblib
+
+# Временные файлы атомарной записи из ingest.py
+*.tmp
+
+# Frontend / Node
+node_modules/
+dist/
+.vite/
+
+# IDE / ОС
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Логи
+*.log
