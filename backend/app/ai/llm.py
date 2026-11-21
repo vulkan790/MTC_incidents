@@ -49,8 +49,7 @@ def _active_provider() -> str:
 def _ask_gigachat(prompt: str) -> str:
     from gigachat import GigaChat
 
-    with GigaChat(credentials=_GIGA_CREDS, scope=_GIGA_SCOPE,
-                  verify_ssl_certs=_GIGA_VERIFY_SSL) as giga:
+    with GigaChat(credentials=_GIGA_CREDS, scope=_GIGA_SCOPE, verify_ssl_certs=_GIGA_VERIFY_SSL) as giga:
         return giga.chat(prompt).choices[0].message.content.strip()
 
 def _ask_qwen(prompt: str) -> str:
