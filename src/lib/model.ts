@@ -13,12 +13,10 @@ export type GroupKey = 'critical' | 'coord' | 'high' | 'research';
 
 // Один инцидент может входить сразу в несколько групп.
 export const GROUP_RULES: Record<GroupKey, (i: Incident, now: number) => boolean> = {
-  // Только «Наивысший». Решённые остаются видны (зелёными) ещё 12 часов, чтобы было видно, что инцидент решён.
-  critical: (i, now) =>
-    isCritical(i) &&
-    (isActive(i) || (!!i.completionDate && now - Date.parse(i.completionDate) < 12 * 3600e3)),
-  // Всё, что лежит на координаторах и не закрыто: их нужно быстро передать в профильную команду.
-  coord: (i) => i.assignedGroupName === COORD_GROUP && i.stateId !== STATE.closed,
+  // Критические — только активные. Решённые (stateId = 7) здесь больше не показываются.
+  critical: (i) => isCritical(i) && isActive(i),
+  // На координаторах: активные и исследования. Решённые и закрытые исключены.
+  coord: (i) => i.assignedGroupName === COORD_GROUP && (isActive(i) || i.stateId === STATE.research),
   // Активные с высоким приоритетом: каждый может перерасти в критический.
   high: (i) => i.priorityId === 3 && isActive(i),
   // Решены, идёт разбор причин.
@@ -26,7 +24,7 @@ export const GROUP_RULES: Record<GroupKey, (i: Incident, now: number) => boolean
 };
 
 export const GROUPS: { key: GroupKey; title: string; hint: string }[] = [
-  { key: 'critical', title: 'Критические', hint: 'Приоритет «Наивысший». Решённые подсвечены зелёным' },
+  { key: 'critical', title: 'Критические', hint: 'Только активные инциденты с приоритетом «Наивысший»' },
   { key: 'coord', title: 'На координаторах', hint: 'Передайте в профильную команду' },
   { key: 'high', title: 'Высокий приоритет', hint: 'Могут перерасти в критические' },
   { key: 'research', title: 'Исследование ситуации', hint: 'Решены, идёт разбор причин' },

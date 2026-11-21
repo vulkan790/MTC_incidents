@@ -27,8 +27,9 @@ export const DATE_FIELDS = ['submitDate', 'deadline', 'completionDate', 'lastAss
 export const isActive = (inc) => ACTIVE_STATES.has(Number(inc.stateId));
 export const isCritical = (inc) => Number(inc.priorityId) === 4;
 export const isCriticalActive = (inc) => isCritical(inc) && isActive(inc);
+// Согласовано с категориями дашборда: завершённые (7) и закрытые (10) не требуют подтверждения.
 export const isOnCoordinators = (inc) =>
-  inc.assignedGroupName === COORD_GROUP && Number(inc.stateId) !== 10;
+  inc.assignedGroupName === COORD_GROUP && (isActive(inc) || Number(inc.stateId) === 20);
 
 export const iso = (d) => new Date(d).toISOString().replace(/\.\d{3}Z$/, 'Z');
 export const hours = (h) => h * 3600 * 1000;

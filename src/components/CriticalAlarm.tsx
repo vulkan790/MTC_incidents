@@ -1,5 +1,5 @@
-// Полноэкранная тревога о критическом инциденте. Не исчезает, пока координатор не подтвердит,
-// и всё это время звучит сирена. Пропустить критический невозможно.
+// Полноэкранная тревога о критическом инциденте. Координатор может принять
+// инцидент или закрыть тревогу лично для себя, не подтверждая её на сервере.
 import { useLayoutEffect, useRef } from 'react';
 import type { Incident } from '../types';
 import { gsap, reducedMotion } from '../lib/motion';
@@ -10,9 +10,10 @@ interface Props {
   incidents: Incident[];
   now: number;
   operator: string;
+  onDecline: (incidentId: string) => void;
 }
 
-export function CriticalAlarm({ incidents, now, operator }: Props) {
+export function CriticalAlarm({ incidents, now, operator, onDecline }: Props) {
   const root = useRef<HTMLDivElement>(null);
   const current = incidents[0];
   const id = current?.id;
@@ -60,8 +61,10 @@ export function CriticalAlarm({ incidents, now, operator }: Props) {
           <button className="btn btn-alarm" autoFocus onClick={() => ack(`crit:${current.id}`, operator)}>
             Принял, беру на контроль
           </button>
+          <button className="btn btn-ghost-light" onClick={() => onDecline(current.id)}>Не беру на контроль</button>
           <button className="btn btn-ghost-light" onClick={() => openItsm(current.id)}>Открыть в ITSM</button>
         </div>
+        <p className="alarm-hint">При отказе тревога закроется только у вас. Инцидент останется критическим и неподтверждённым.</p>
       </div>
     </div>
   );

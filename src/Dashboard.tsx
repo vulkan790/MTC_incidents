@@ -1,5 +1,5 @@
 import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { Incident, LiveEvent } from './types';
+import type { Incident, LiveEvent, LiveState } from './types';
 import {
   GROUPS, GROUP_RULES, type GroupKey, COORD_GROUP, fmtClock, fmtDuration, fmtAgo, groupsOf, isActive,
   isCritical, isCriticalActive, openItsm, resolutionStats, slaOf, STATE,
@@ -15,6 +15,7 @@ import { Sidebar } from './components/Sidebar';
 import { DemoPanel } from './components/DemoPanel';
 import { StartOverlay } from './components/StartOverlay';
 import { Icon } from './components/Icon';
+import { matchesCriticalAlert, readNotificationSettings, useNotificationSettings } from './lib/notification-settings';
 
 const store = {
   get(key: string, fallback: string) {
@@ -24,6 +25,29 @@ const store = {
     try { localStorage.setItem(key, value); } catch { /* приватный режим */ }
   },
 };
+
+// Отказ не является подтверждением и сохраняется только в текущей сессии браузера.
+function readDeclinedCritical(operator: string): string[] {
+  try {
+    const saved: unknown = JSON.parse(sessionStorage.getItem(`mi:declined-critical:${operator}`) || '[]');
+    return Array.isArray(saved) ? saved.filter((id): id is string => typeof id === 'string') : [];
+  } catch { return []; }
+}
+
+// Скрытие красной полосы — личное действие координатора, а НЕ подтверждение в ITSM.
+// Запоминаем номера критических инцидентов на момент закрытия. Новый критический
+// появится на полосе снова, даже если предыдущую координатор скрыл.
+function criticalStripStorageKey(operator: string) {
+  return `mi:hidden-critical-strip:${operator.trim().toLocaleLowerCase('ru-RU') || 'координатор'}`;
+}
+function readHiddenCriticalStrip(operator: string): string[] | null {
+  try {
+    const raw = sessionStorage.getItem(criticalStripStorageKey(operator));
+    if (raw === null) return null;
+    const saved: unknown = JSON.parse(raw);
+    return Array.isArray(saved) && saved.every((id) => typeof id === 'string') ? saved : null;
+  } catch { return null; }
+}
 
 type Theme = 'light' | 'dark';
 // Тему выставляет скрипт в index.html до первой отрисовки, чтобы экран не мигал.
@@ -61,7 +85,9 @@ export function Dashboard() {
   const now = useNow(1000);
   const [operator, setOperator] = useState(() => store.get('operator', ''));
   const [started, setStarted] = useState(false);
-  const [sound, setSound] = useState(true);
+  const [declinedCritical, setDeclinedCritical] = useState<string[]>(() => readDeclinedCritical(store.get('operator', '')));
+  const [hiddenCriticalStripIds, setHiddenCriticalStripIds] = useState<string[] | null>(() => readHiddenCriticalStrip(store.get('operator', '')));
+  const { settings: preferences, update: updatePreferences } = useNotificationSettings(operator);
   const [theme, setTheme] = useState<Theme>(initialTheme);
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   const [demoOpen, setDemoOpen] = useState(() => new URLSearchParams(location.search).has('demo'));
@@ -84,6 +110,54 @@ export function Dashboard() {
     .filter((i) => isCriticalActive(i) && !acks[`crit:${i.id}`])
     .sort((a, b) => Date.parse(a.submitDate) - Date.parse(b.submitDate));
   const activeCritical = incidents.filter(isCriticalActive);
+  const isCriticalStripHidden = hiddenCriticalStripIds !== null
+    && activeCritical.length > 0
+    && activeCritical.every((i) => hiddenCriticalStripIds.includes(i.id));
+
+  const hideCriticalStrip = () => {
+    const ids = activeCritical.map((i) => i.id);
+    setHiddenCriticalStripIds(ids);
+    try { sessionStorage.setItem(criticalStripStorageKey(operator), JSON.stringify(ids)); }
+    catch { /* приватный режим: скрываем хотя бы до перезагрузки */ }
+  };
+  const showCriticalStrip = () => {
+    setHiddenCriticalStripIds(null);
+    try { sessionStorage.removeItem(criticalStripStorageKey(operator)); }
+    catch { /* */ }
+  };
+  // При появлении нового критического снимаем локальное скрытие автоматически.
+  // Если критических больше нет, сбрасываем скрытие, чтобы повторная авария снова показалась.
+  useEffect(() => {
+    if (!data || hiddenCriticalStripIds === null) return;
+    if (activeCritical.length === 0 || activeCritical.some((i) => !hiddenCriticalStripIds.includes(i.id))) {
+      showCriticalStrip();
+    }
+  }, [data, activeCritical, hiddenCriticalStripIds, operator]);
+  // Критические группы остаются общими. Персональные настройки влияют только на тревогу.
+  const eligibleUnacked = incidents.filter((i) => matchesCriticalAlert(i, preferences) && !acks[`crit:${i.id}`])
+    .sort((a, b) => Date.parse(a.submitDate) - Date.parse(b.submitDate));
+  const alarmCritical = eligibleUnacked.filter((i) => !declinedCritical.includes(i.id));
+  const declinedUnacked = eligibleUnacked.filter((i) => declinedCritical.includes(i.id));
+
+  // При решении или закрытии инцидента очищаем его личный отказ.
+  // Если инцидент вновь станет критическим, оповещение появится снова.
+  useEffect(() => {
+    if (!data) return;
+    const validIds = new Set(incidents.filter((i) => i.priorityId === 4 && i.stateId !== STATE.resolved && i.stateId !== STATE.closed).map((i) => i.id));
+    setDeclinedCritical((old) => old.every((id) => validIds.has(id)) ? old : old.filter((id) => validIds.has(id)));
+  }, [data, incidents]);
+
+  useEffect(() => {
+    try { sessionStorage.setItem(`mi:declined-critical:${operator}`, JSON.stringify(declinedCritical)); }
+    catch { /* может быть запрещён доступ к хранилищу */ }
+  }, [operator, declinedCritical]);
+
+  const declineCritical = (id: string) => {
+    setDeclinedCritical((old) => old.includes(id) ? old : [...old, id]);
+  };
+  const restoreCriticalAlarm = () => {
+    setDeclinedCritical((old) => old.filter((id) => !declinedUnacked.some((i) => i.id === id)));
+  };
 
   // ---------- Распределение по группам ----------
   const lanes = useMemo(() => {
@@ -121,7 +195,7 @@ export function Dashboard() {
         if (ac !== bc) return ac ? -1 : 1;
         return Date.parse(b.inc.completionDate ?? b.inc.submitDate) - Date.parse(a.inc.completionDate ?? a.inc.submitDate);
       });
-      const active = g.key === 'critical' ? rows.filter((r) => isActive(r.inc)).length : rows.length;
+      const active = rows.length; // Во всех категориях решённые инциденты уже исключены правилами.
       out[g.key] = { items: rows, active };
     }
     return out;
@@ -154,7 +228,7 @@ export function Dashboard() {
   }, []);
   const closeToast = useCallback((id: string) => setToasts((list) => list.filter((t) => t.id !== id)), []);
 
-  useEffect(() => onLiveEvents((events: LiveEvent[]) => {
+  useEffect(() => onLiveEvents((events: LiveEvent[], incoming: LiveState) => {
     const stamp = Date.now();
     setChanges((c) => {
       const next = { ...c };
@@ -165,53 +239,64 @@ export function Dashboard() {
     for (const e of events) {
       const where = `${e.incidentId ?? ''}${e.product ? `, ${e.product}` : ''}`;
       if (e.type === 'critical_resolved') {
-        pushToast({ kind: 'resolved', title: 'Критический инцидент решён', text: where, incidentId: e.incidentId, ttl: 15000 });
-        notify('Критический инцидент решён', where);
-        sound = 'resolved';
+        if (preferences.resolvedToasts) pushToast({ kind: 'resolved', title: 'Критический инцидент решён', text: where, incidentId: e.incidentId, ttl: 15000 });
+        if (preferences.desktopOther) notify('Критический инцидент решён', where);
+        if (preferences.resolvedToasts) sound = 'resolved';
       } else if (e.type === 'coord_assigned') {
-        pushToast({ kind: 'coord', title: 'Назначен на координаторов', text: `${where}. Передайте в профильную команду`, incidentId: e.incidentId, ttl: 20000 });
-        notify('Назначен на координаторов', where);
-        sound ??= 'coord';
+        if (preferences.coordToasts) pushToast({ kind: 'coord', title: 'Назначен на координаторов', text: `${where}. Передайте в профильную команду`, incidentId: e.incidentId, ttl: 20000 });
+        if (preferences.desktopOther) notify('Назначен на координаторов', where);
+        if (preferences.coordToasts) sound ??= 'coord';
       } else if (e.type === 'critical_new') {
-        notify('КРИТИЧЕСКИЙ ИНЦИДЕНТ', where);
+        // Фильтр работает для новых событий так же, как для модального окна.
+        const incident = incoming.incidents.find((i) => i.id === e.incidentId);
+        if (preferences.criticalDesktop && incident && matchesCriticalAlert(incident, preferences) && !declinedCritical.includes(incident.id)) {
+          notify('КРИТИЧЕСКИЙ ИНЦИДЕНТ', where);
+        }
       } else if (e.type === 'coord_handed_off') {
         pushToast({ kind: 'handoff', title: `Передан в «${e.to ?? 'команду'}»`, text: where, incidentId: e.incidentId, ttl: 7000 });
       } else if (e.type === 'mail' && e.level === 'warn') {
-        pushToast({ kind: 'mail', title: 'Важное письмо', text: e.text.replace(/^Письмо: /, ''), incidentId: e.incidentId, ttl: 9000 });
-        sound ??= 'soft';
+        if (preferences.mailToasts) {
+          pushToast({ kind: 'mail', title: 'Важное письмо', text: e.text.replace(/^Письмо: /, ''), incidentId: e.incidentId, ttl: 9000 });
+          sound ??= 'soft';
+        }
       } else if (e.type === 'priority_changed' && e.level === 'warn') {
         sound ??= 'soft';
       }
     }
-    if (sound === 'resolved') playResolved();
-    else if (sound === 'coord') playCoord();
-    else if (sound === 'soft') playSoft();
-  }), [pushToast]);
+    if (preferences.secondarySounds && preferences.soundEnabled) {
+      if (sound === 'resolved') playResolved();
+      else if (sound === 'coord') playCoord();
+      else if (sound === 'soft') playSoft();
+    }
+  }), [pushToast, preferences, declinedCritical]);
 
-  // Сирена повторяется, пока есть неподтверждённые критические.
-  const alarmOn = started && unackedCritical.length > 0;
+  // Применяем персональный общий выключатель ДО запуска эффекта сирены.
+  useEffect(() => setMuted(!preferences.soundEnabled), [preferences.soundEnabled]);
+
+  // Сирена повторяется лишь для критических, тревога по которым не закрыта лично координатором.
+  const alarmOn = started && preferences.criticalModal && alarmCritical.length > 0;
+  const alertIds = alarmCritical.map((i) => i.id).join(',');
   useEffect(() => {
-    if (!alarmOn) return;
+    if (!alarmOn || !preferences.siren || !preferences.soundEnabled) return;
     playSiren();
-    const t = setInterval(playSiren, 3500);
+    if (preferences.sirenRepeatSeconds === 0) return;
+    const t = setInterval(playSiren, preferences.sirenRepeatSeconds * 1000);
     return () => clearInterval(t);
-  }, [alarmOn]);
+  }, [alarmOn, alertIds, preferences.siren, preferences.sirenRepeatSeconds, preferences.soundEnabled]);
 
-  // Мигающий заголовок вкладки, если координатор смотрит в другое окно.
+  // Мигающий заголовок — только для тревог, которые этот координатор ещё не закрыл.
   useEffect(() => {
-    if (!unackedCritical.length) {
+    if (!preferences.blinkTitle || !alarmCritical.length) {
       document.title = activeCritical.length ? `● Критических: ${activeCritical.length} · Пульт МИ` : 'Пульт МИ';
       return;
     }
     let on = false;
     const t = setInterval(() => {
       on = !on;
-      document.title = on ? '🔴 КРИТИЧЕСКИЙ ИНЦИДЕНТ' : `Пульт МИ (${unackedCritical.length})`;
+      document.title = on ? '🔴 КРИТИЧЕСКИЙ ИНЦИДЕНТ' : `Пульт МИ (${alarmCritical.length})`;
     }, 800);
     return () => clearInterval(t);
-  }, [unackedCritical.length, activeCritical.length]);
-
-  useEffect(() => setMuted(!sound), [sound]);
+  }, [alarmCritical.length, activeCritical.length, preferences.blinkTitle]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -224,9 +309,11 @@ export function Dashboard() {
   const start = (name: string) => {
     unlockAudio();
     setOperator(name);
+    setDeclinedCritical(readDeclinedCritical(name));
+    setHiddenCriticalStripIds(readHiddenCriticalStrip(name));
     store.set('operator', name);
     setStarted(true);
-    try { if ('Notification' in window && Notification.permission === 'default') void Notification.requestPermission(); } catch { /* */ }
+    try { if ('Notification' in window && (readNotificationSettings(name).criticalDesktop || readNotificationSettings(name).desktopOther) && Notification.permission === 'default') void Notification.requestPermission(); } catch { /* */ }
     if (board.current && !reducedMotion()) {
       gsap.fromTo(board.current.querySelectorAll('.lane'), { y: 24, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.08, duration: 0.6, ease: 'power3.out' });
     }
@@ -247,12 +334,11 @@ export function Dashboard() {
   const coordUnacked = coord.items.filter((r) => r.unacked).length;
   const highRisky = high.items.filter((r) => r.sla.risk === 'overdue' || r.sla.risk === 'risk').length;
   const researchOnCoord = research.items.filter((r) => r.inc.assignedGroupName === COORD_GROUP).length;
-  const critResolved = crit.items.length - crit.active;
   const kpis: Record<GroupKey, LaneKpi> = {
     critical: {
       sub: unackedCritical.length
         ? `Ждут подтверждения: ${unackedCritical.length}`
-        : crit.active ? 'Все на контроле' : critResolved ? `Решено за 12 ч: ${critResolved}` : 'Активных нет',
+        : crit.active ? 'Все на контроле' : 'Активных нет',
       alert: crit.active > 0,
     },
     coord: {
@@ -264,7 +350,7 @@ export function Dashboard() {
   };
 
   return (
-    <div className={`app ${unackedCritical.length ? 'has-alarm' : ''}`}>
+    <div className={`app ${alarmOn ? 'has-alarm' : ''}`}>
       <header className="topbar">
         <div className="brand">
           <img className="brand-mark" src="/mtc.png" alt="МТС" />
@@ -282,6 +368,11 @@ export function Dashboard() {
           <button aria-pressed={theme === 'dark'} onClick={() => switchTheme('dark')}>Тёмная</button>
         </div>
         <div className="clock">{new Date(now).toLocaleTimeString('ru-RU')}</div>
+        <a className="settings-link" href="/settings" title="Персональные настройки уведомлений">⚙ Настройки</a>
+        <a className="profile-link" href="/cabinet" title="Личный кабинет и почта" aria-label="Личный кабинет и почта">
+          <span className="profile-avatar">{(operator.trim()[0] || 'К').toUpperCase()}</span>
+          <span className="profile-label">Кабинет</span>
+        </a>
       </header>
 
       <div className="toolbar">
@@ -307,11 +398,16 @@ export function Dashboard() {
           Только со сроком под угрозой
         </label>
         {filtering && <button className="btn btn-quiet" onClick={() => setFilters(NO_FILTERS)}>Сбросить фильтры</button>}
+        {preferences.criticalBanner && isCriticalStripHidden && (
+          <button className="btn btn-quiet crit-strip-restore" onClick={showCriticalStrip}>
+            Показать критические ({activeCritical.length})
+          </button>
+        )}
         {!layout.isDefault && <button className="btn btn-quiet" onClick={layout.reset}>Вернуть колонки на место</button>}
         <span className="spacer" />
         <span className="operator">На смене: {operator || 'не указан'}</span>
-        <button className={`btn btn-quiet ${sound ? '' : 'is-off'}`} onClick={() => setSound((s) => !s)} aria-pressed={!sound}>
-          {sound ? 'Звук включён' : 'Звук выключен'}
+        <button className={`btn btn-quiet ${preferences.soundEnabled ? '' : 'is-off'}`} onClick={() => updatePreferences({ soundEnabled: !preferences.soundEnabled })} aria-pressed={!preferences.soundEnabled}>
+          {preferences.soundEnabled ? 'Звук включён' : 'Звук выключен'}
         </button>
         <button className="btn btn-quiet" onClick={() => setDemoOpen((v) => !v)} aria-pressed={demoOpen}>Имитация ITSM</button>
       </div>
@@ -322,12 +418,12 @@ export function Dashboard() {
         </div>
       )}
 
-      {activeCritical.length > 0 && (
-        <div className="crit-strip" role="alert">
+      {preferences.criticalBanner && activeCritical.length > 0 && !isCriticalStripHidden && (
+        <div className="crit-strip" role="alert" aria-label="Активные критические инциденты">
           {activeCritical.map((i) => {
             const left = i.deadline ? Date.parse(i.deadline) - now : null;
             return (
-              <button key={i.id} onClick={() => openItsm(i.id)}>
+              <button className="crit-strip-incident" key={i.id} onClick={() => openItsm(i.id)}>
                 <b>Критический</b>
                 <span className="crit-text">
                   {i.productName}: {i.header}.{' '}
@@ -337,6 +433,22 @@ export function Dashboard() {
               </button>
             );
           })}
+          <button
+            type="button"
+            className="crit-strip-close"
+            onClick={hideCriticalStrip}
+            aria-label="Скрыть красную полосу только у меня"
+            title="Скрыть полосу у себя. Другие координаторы продолжат её видеть"
+          >
+            ×
+          </button>
+        </div>
+      )}
+
+      {preferences.criticalModal && declinedUnacked.length > 0 && (
+        <div className="crit-declined" role="status">
+          <span>Не взяты на контроль: {declinedUnacked.length}. Окно и сирена отключены только в этом браузере; другие координаторы продолжат получать тревогу.</span>
+          <button className="btn btn-quiet" onClick={restoreCriticalAlarm}>Показать тревогу снова</button>
         </div>
       )}
 
@@ -382,7 +494,7 @@ export function Dashboard() {
 
       <Toasts toasts={toasts} onClose={closeToast} />
       {demoOpen && <DemoPanel auto={data.auto} onClose={() => setDemoOpen(false)} />}
-      {started && <CriticalAlarm incidents={unackedCritical} now={now} operator={operator} />}
+      {alarmOn && <CriticalAlarm incidents={alarmCritical} now={now} operator={operator} onDecline={declineCritical} />}
       {!started && <StartOverlay name={operator} onStart={start} />}
     </div>
   );

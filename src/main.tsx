@@ -8,22 +8,28 @@ import '@fontsource/manrope/700.css';
 import '@fontsource/manrope/800.css';
 import './styles.css';
 import './itsm/itsm.css';
+import './cabinet/cabinet.css';
+import './settings/settings.css';
 import { LiveProvider } from './lib/live';
 import { Dashboard } from './Dashboard';
 import { ItsmPage } from './itsm/ItsmPage';
+import { CabinetPage } from './cabinet/CabinetPage';
+import { NotificationSettingsPage } from './settings/NotificationSettingsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: true, retryDelay: 2000, refetchOnWindowFocus: false } },
 });
 
 const itsm = location.pathname.match(/^\/itsm\/([^/]+)/);
+const settings = location.pathname === '/settings' || location.pathname === '/settings/';
+const cabinet = location.pathname === '/cabinet' || location.pathname.startsWith('/cabinet/');
 if (itsm) document.body.classList.add('is-itsm');
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <LiveProvider>
-        {itsm ? <ItsmPage id={decodeURIComponent(itsm[1])} /> : <Dashboard />}
+        {itsm ? <ItsmPage id={decodeURIComponent(itsm[1])} /> : settings ? <NotificationSettingsPage /> : cabinet ? <CabinetPage /> : <Dashboard />}
       </LiveProvider>
     </QueryClientProvider>
   </StrictMode>,

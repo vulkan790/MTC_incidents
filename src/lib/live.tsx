@@ -6,7 +6,7 @@ import type { LiveEvent, LiveState } from '../types';
 
 export type Connection = 'connecting' | 'online' | 'offline';
 
-type Listener = (events: LiveEvent[]) => void;
+type Listener = (events: LiveEvent[], state: LiveState) => void;
 const listeners = new Set<Listener>();
 export function onLiveEvents(fn: Listener) {
   listeners.add(fn);
@@ -54,7 +54,7 @@ export function LiveProvider({ children }: { children: ReactNode }) {
         const data = JSON.parse(msg.data);
         if (data.type !== 'state') return;
         qc.setQueryData(['state'], data.state as LiveState);
-        if (data.events?.length) listeners.forEach((fn) => fn(data.events));
+        if (data.events?.length) listeners.forEach((fn) => fn(data.events, data.state));
       };
       socket.onclose = () => {
         if (stopped) return;

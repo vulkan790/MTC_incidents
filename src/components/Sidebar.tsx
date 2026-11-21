@@ -18,6 +18,8 @@ interface Props {
 }
 
 export function Sidebar({ events, mail, now, summary, dnd }: Props) {
+  const candidates = mail.filter((m) => m.folder === 'inbox' && m.analysis?.isPotential)
+    .sort((a, b) => Date.parse(b.receivedAt) - Date.parse(a.receivedAt));
   return (
     <aside className={`sidebar ${dnd?.className ?? ''}`} data-col="side" {...dnd?.zone}>
       <section className="kpi kpi-sla" aria-label="Контроль сроков" {...dnd?.handle}>
@@ -56,18 +58,20 @@ export function Sidebar({ events, mail, now, summary, dnd }: Props) {
         </ol>
       </section>
       <section className="side-block">
-        <h2><Icon name="mail" />Почта по инцидентам</h2>
+        <h2><Icon name="mail" />Почта по инцидентам <a className="side-mail-all" href="/cabinet">Вся почта</a></h2>
+        {!candidates.length && <p className="side-empty">Подозрительных писем пока нет. Анализ не создаёт инциденты.</p>}
         <ol className="mail">
-          {mail.slice(0, 30).map((m) => (
+          {candidates.slice(0, 30).map((m) => (
             <li key={m.id} className={m.important ? 'is-important' : ''}>
-              <button disabled={!m.incidentId} onClick={() => m.incidentId && openItsm(m.incidentId)} title={m.body}>
+              <a href={`/cabinet/mail/${encodeURIComponent(m.id)}`} title="Открыть письмо в личном кабинете">
                 <span className="mail-meta">
                   <b>{personName(m.fromName) || m.fromName}</b>
                   <time>{fmtTime(m.receivedAt, now)}</time>
                 </span>
                 <span className="mail-subject">{m.subject}</span>
                 <span className="mail-body">{m.body}</span>
-              </button>
+                <span className="mail-ai-tag">{m.analysis.source === 'ollama' ? 'ИИ' : m.analysis.source === 'manual' ? 'Отмечено' : 'Правила'}{m.incidentId ? ` · ${m.incidentId}` : ' · Без инцидента'}</span>
+              </a>
             </li>
           ))}
         </ol>

@@ -48,6 +48,21 @@ export interface Incident {
   solution: string | null;
 }
 
+export interface MailAnalysis {
+  isPotential: boolean;
+  confidence: number;
+  reason: string;
+  source: 'ollama' | 'rules' | 'manual';
+  analyzedAt: string;
+}
+
+export interface AiStatus {
+  available: boolean;
+  provider: string;
+  model: string;
+  details: string;
+}
+
 export interface Letter {
   id: string;
   receivedAt: string;
@@ -57,6 +72,9 @@ export interface Letter {
   body: string;
   incidentId: string | null;
   important: boolean;
+  folder: 'inbox' | 'archive' | 'spam';
+  read: boolean;
+  analysis: MailAnalysis;
 }
 
 export type EventLevel = 'critical' | 'warn' | 'ok' | 'info';
@@ -90,5 +108,5 @@ export interface LiveState {
   events: LiveEvent[];
   error: string | null;
   auto: { enabled: boolean; intervalMs: number; last: string | null };
-  meta: { coordGroup: string; teams: string[] };
+  meta: { coordGroup: string; teams: string[]; ai: AiStatus };
 }

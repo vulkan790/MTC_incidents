@@ -1,5 +1,55 @@
 [
   {
+    "id": "MSG-YM3R9SY0",
+    "receivedAt": "2026-11-21T15:19:07Z",
+    "fromName": "Мониторинг 9го королевства",
+    "fromAddress": "monitoring@corp.local",
+    "subject": "[ALERT] Акваланг для муравьев: Кран недоступен",
+    "body": "Сработали пороги доступности по сервису [Акваланг для муравьев] Баллон с воздухом. Зарегистрирован INC000021941869.",
+    "incidentId": "INC000021941869",
+    "important": true
+  },
+  {
+    "id": "MSG-YZRZN6HE",
+    "receivedAt": "2026-11-21T13:31:07Z",
+    "fromName": "Мониторинг 9го королевства",
+    "fromAddress": "monitoring@corp.local",
+    "subject": "[ALERT] Летающий ковер: Узор недоступен",
+    "body": "Сработали пороги доступности по сервису [Летающий ковер] Ткань ковра. Зарегистрирован INC000021941837.",
+    "incidentId": "INC000021941837",
+    "important": true
+  },
+  {
+    "id": "MSG-DEMO-OUTAGE",
+    "receivedAt": "2026-11-21T13:23:07Z",
+    "fromName": "Дежурный инженер сети",
+    "fromAddress": "noc@corp.local",
+    "subject": "Авария: массовая недоступность личного кабинета",
+    "body": "С 15:10 пользователи не могут открыть личный кабинет. Ошибки 503 в нескольких регионах, обращения продолжают поступать. Просьба срочно проверить сервис.",
+    "incidentId": null,
+    "important": true
+  },
+  {
+    "id": "MSG-DEMO-INFO",
+    "receivedAt": "2026-11-21T13:13:07Z",
+    "fromName": "Администрация",
+    "fromAddress": "info@corp.local",
+    "subject": "Информация о встрече команды",
+    "body": "Напоминаем о еженедельной встрече координаторов в понедельник. Повестка: итоги недели.",
+    "incidentId": null,
+    "important": false
+  },
+  {
+    "id": "MSG-P8L6728F",
+    "receivedAt": "2026-11-21T13:11:24Z",
+    "fromName": "Мониторинг 9го королевства",
+    "fromAddress": "monitoring@corp.local",
+    "subject": "[ALERT] Автопросматриватель TicTok: Объектив недоступен",
+    "body": "Сработали пороги доступности по сервису [Автопросматриватель TicTok] Камера-сканер. Зарегистрирован INC000021941835.",
+    "incidentId": "INC000021941835",
+    "important": true
+  },
+  {
     "id": "MSG-3RE1O9FJ",
     "receivedAt": "2026-11-21T12:24:12Z",
     "fromName": "Дядя Фёдор (unclefedor)",

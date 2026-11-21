@@ -8,10 +8,11 @@ import http from 'node:http';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
 import { WebSocketServer } from 'ws';
-import { DATA_DIR, FILES, readJson, writeJson } from './store.js';
+import { DATA_DIR, FILES, readJson, writeJson, updateIncidents, updateMail } from './store.js';
+import { setMailUpdateListener, syncMailMetadata, decorateMail, patchMailMetadata, analyzeMail, analyzeInbox, aiStatus, probeOllama, resetMailMetadata } from './mail-service.js';
 import { COORD_GROUP, STATES, PRIORITY, isCriticalActive, isOnCoordinators, iso } from './model.js';
 import { diffIncidents, diffMail } from './events.js';
-import { SCENARIOS, patchIncident, runScenario, runRandomScenario, teams } from './scenarios.js';
+import { SCENARIOS, patchIncident, runScenario, runRandomScenario, teams, makeIncident } from './scenarios.js';
 import { seed } from './seed.js';
 
 const PORT = Number(process.env.PORT) || 3001;
@@ -42,12 +43,12 @@ function snapshot() {
     updatedAt: state.updatedAt,
     serverTime: new Date().toISOString(),
     incidents: state.incidents,
-    mail: state.mail,
+    mail: decorateMail(state.mail),
     acks: state.acks,
     events: state.events.slice(0, 80),
     error: state.error,
     auto: { enabled: auto.enabled, intervalMs: auto.intervalMs, last: auto.last },
-    meta: { coordGroup: COORD_GROUP, teams: teams(state.incidents) },
+    meta: { coordGroup: COORD_GROUP, teams: teams(state.incidents), ai: aiStatus() },
   };
 }
 
@@ -112,6 +113,7 @@ function load(kind, { initial = false } = {}) {
   if (state.error?.startsWith(path.basename(file))) state.error = null;
   const prev = state[kind];
   state[kind] = kind === 'incidents' ? normalize(parsed, prev) : parsed;
+  if (kind === 'mail') syncMailMetadata(parsed);
   if (initial) return [];
   return kind === 'incidents' ? diffIncidents(prev, parsed) : diffMail(prev, parsed);
 }
@@ -121,6 +123,7 @@ function refresh(kinds = ['incidents', 'mail']) {
   const results = kinds.map((k) => load(k));
   const changed = results.some((r) => r !== null);
   const events = results.flatMap((r) => r ?? []);
+  if (kinds.includes('mail') && results[kinds.indexOf('mail')] !== null) void analyzeInbox(state.mail);
   if (!changed && before === state.error) return;
   state.version += 1;
   state.updatedAt = iso(Date.now());
@@ -133,6 +136,8 @@ function refresh(kinds = ['incidents', 'mail']) {
 load('incidents', { initial: true });
 load('mail', { initial: true });
 cleanupAcks();
+setMailUpdateListener(() => broadcast({ type: 'state', state: snapshot(), events: [] }));
+void analyzeInbox(state.mail);
 
 // Изменения файла ловим двумя способами: fs.watch (мгновенно) и опросом mtime (надёжно для любых редакторов и сетевых дисков).
 let debounce = null;
@@ -173,6 +178,87 @@ app.post('/api/incidents/:id', (req, res) => {
   res.json(inc);
 });
 
+// ---------- Почта: чтение, папки, оценки, явное преобразование в инцидент ----------
+app.get('/api/ai/status', async (_req, res) => res.json(await probeOllama()));
+
+app.post('/api/mail/analyze', async (_req, res) => {
+  // Массовый повторный прогон, без создания ITSM. Не держим HTTP-запрос открытым на генерации.
+  const letters = [...state.mail];
+  void (async () => {
+    await probeOllama();
+    for (const letter of letters) if (state.mail.some((m) => m.id === letter.id)) await analyzeMail(letter, { force: true });
+  })();
+  res.json({ ok: true, count: letters.length, message: 'Анализ запущен; результаты появятся автоматически' });
+});
+
+app.post('/api/mail/:id/analyze', async (req, res) => {
+  const mail = state.mail.find((m) => m.id === req.params.id);
+  if (!mail) return res.status(404).json({ error: 'Письмо не найдено' });
+  try { res.json(await analyzeMail(mail, { force: true })); }
+  catch (err) { res.status(502).json({ error: err.message }); }
+});
+
+app.patch('/api/mail/:id', (req, res) => {
+  if (!state.mail.some((m) => m.id === req.params.id)) return res.status(404).json({ error: 'Письмо не найдено' });
+  const input = req.body ?? {};
+  const patch = {};
+  if (input.folder !== undefined) {
+    if (!['inbox', 'spam', 'archive'].includes(input.folder)) return res.status(400).json({ error: 'Неизвестная папка' });
+    patch.folder = input.folder;
+  }
+  if (input.read !== undefined) {
+    if (typeof input.read !== 'boolean') return res.status(400).json({ error: 'read должно быть boolean' });
+    patch.read = input.read;
+  }
+  if (input.potential !== undefined) {
+    if (typeof input.potential !== 'boolean') return res.status(400).json({ error: 'potential должно быть boolean' });
+    patch.potential = input.potential;
+  }
+  res.json({ ok: true, metadata: patchMailMetadata(req.params.id, patch) });
+});
+
+app.post('/api/mail/:id/link', (req, res) => {
+  const incidentId = String(req.body?.incidentId ?? '').trim().toUpperCase();
+  if (!state.incidents.some((inc) => inc.id === incidentId)) return res.status(404).json({ error: 'Инцидент с таким номером не найден' });
+  if (!state.mail.some((m) => m.id === req.params.id)) return res.status(404).json({ error: 'Письмо не найдено' });
+  updateMail((list) => { const mail = list.find((m) => m.id === req.params.id); mail.incidentId = incidentId; });
+  refresh(['mail']);
+  res.json({ ok: true, incidentId });
+});
+
+app.post('/api/mail/:id/incident', (req, res) => {
+  const letter = state.mail.find((m) => m.id === req.params.id);
+  if (!letter) return res.status(404).json({ error: 'Письмо не найдено' });
+  if (letter.incidentId) return res.status(409).json({ error: `Письмо уже связано с ${letter.incidentId}` });
+  const priorityId = Number(req.body?.priorityId ?? 2);
+  if (![1, 2, 3, 4].includes(priorityId)) return res.status(400).json({ error: 'Неверный приоритет' });
+  const team = String(req.body?.team || COORD_GROUP).slice(0, 120);
+  if (team !== COORD_GROUP && !teams(state.incidents).includes(team)) return res.status(400).json({ error: 'Неизвестная команда' });
+  const incident = updateIncidents((list) => {
+    const inc = makeIncident(list, { priorityId, group: team });
+    // Сохраняем структуру ITSM, но содержимое берём только из конкретного письма.
+    inc.header = String(letter.subject).slice(0, 240);
+    inc.shortDescription = inc.header;
+    inc.description = `Получено по электронной почте от ${letter.fromName} <${letter.fromAddress}>:\n${letter.body}`.slice(0, 5000);
+    inc.initiatorName = letter.fromName;
+    inc.initiatorLogin = letter.fromAddress;
+    inc.receivingChannel = 'Электронная почта';
+    inc.assignedEmployee = null;
+    inc.assignedEmployeeLogin = null;
+    inc.productName = 'Не определён (почта)';
+    inc.productId = '';
+    inc.productMasterId = '';
+    inc.service = 'Требуется классификация';
+    inc.serviceId = '';
+    inc.scenarioName = 'Обращение из почты';
+    list.unshift(inc);
+    return inc;
+  });
+  updateMail((list) => { const mail = list.find((m) => m.id === letter.id); if (mail) mail.incidentId = incident.id; });
+  refresh(['incidents', 'mail']);
+  res.status(201).json({ ok: true, incidentId: incident.id });
+});
+
 app.post('/api/ack', (req, res) => {
   const { key, by } = req.body ?? {};
   if (!/^(crit|coord):[\w-]+$/.test(key ?? '')) return res.status(400).json({ error: 'Неверный ключ подтверждения' });
@@ -201,6 +287,8 @@ app.post('/api/demo/reset', (_req, res) => {
   state.mail = [];
   load('incidents', { initial: true });
   load('mail', { initial: true });
+  resetMailMetadata(state.mail);
+  void analyzeInbox(state.mail);
   state.events = [];
   state.version += 1;
   broadcast({ type: 'state', state: snapshot(), events: [] });
