@@ -1,0 +1,35 @@
+{
+  "name": "itsm-coordinator-dashboard",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Пульт координатора массовых инцидентов: дашборд поверх ITSM (эмуляция JSON-файлом)",
+  "scripts": {
+    "dev": "concurrently -k -n server,web -c red,cyan \"node --watch-path=server server/index.js\" \"vite\"",
+    "build": "tsc -p . && vite build",
+    "start": "node server/index.js",
+    "simulate": "node server/simulate.js",
+    "seed": "node server/seed.js",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@fontsource/golos-text": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0",
+    "@fontsource/unbounded": "^5.3.0",
+    "@tanstack/react-query": "^5.108.2",
+    "express": "^5.3.0",
+    "gsap": "^3.15.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "ws": "^8.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "concurrently": "^10.0.7",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.8"
+  }
+}

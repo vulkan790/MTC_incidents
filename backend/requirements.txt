@@ -1,9 +1,0 @@
-fastapi
-uvicorn[standard]
-sse-starlette
-pydantic
-watchfiles
-gigachat
-openai
-scikit-learn
-joblib

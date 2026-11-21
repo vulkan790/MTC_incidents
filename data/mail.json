@@ -1,0 +1,102 @@
+[
+  {
+    "id": "MSG-ZGW091AJ",
+    "receivedAt": "2026-11-21T11:31:16Z",
+    "fromName": "Дядя Фёдор (unclefedor)",
+    "fromAddress": "unclefedor@corp.local",
+    "subject": "Re: INC000021941816 Неисправность: Экран счётчика",
+    "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
+    "incidentId": "INC000021941816",
+    "important": false
+  },
+  {
+    "id": "MSG-SXU70B6W",
+    "receivedAt": "2026-11-21T10:53:03Z",
+    "fromName": "Мониторинг 9го королевства",
+    "fromAddress": "monitoring@corp.local",
+    "subject": "Плановые работы на сетевом ядре сегодня 23:00–01:00",
+    "body": "Возможны кратковременные потери связности. Инциденты по этому окну просьба связывать с плановыми работами.",
+    "incidentId": null,
+    "important": false
+  },
+  {
+    "id": "MSG-50PKXFO3",
+    "receivedAt": "2026-11-21T10:50:21Z",
+    "fromName": "Буратино (buratino)",
+    "fromAddress": "buratino@corp.local",
+    "subject": "Вопрос по INC000021941647 (Акваланг для муравьев)",
+    "body": "Подскажите, кто сейчас отвечает за Фильтр? Наши клиенты тоже затронуты.",
+    "incidentId": "INC000021941647",
+    "important": false
+  },
+  {
+    "id": "MSG-GE0MK0AC",
+    "receivedAt": "2026-11-21T10:30:47Z",
+    "fromName": "Кот Матроскин (matrosov_kot)",
+    "fromAddress": "matrosov_kot@corp.local",
+    "subject": "Вопрос по INC000021941658 (Летающий ковер)",
+    "body": "Подскажите, кто сейчас отвечает за Нити? Наши клиенты тоже затронуты.",
+    "incidentId": "INC000021941658",
+    "important": false
+  },
+  {
+    "id": "MSG-R4YOXDL7",
+    "receivedAt": "2026-11-21T06:12:51Z",
+    "fromName": "Голубая птица (bluebird)",
+    "fromAddress": "bluebird@corp.local",
+    "subject": "Разбор причин INC000021939297",
+    "body": "Собираем таймлайн инцидента. Для разбора нужна информация от смежной команды, предлагаем передать через координаторов.",
+    "incidentId": "INC000021939297",
+    "important": false
+  },
+  {
+    "id": "MSG-YTU35HIK",
+    "receivedAt": "2026-11-21T05:59:41Z",
+    "fromName": "Синяя Борода (bluebeard)",
+    "fromAddress": "bluebeard@corp.local",
+    "subject": "Вопрос по INC000021940779 (Страхование хомячков)",
+    "body": "Подскажите, кто сейчас отвечает за Батарейка? Наши клиенты тоже затронуты.",
+    "incidentId": "INC000021940779",
+    "important": false
+  },
+  {
+    "id": "MSG-PRKRFT2Z",
+    "receivedAt": "2026-11-21T05:57:11Z",
+    "fromName": "Кощей Бессмертный (koschei)",
+    "fromAddress": "koschei@corp.local",
+    "subject": "Re: INC000021940033 Аномалия в Магнит",
+    "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
+    "incidentId": "INC000021940033",
+    "important": false
+  },
+  {
+    "id": "MSG-8YJVIMME",
+    "receivedAt": "2026-11-21T04:56:18Z",
+    "fromName": "Алиса в Стране Чудес (alice)",
+    "fromAddress": "alice@corp.local",
+    "subject": "INC000021940003: статус работ",
+    "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
+    "incidentId": "INC000021940003",
+    "important": false
+  },
+  {
+    "id": "MSG-FWTZFJOC",
+    "receivedAt": "2026-11-21T03:29:31Z",
+    "fromName": "Шарик (sharik_dog)",
+    "fromAddress": "sharik_dog@corp.local",
+    "subject": "Re: INC000021938770 Неисправность: Футляр",
+    "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
+    "incidentId": "INC000021938770",
+    "important": false
+  },
+  {
+    "id": "MSG-BX3KNBOE",
+    "receivedAt": "2026-11-20T23:57:05Z",
+    "fromName": "Шарик (sharik_dog)",
+    "fromAddress": "sharik_dog@corp.local",
+    "subject": "Вопрос по INC000021938960 (Автопросматриватель TicTok)",
+    "body": "Подскажите, кто сейчас отвечает за Кэш кадров? Наши клиенты тоже затронуты.",
+    "incidentId": "INC000021938960",
+    "important": false
+  }
+]
