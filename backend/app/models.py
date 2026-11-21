@@ -6,7 +6,7 @@ class Group(str, Enum):
     critical = "critical" # Критические (priorityId = 4, кроме stateId = 20)
     coordinators = "coordinators" # Назначенные на координаторов
     high_priority = "high_priority" # Высокий приоритет (priorityId = 3, кроме stateId = 20)
-    invenstigation = "invenstigation" # Исследовательские ситуации (stateId = 20)
+    investigation = "investigation"  # Исследовательские ситуации (stateId = 20)
 
 GROUP_META = {
     Group.critical: {
@@ -42,8 +42,8 @@ class Incident(BaseModel):
     state_id: str | None = None
     priority: str | None = None
     priority_id: str | None = None
-    impact_id: str | None = None # Влияние (от 1 до 4). 4 - наивысшее
-    urgency_id: str | None = None # Срочность (от 1 до 4). 4 - наивысшее
+    impact_id: int | None = None # Влияние (от 1 до 4). 4 - наивысшее
+    urgency_id: int | None = None # Срочность (от 1 до 4). 4 - наивысшее
     header: str | None = None
     short_description: str | None = None
     description: str | None = None 
