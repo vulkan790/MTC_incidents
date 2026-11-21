@@ -1,5 +1,255 @@
 [
   {
+    "id": "MSG-OV4WK85I",
+    "receivedAt": "2026-11-21T18:56:22Z",
+    "fromName": "Лисичка-сестричка (lisichka)",
+    "fromAddress": "lisichka@corp.local",
+    "subject": "Вопрос по INC000021933291 (Автопросматриватель TicTok)",
+    "body": "Подскажите, кто сейчас отвечает за Подсветка? Наши клиенты тоже затронуты.",
+    "incidentId": "INC000021933291",
+    "important": false
+  },
+  {
+    "id": "MSG-9IVOI2RZ",
+    "receivedAt": "2026-11-21T18:55:58Z",
+    "fromName": "Малыш Хоббит (hobbit)",
+    "fromAddress": "hobbit@corp.local",
+    "subject": "INC000021939297: статус работ",
+    "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
+    "incidentId": "INC000021939297",
+    "important": false
+  },
+  {
+    "id": "MSG-ATZM7Z6B",
+    "receivedAt": "2026-11-21T18:53:18Z",
+    "fromName": "Василиса Премудрая (vasilisa)",
+    "fromAddress": "vasilisa@corp.local",
+    "subject": "Разбор причин INC000021936363",
+    "body": "Собираем таймлайн инцидента. Для разбора нужна информация от смежной команды, предлагаем передать через координаторов.",
+    "incidentId": "INC000021936363",
+    "important": false
+  },
+  {
+    "id": "MSG-VOW7CSZ7",
+    "receivedAt": "2026-11-21T18:52:54Z",
+    "fromName": "Василиса Премудрая (vasilisa)",
+    "fromAddress": "vasilisa@corp.local",
+    "subject": "INC000021933290: статус работ",
+    "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
+    "incidentId": "INC000021933290",
+    "important": false
+  },
+  {
+    "id": "MSG-D1F4E1AN",
+    "receivedAt": "2026-11-21T18:51:58Z",
+    "fromName": "Кощей Бессмертный (koschei)",
+    "fromAddress": "koschei@corp.local",
+    "subject": "Вопрос по INC000021939297 (Страхование хомячков)",
+    "body": "Подскажите, кто сейчас отвечает за Экран счётчика? Наши клиенты тоже затронуты.",
+    "incidentId": "INC000021939297",
+    "important": false
+  },
+  {
+    "id": "MSG-QQF0IGHM",
+    "receivedAt": "2026-11-21T18:51:42Z",
+    "fromName": "Лисичка-сестричка (lisichka)",
+    "fromAddress": "lisichka@corp.local",
+    "subject": "Вопрос по INC000021942590 (Летающий ковер)",
+    "body": "Подскажите, кто сейчас отвечает за Нити? Наши клиенты тоже затронуты.",
+    "incidentId": "INC000021942590",
+    "important": false
+  },
+  {
+    "id": "MSG-SMXKBBER",
+    "receivedAt": "2026-11-21T18:51:26Z",
+    "fromName": "Медведь Барсик (barsik)",
+    "fromAddress": "barsik@corp.local",
+    "subject": "Re: INC000021942300 Неисправность: Магнит",
+    "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
+    "incidentId": "INC000021942300",
+    "important": false
+  },
+  {
+    "id": "MSG-D3A2621I",
+    "receivedAt": "2026-11-21T18:51:18Z",
+    "fromName": "Медведь Барсик (barsik)",
+    "fromAddress": "barsik@corp.local",
+    "subject": "INC000021942544: статус работ",
+    "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
+    "incidentId": "INC000021942544",
+    "important": false
+  },
+  {
+    "id": "MSG-S5NTKL47",
+    "receivedAt": "2026-11-21T18:50:14Z",
+    "fromName": "Алиса в Стране Чудес (alice)",
+    "fromAddress": "alice@corp.local",
+    "subject": "INC000021939297: статус работ",
+    "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
+    "incidentId": "INC000021939297",
+    "important": false
+  },
+  {
+    "id": "MSG-L60VHBYI",
+    "receivedAt": "2026-11-21T18:49:02Z",
+    "fromName": "Синяя Борода (bluebeard)",
+    "fromAddress": "bluebeard@corp.local",
+    "subject": "Вопрос по INC000021941881 (Автопросматриватель TicTok)",
+    "body": "Подскажите, кто сейчас отвечает за Объектив? Наши клиенты тоже затронуты.",
+    "incidentId": "INC000021941881",
+    "important": true
+  },
+  {
+    "id": "MSG-G8REF1SP",
+    "receivedAt": "2026-11-21T18:48:46Z",
+    "fromName": "Мониторинг 9го королевства",
+    "fromAddress": "monitoring@corp.local",
+    "subject": "[ALERT] Страхование хомячков: Датчик хвоста недоступен",
+    "body": "Сработали пороги доступности по сервису [Страхование хомячков] Счётчик хомячков. Зарегистрирован INC000021942623.",
+    "incidentId": "INC000021942623",
+    "important": true
+  },
+  {
+    "id": "MSG-CBG31GY5",
+    "receivedAt": "2026-11-21T18:47:26Z",
+    "fromName": "Пятачок (piglet)",
+    "fromAddress": "piglet@corp.local",
+    "subject": "INC000021941927: статус работ",
+    "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
+    "incidentId": "INC000021941927",
+    "important": false
+  },
+  {
+    "id": "MSG-YZRV2MBB",
+    "receivedAt": "2026-11-21T18:46:46Z",
+    "fromName": "Медведь Барсик (barsik)",
+    "fromAddress": "barsik@corp.local",
+    "subject": "Re: INC000021942544 Отказ Ячейка данных (Полис-хранилище)",
+    "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
+    "incidentId": "INC000021942544",
+    "important": false
+  },
+  {
+    "id": "MSG-3XQSW7EO",
+    "receivedAt": "2026-11-21T18:42:28Z",
+    "fromName": "Мониторинг 9го королевства",
+    "fromAddress": "monitoring@corp.local",
+    "subject": "[ALERT] Акваланг для муравьев: Стекло недоступен",
+    "body": "Сработали пороги доступности по сервису [Акваланг для муравьев] Маска. Зарегистрирован INC000021942588.",
+    "incidentId": "INC000021942588",
+    "important": true
+  },
+  {
+    "id": "MSG-HW5DXUN6",
+    "receivedAt": "2026-11-21T18:42:15Z",
+    "fromName": "Мониторинг 9го королевства",
+    "fromAddress": "monitoring@corp.local",
+    "subject": "[ALERT] Летающий ковер: Кнопка недоступен",
+    "body": "Сработали пороги доступности по сервису [Летающий ковер] Руль-пульт. Зарегистрирован INC000021942582.",
+    "incidentId": "INC000021942582",
+    "important": true
+  },
+  {
+    "id": "MSG-Z8VZI94C",
+    "receivedAt": "2026-11-21T18:16:08Z",
+    "fromName": "Малыш Хоббит (hobbit)",
+    "fromAddress": "hobbit@corp.local",
+    "subject": "Вопрос по INC000021942394 (Летающий ковер)",
+    "body": "Подскажите, кто сейчас отвечает за Нити? Наши клиенты тоже затронуты.",
+    "incidentId": "INC000021942394",
+    "important": true
+  },
+  {
+    "id": "MSG-3P3UDPYG",
+    "receivedAt": "2026-11-21T18:14:24Z",
+    "fromName": "Малыш Хоббит (hobbit)",
+    "fromAddress": "hobbit@corp.local",
+    "subject": "Re: INC000021942422 Отказ Сирена (Аварийный сигнал)",
+    "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
+    "incidentId": "INC000021942422",
+    "important": false
+  },
+  {
+    "id": "MSG-LCVUILNN",
+    "receivedAt": "2026-11-21T18:13:44Z",
+    "fromName": "Пятачок (piglet)",
+    "fromAddress": "piglet@corp.local",
+    "subject": "Вопрос по INC000021932639 (Автопросматриватель TicTok)",
+    "body": "Подскажите, кто сейчас отвечает за Кэш кадров? Наши клиенты тоже затронуты.",
+    "incidentId": "INC000021932639",
+    "important": false
+  },
+  {
+    "id": "MSG-XA0QJZR9",
+    "receivedAt": "2026-11-21T18:13:28Z",
+    "fromName": "Синяя Борода (bluebeard)",
+    "fromAddress": "bluebeard@corp.local",
+    "subject": "Вопрос по INC000021942300 (Летающий ковер)",
+    "body": "Подскажите, кто сейчас отвечает за Магнит? Наши клиенты тоже затронуты.",
+    "incidentId": "INC000021942300",
+    "important": false
+  },
+  {
+    "id": "MSG-66NS4VUL",
+    "receivedAt": "2026-11-21T18:13:12Z",
+    "fromName": "Карлсон (karlsson)",
+    "fromAddress": "karlsson@corp.local",
+    "subject": "INC000021942371: статус работ",
+    "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
+    "incidentId": "INC000021942371",
+    "important": false
+  },
+  {
+    "id": "MSG-3P89RBVW",
+    "receivedAt": "2026-11-21T18:13:04Z",
+    "fromName": "Пятачок (piglet)",
+    "fromAddress": "piglet@corp.local",
+    "subject": "Вопрос по INC000021936363 (Страхование хомячков)",
+    "body": "Подскажите, кто сейчас отвечает за Датчик хвоста? Наши клиенты тоже затронуты.",
+    "incidentId": "INC000021936363",
+    "important": false
+  },
+  {
+    "id": "MSG-YBIPLMPM",
+    "receivedAt": "2026-11-21T18:12:48Z",
+    "fromName": "Лисичка-сестричка (lisichka)",
+    "fromAddress": "lisichka@corp.local",
+    "subject": "Re: INC000021938960 Неисправность: Кэш кадров",
+    "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
+    "incidentId": "INC000021938960",
+    "important": false
+  },
+  {
+    "id": "MSG-8PB67OH3",
+    "receivedAt": "2026-11-21T18:12:40Z",
+    "fromName": "Медведь Барсик (barsik)",
+    "fromAddress": "barsik@corp.local",
+    "subject": "Вопрос по INC000021942371 (Страхование хомячков)",
+    "body": "Подскажите, кто сейчас отвечает за Сирена? Наши клиенты тоже затронуты.",
+    "incidentId": "INC000021942371",
+    "important": false
+  },
+  {
+    "id": "MSG-DZXZZG99",
+    "receivedAt": "2026-11-21T18:12:16Z",
+    "fromName": "Мониторинг 9го королевства",
+    "fromAddress": "monitoring@corp.local",
+    "subject": "[ALERT] Летающий ковер: Катушка недоступен",
+    "body": "Сработали пороги доступности по сервису [Летающий ковер] Магнитный двигатель. Зарегистрирован INC000021942442.",
+    "incidentId": "INC000021942442",
+    "important": true
+  },
+  {
+    "id": "MSG-QPYBK6WJ",
+    "receivedAt": "2026-11-21T18:12:01Z",
+    "fromName": "Мониторинг 9го королевства",
+    "fromAddress": "monitoring@corp.local",
+    "subject": "[ALERT] Летающий ковер: Нити недоступен",
+    "body": "Сработали пороги доступности по сервису [Летающий ковер] Ткань ковра. Зарегистрирован INC000021942394.",
+    "incidentId": "INC000021942394",
+    "important": true
+  },
+  {
     "id": "MSG-TD5MUNRT",
     "receivedAt": "2026-11-21T17:47:47Z",
     "fromName": "Змей Горыныч (zmej)",

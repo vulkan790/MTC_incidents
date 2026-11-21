@@ -10,6 +10,7 @@ import './styles.css';
 import './itsm/itsm.css';
 import './cabinet/cabinet.css';
 import './settings/settings.css';
+import './mobile.css';
 import { LiveProvider } from './lib/live';
 import { GlobalAlertsProvider } from './lib/global-alerts';
 import { Dashboard } from './Dashboard';

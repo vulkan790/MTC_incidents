@@ -20,6 +20,7 @@ interface Props {
   onDeadlineFilter: (value: Exclude<DeadlineFilter, 'all'>) => void;
   dnd?: ColumnDnd;
   operator: string;
+  mobile?: boolean;
 }
 
 type SidePanel = 'events' | 'mail';
@@ -37,7 +38,7 @@ function readSideOrder(key: string): SidePanel[] {
   return [...SIDE_ORDER_DEFAULT];
 }
 
-export function Sidebar({ events, mail, now, summary, deadlineFilter, onDeadlineFilter, dnd, operator }: Props) {
+export function Sidebar({ events, mail, now, summary, deadlineFilter, onDeadlineFilter, dnd, operator, mobile = false }: Props) {
   const storageKey = `mi:sidebar-order:v1:${operator.trim().toLocaleLowerCase('ru-RU') || 'координатор'}`;
   const [order, setOrder] = useState<SidePanel[]>(() => readSideOrder(storageKey));
   const [dragging, setDragging] = useState<SidePanel | null>(null);
@@ -55,6 +56,7 @@ export function Sidebar({ events, mail, now, summary, deadlineFilter, onDeadline
   // это половина свободного пространства после KPI; в сетке — исходная высота
   // строки, с прежним ограничением 22rem. Она не зависит от выбранного масштаба.
   useLayoutEffect(() => {
+    if (mobile) return;
     const root = aside.current;
     if (!root) return;
     const kpi = root.querySelector<HTMLElement>('.kpi-sla');
@@ -106,7 +108,7 @@ export function Sidebar({ events, mail, now, summary, deadlineFilter, onDeadline
     }
     window.addEventListener('resize', measure);
     return () => { observer.disconnect(); window.removeEventListener('resize', measure); };
-  }, [events, mail, order]);
+  }, [events, mail, order, mobile]);
 
   useEffect(() => { saveBoardValue(heightsKey, scales); }, [heightsKey, scales]);
 
@@ -115,7 +117,7 @@ export function Sidebar({ events, mail, now, summary, deadlineFilter, onDeadline
     setScales((old) => old[panel] === next ? old : { ...old, [panel]: next });
   }
   function beginResize(event: PointerEvent<HTMLButtonElement>, panel: SidePanel) {
-    if (event.button !== 0 || !base) return;
+    if (mobile || event.button !== 0 || !base) return;
     event.stopPropagation();
     event.preventDefault();
     event.currentTarget.focus({ preventScroll: true });
@@ -157,7 +159,7 @@ export function Sidebar({ events, mail, now, summary, deadlineFilter, onDeadline
     </div>;
   }
   function panelStyle(panel: SidePanel) {
-    return base ? { height: `${base[panel] * scales[panel]}px` } : undefined;
+    return !mobile && base ? { height: `${base[panel] * scales[panel]}px` } : undefined;
   }
 
   function swap() {
@@ -231,7 +233,7 @@ export function Sidebar({ events, mail, now, summary, deadlineFilter, onDeadline
   const candidates = mail.filter((m) => m.folder === 'inbox' && m.analysis?.isPotential)
     .sort((a, b) => Date.parse(b.receivedAt) - Date.parse(a.receivedAt));
   return (
-    <aside ref={aside} className={`sidebar sidebar-resizable ${dnd?.className ?? ''}`} data-col="side" {...dnd?.zone}>
+    <aside ref={aside} id={mobile ? 'mobile-side' : undefined} className={`sidebar ${mobile ? 'sidebar-mobile' : 'sidebar-resizable'} ${dnd?.className ?? ''}`} data-col="side" {...dnd?.zone}>
       <section className="kpi kpi-sla" aria-label="Контроль сроков">
         <div className="kpi-head" {...dnd?.handle}>
           <div className="kpi-title">
@@ -258,12 +260,13 @@ export function Sidebar({ events, mail, now, summary, deadlineFilter, onDeadline
           </button>
         </div>
       </section>
-      {order.map((panel) => panel === 'events' ? (
-      <section key="events" data-side-panel="events" className={panelClass('events')} style={panelStyle('events')} {...zone('events')}>
+      {mobile && <a className="btn mobile-back-to-lanes" href="#dashboard-filters" onClick={(event) => { event.preventDefault(); document.querySelector('.mobile-category-nav')?.scrollIntoView({ block: 'start' }); }}>↑ К инцидентам</a>}
+      {(mobile ? SIDE_ORDER_DEFAULT : order).map((panel) => panel === 'events' ? (
+      <section key="events" data-side-panel="events" className={panelClass('events')} style={panelStyle('events')} {...(mobile ? {} : zone('events'))}>
         <div className="side-panel-content">
         <div className="side-panel-head">
           <h2><Icon name="activity" /><span>События смены</span></h2>
-          {handle('events')}
+          {!mobile && handle('events')}
         </div>
         {!events.length && <p className="side-empty">Изменения из ITSM появятся здесь, как только придут</p>}
         <ol className="feed">
@@ -278,14 +281,14 @@ export function Sidebar({ events, mail, now, summary, deadlineFilter, onDeadline
           ))}
         </ol>
         </div>
-        {resizeHandle('events')}
+        {!mobile && resizeHandle('events')}
       </section>
       ) : (
-      <section key="mail" data-side-panel="mail" className={panelClass('mail')} style={panelStyle('mail')} {...zone('mail')}>
+      <section key="mail" data-side-panel="mail" className={panelClass('mail')} style={panelStyle('mail')} {...(mobile ? {} : zone('mail'))}>
         <div className="side-panel-content">
         <div className="side-panel-head">
           <h2><Icon name="mail" /><span>Почта по инцидентам</span><a className="side-mail-all" href="/cabinet">Вся почта</a></h2>
-          {handle('mail')}
+          {!mobile && handle('mail')}
         </div>
         {!candidates.length && <p className="side-empty">Подозрительных писем пока нет. Анализ не создаёт инциденты.</p>}
         <ol className="mail">
@@ -304,7 +307,7 @@ export function Sidebar({ events, mail, now, summary, deadlineFilter, onDeadline
           ))}
         </ol>
         </div>
-        {resizeHandle('mail')}
+        {!mobile && resizeHandle('mail')}
       </section>
       ))}
     </aside>

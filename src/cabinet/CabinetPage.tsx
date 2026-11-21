@@ -1,10 +1,11 @@
 // Личный кабинет координатора и почтовый триаж в стиле Bitrix.
 // Анализ помечает письмо, но НИКОГДА не создаёт ITSM: это отдельное подтверждённое действие.
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Letter } from '../types';
 import { useConnection, useLiveState } from '../lib/live';
 import { fmtTime, openItsm } from '../lib/model';
 import { Icon } from '../components/Icon';
+import { useMobileLayout } from '../lib/mobile';
 import { readOperator, rememberOperator } from '../lib/operator-session';
 
 type Folder = 'inbox' | 'potential' | 'archive' | 'spam';
@@ -34,6 +35,21 @@ export function CabinetPage() {
   const [nameDraft, setNameDraft] = useState(operator);
   const [folder, setFolder] = useState<Folder>(routeId() ? 'potential' : 'inbox');
   const [selectedId, setSelectedId] = useState<string | null>(routeId);
+  const mobile = useMobileLayout();
+  const [mobileReading, setMobileReading] = useState(() => !!routeId());
+  const mailPanel = useRef<HTMLElement>(null);
+  const reader = useRef<HTMLElement>(null);
+  const listScroll = useRef<HTMLDivElement>(null);
+  const listPosition = useRef(0);
+  const mailReady = !!data;
+  useEffect(() => {
+    if (!mobile) return;
+    if (mobileReading) {
+      reader.current?.scrollIntoView({ block: 'start' });
+    } else if (listScroll.current) {
+      listScroll.current.scrollTop = listPosition.current;
+    }
+  }, [mobile, mobileReading, mailReady]);
   const [search, setSearch] = useState('');
   const [busy, setBusy] = useState(false);
   const [banner, setBanner] = useState('');
@@ -69,11 +85,15 @@ export function CabinetPage() {
   }, [data?.version, selectedId]);
 
   useEffect(() => {
-    if (!selected || selected.read) return;
+    if (!selected || selected.read || (mobile && !mobileReading)) return;
     void updateLetter(selected.id, { read: true }).catch(() => {});
-  }, [selected?.id, selected?.read]);
+  }, [selected?.id, selected?.read, mobile, mobileReading]);
 
   const pickMail = (id: string) => {
+    if (mobile) {
+      listPosition.current = listScroll.current?.scrollTop ?? 0;
+      setMobileReading(true);
+    }
     setSelectedId(id);
     setBanner('');
     setConvertOpen(false);
@@ -85,7 +105,10 @@ export function CabinetPage() {
     setSearch('');
     setBanner('');
     const first = mails.find((mail) => matchesFolder(mail, next));
-    setSelectedId(first?.id ?? null);
+    setSelectedId(mobile ? null : first?.id ?? null);
+    setMobileReading(false);
+    listPosition.current = 0;
+    if (listScroll.current) listScroll.current.scrollTop = 0;
     window.history.replaceState(null, '', '/cabinet');
   };
 
@@ -140,7 +163,7 @@ export function CabinetPage() {
           <div className="cabinet-profile-field"><span>Почтовый ящик</span><strong>Демо-почта координатора</strong><small>Источник: data/mail.json</small></div>
         </section>
 
-        <section className="cabinet-mail-panel" aria-label="Рабочая почта">
+        <section ref={mailPanel} className="cabinet-mail-panel" aria-label="Рабочая почта">
           <div className="cabinet-mail-heading">
             <div><h2><Icon name="mail" /> Почта</h2><p>Письма проходят триаж. Создать инцидент можно только вручную.</p></div>
             <div className="cabinet-ai-actions">
@@ -152,7 +175,7 @@ export function CabinetPage() {
               }, 'Проверка входящих запущена. Результаты будут обновляться автоматически.')}>Повторить анализ</button>
             </div>
           </div>
-          <div className="cabinet-mail-layout">
+          <div className={`cabinet-mail-layout ${mobile && mobileReading ? 'mobile-reading' : ''}`}>
             <nav className="cabinet-folders" aria-label="Папки почты">
               <button className={folder === 'inbox' ? 'active' : ''} onClick={() => switchFolder('inbox')}><span>Входящие</span><b>{counters.inbox}</b></button>
               <button className={folder === 'potential' ? 'active' : ''} onClick={() => switchFolder('potential')}><span>Потенциальные инциденты</span><b>{counters.potential}</b></button>
@@ -163,7 +186,7 @@ export function CabinetPage() {
 
             <div className="cabinet-letter-list">
               <div className="cabinet-list-tools"><input type="search" placeholder="Поиск по почте" value={search} onChange={(e) => setSearch(e.target.value)} aria-label="Поиск писем" /><span>{visible.length} писем</span></div>
-              <div className="cabinet-letters-scroll">
+              <div className="cabinet-letters-scroll" ref={listScroll}>
                 {visible.length === 0 && <p className="cabinet-empty">В этой папке нет писем по выбранному запросу.</p>}
                 {visible.map((m) => (
                   <button key={m.id} className={`cabinet-letter ${selected?.id === m.id ? 'selected' : ''} ${m.read ? '' : 'unread'}`} onClick={() => pickMail(m.id)}>
@@ -179,7 +202,14 @@ export function CabinetPage() {
               </div>
             </div>
 
-            <article className="cabinet-reader">
+            <article className="cabinet-reader" ref={reader}>
+              {mobile && <button type="button" className="cabinet-mobile-back" onClick={() => {
+                setMobileReading(false);
+                setConvertOpen(false);
+                setLinkOpen(false);
+                window.history.replaceState(null, '', '/cabinet');
+                requestAnimationFrame(() => mailPanel.current?.scrollIntoView({ block: 'start' }));
+              }}>← К списку писем</button>}
               {!selected ? <div className="cabinet-reader-empty"><Icon name="mail" /><h3>Выберите письмо</h3><p>Откройте сообщение, чтобы увидеть анализ и доступные действия.</p></div> : (
                 <>
                   <div className="cabinet-reader-header"><h3>{selected.subject}</h3><div className="cabinet-reader-meta"><span><b>{selected.fromName}</b> · {selected.fromAddress}</span><time>{new Date(selected.receivedAt).toLocaleString('ru-RU')}</time></div></div>

@@ -1,4 +1,4 @@
-import { type CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
+import { type CSSProperties, type TouchEvent, useEffect, useMemo, useRef, useState } from 'react';
 import type { Incident } from './types';
 import {
   GROUPS, GROUP_RULES, type GroupKey, COORD_GROUP, fmtClock, fmtAgo, groupsOf, isActive,
@@ -7,7 +7,8 @@ import {
 import { useConnection, useLiveState, useNow } from './lib/live';
 import { unlockAudio } from './lib/sound';
 import { gsap, reducedMotion } from './lib/motion';
-import { useColumnLayout } from './lib/layout';
+import { DEFAULT_ORDER, useColumnLayout } from './lib/layout';
+import { swipeDirection, useMobileLayout } from './lib/mobile';
 import { Lane, type LaneKpi } from './components/Lane';
 import { Sidebar } from './components/Sidebar';
 import { DemoPanel } from './components/DemoPanel';
@@ -58,6 +59,35 @@ export function Dashboard() {
   const [demoOpen, setDemoOpen] = useState(() => new URLSearchParams(location.search).has('demo'));
   const board = useRef<HTMLDivElement>(null);
   const layout = useColumnLayout(board);
+  const mobile = useMobileLayout();
+  const [mobileGroup, setMobileGroup] = useState<GroupKey>('critical');
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const mobileTabs = useRef<HTMLElement>(null);
+  const touch = useRef<{ x: number; y: number } | null>(null);
+  const mobileIndex = GROUPS.findIndex((group) => group.key === mobileGroup);
+
+  function selectMobileGroup(key: GroupKey) {
+    setMobileGroup(key);
+    // При переключении после длинного списка возвращаемся к заголовку категории.
+    if (mobileTabs.current && mobileTabs.current.getBoundingClientRect().top < 0) {
+      mobileTabs.current.scrollIntoView({ block: 'start' });
+    }
+  }
+  function beginSwipe(event: TouchEvent<HTMLElement>) {
+    const target = event.target as HTMLElement;
+    const valid = mobile && event.touches.length === 1 && target.closest('.lane')
+      && !target.closest('input, select, textarea, .handoff, .compact-handoff');
+    touch.current = valid ? { x: event.touches[0].clientX, y: event.touches[0].clientY } : null;
+  }
+  function endSwipe(event: TouchEvent<HTMLElement>) {
+    const start = touch.current;
+    touch.current = null;
+    if (!mobile || !start || event.changedTouches.length !== 1) return;
+    const end = event.changedTouches[0];
+    const direction = swipeDirection(end.clientX - start.x, end.clientY - start.y);
+    const next = GROUPS[mobileIndex + direction];
+    if (direction && next) selectMobileGroup(next.key);
+  }
 
   const incidents = useMemo(() => data?.incidents ?? [], [data]);
   const acks = data?.acks ?? {};
@@ -177,7 +207,7 @@ export function Dashboard() {
   };
 
   return (
-    <div className={`app ${alarmOn ? 'has-alarm' : ''}`}>
+    <div className={`app ${mobile ? 'is-mobile-app' : ''} ${alarmOn ? 'has-alarm' : ''}`}>
       <header className="topbar">
         <div className="brand">
           <img className="brand-mark" src="/mtc.png" alt="МТС" />
@@ -202,7 +232,13 @@ export function Dashboard() {
         </a>
       </header>
 
-      <div className="toolbar">
+      {mobile && <div className="mobile-toolbar-head">
+        <button type="button" className="btn mobile-filter-toggle" aria-expanded={mobileFiltersOpen} aria-controls="dashboard-filters" onClick={() => setMobileFiltersOpen((v) => !v)}>
+          {mobileFiltersOpen ? 'Скрыть фильтры' : 'Поиск и фильтры'}{filtering ? ' · активны' : ''}
+        </button>
+        <a className="btn mobile-side-link" href="#mobile-side">Сроки и события ↓</a>
+      </div>}
+      <div id="dashboard-filters" className={`toolbar ${mobile && !mobileFiltersOpen ? 'mobile-filters-closed' : ''}`}>
         <input
           className="search"
           type="search"
@@ -227,7 +263,7 @@ export function Dashboard() {
           <option value="risk">Под угрозой (до 2 ч)</option>
         </select>
         {filtering && <button className="btn btn-quiet" onClick={() => setFilters(NO_FILTERS)}>Сбросить фильтры</button>}
-        {!layout.isDefault && <button className="btn btn-quiet" onClick={layout.reset}>Вернуть колонки на место</button>}
+        {!mobile && !layout.isDefault && <button className="btn btn-quiet" onClick={layout.reset}>Вернуть колонки на место</button>}
         <span className="spacer" />
         <span className="operator">На смене: {operator || 'не указан'}</span>
         <button className={`btn btn-quiet ${preferences.soundEnabled ? '' : 'is-off'}`} onClick={() => updatePreferences({ soundEnabled: !preferences.soundEnabled })} aria-pressed={!preferences.soundEnabled}>
@@ -244,10 +280,27 @@ export function Dashboard() {
 
       <CriticalStrips />
 
-      <main className={`board ${preferences.incidentViewMode === 'compact' ? 'is-compact-board' : ''}`} ref={board} style={{ '--cols': layout.columns } as CSSProperties}>
-        {layout.order.map((key, position) => {
+      <main className={`board ${preferences.incidentViewMode === 'compact' ? 'is-compact-board' : ''} ${mobile ? 'is-mobile-board' : ''}`} ref={board} style={{ '--cols': layout.columns } as CSSProperties}
+        data-mobile-group={mobile ? mobileGroup : undefined} onTouchStart={beginSwipe} onTouchEnd={endSwipe} onTouchCancel={() => { touch.current = null; }}>
+        {mobile && <nav className="mobile-category-nav" ref={mobileTabs} aria-label="Категории инцидентов">
+          <div className="mobile-category-head"><b>Инциденты</b><span>{mobileIndex + 1} / {GROUPS.length} · свайп ← →</span></div>
+          <div className="mobile-category-tabs">
+            {GROUPS.map((group) => <button type="button" key={group.key} className={`mobile-category-tab tab-${group.key}`} aria-pressed={mobileGroup === group.key} onClick={() => selectMobileGroup(group.key)}>
+              <Icon name={group.key} /><span>{group.title}</span><strong>{lanes[group.key].active}</strong>
+            </button>)}
+          </div>
+        </nav>}
+        {(mobile ? DEFAULT_ORDER : layout.order).map((key, position) => {
           if (key === 'side') {
-            return <Sidebar key={`side:${operator}`} operator={operator} events={data.events} mail={data.mail} now={now} summary={summary} deadlineFilter={filters.deadline} onDeadlineFilter={(value) => setFilters((old) => ({ ...old, deadline: old.deadline === value ? 'all' : value }))} dnd={layout.dnd('side')} />;
+            return <Sidebar key={`side:${operator}`} mobile={mobile} operator={operator} events={data.events} mail={data.mail} now={now} summary={summary} deadlineFilter={filters.deadline} onDeadlineFilter={(value) => {
+              const next = filters.deadline === value ? 'all' : value;
+              setFilters((old) => ({ ...old, deadline: next }));
+              if (mobile) {
+                const matching = GROUPS.find((g) => incidents.some((i) => GROUP_RULES[g.key](i, now) && matchesDeadline(i, now, next) && (g.key === 'critical' && next === 'all' || matches(i, filters))));
+                if (matching) setMobileGroup(matching.key);
+                mobileTabs.current?.scrollIntoView({ block: 'start' });
+              }
+            }} dnd={mobile ? undefined : layout.dnd('side')} />;
           }
           const g = GROUPS.find((x) => x.key === key)!;
           return (
@@ -264,7 +317,7 @@ export function Dashboard() {
               viewMode={preferences.incidentViewMode}
               note={g.key === 'critical' && filtering && !deadlineFiltering ? 'Фильтры не скрывают критические инциденты' : undefined}
               filtered={deadlineFiltering}
-              dnd={layout.dnd(g.key)}
+              dnd={mobile ? undefined : layout.dnd(g.key)}
               position={position}
             />
           );
