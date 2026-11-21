@@ -36,6 +36,37 @@ export function groupsOf(i: Incident, now: number): GroupKey[] {
 
 // ---------- Сроки и прогноз ----------
 export type Risk = 'overdue' | 'risk' | 'ok' | 'none';
+export type DeadlineFilter = 'all' | 'overdue' | 'risk';
+export const DEADLINE_RISK_MS = 2 * 60 * 60 * 1000;
+
+// Один критерий для счётчиков, карточек и фильтра. Прогноз — отдельно.
+export function deadlineRisk(i: Incident, now: number): Risk {
+  if (!isActive(i) || !i.deadline) return 'none';
+  const left = Date.parse(i.deadline) - now;
+  if (!Number.isFinite(left)) return 'none';
+  if (left <= 0) return 'overdue';
+  return left <= DEADLINE_RISK_MS ? 'risk' : 'ok';
+}
+
+export function matchesDeadline(i: Incident, now: number, filter: DeadlineFilter): boolean {
+  return filter === 'all' || deadlineRisk(i, now) === filter;
+}
+
+// Контроль сроков охватывает только активные инциденты основных категорий.
+// Инцидент в нескольких категориях учитывается один раз; вне доски данные не меняются.
+export function dashboardDeadlineSummary(incidents: Incident[], now: number) {
+  let active = 0, overdue = 0, risk = 0;
+  const seen = new Set<string>();
+  for (const i of incidents) {
+    if (!isActive(i) || groupsOf(i, now).length === 0 || seen.has(i.id)) continue;
+    seen.add(i.id);
+    active++;
+    const state = deadlineRisk(i, now);
+    if (state === 'overdue') overdue++;
+    else if (state === 'risk') risk++;
+  }
+  return { active, overdue, risk };
+}
 
 export interface Sla {
   risk: Risk;
@@ -70,9 +101,11 @@ export function resolutionStats(list: Incident[]) {
 }
 
 export function slaOf(i: Incident, now: number, stats: Record<number, number>): Sla {
-  if (!isActive(i) || !i.deadline) return { risk: 'none', left: null, fraction: null, typical: null, forecast: false };
-  const start = Date.parse(i.submitDate);
+  const risk = deadlineRisk(i, now);
+  if (risk === 'none' || !i.deadline) return { risk: 'none', left: null, fraction: null, typical: null, forecast: false };
   const end = Date.parse(i.deadline);
+  const parsedStart = Date.parse(i.submitDate);
+  const start = Number.isFinite(parsedStart) ? parsedStart : now;
   const total = Math.max(end - start, 60e3);
   const left = end - now;
   const fraction = Math.min(Math.max((now - start) / total, 0), 1.5);
@@ -80,7 +113,6 @@ export function slaOf(i: Incident, now: number, stats: Record<number, number>): 
   // Прогноз: оставшегося времени меньше, чем обычно уходит на решение,
   // или инцидент до сих пор никто не взял в работу, а половина срока уже прошла.
   const forecast = left > 0 && (left < typical || (i.stateId === STATE.assigned && fraction > 0.5));
-  const risk: Risk = left <= 0 ? 'overdue' : forecast || fraction >= 0.75 || left < 30 * 60e3 ? 'risk' : 'ok';
   return { risk, left, fraction, typical, forecast };
 }
 

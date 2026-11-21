@@ -5,6 +5,7 @@ import type { Letter } from '../types';
 import { useConnection, useLiveState } from '../lib/live';
 import { fmtTime, openItsm } from '../lib/model';
 import { Icon } from '../components/Icon';
+import { readOperator, rememberOperator } from '../lib/operator-session';
 
 type Folder = 'inbox' | 'potential' | 'archive' | 'spam';
 const routeId = () => {
@@ -28,7 +29,7 @@ const initials = (name: string) => name.trim().split(/\s+/).slice(0, 2).map((wor
 export function CabinetPage() {
   const { data, isError } = useLiveState();
   const connection = useConnection();
-  const [operator, setOperator] = useState(() => localStorage.getItem('operator') || 'Координатор');
+  const [operator, setOperator] = useState(() => readOperator() || 'Координатор');
   const [editingName, setEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState(operator);
   const [folder, setFolder] = useState<Folder>(routeId() ? 'potential' : 'inbox');
@@ -99,7 +100,7 @@ export function CabinetPage() {
 
   const saveName = () => {
     const clean = nameDraft.trim().slice(0, 60) || 'Координатор';
-    localStorage.setItem('operator', clean);
+    rememberOperator(clean);
     setOperator(clean);
     setEditingName(false);
   };

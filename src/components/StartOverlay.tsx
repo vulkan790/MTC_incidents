@@ -1,6 +1,7 @@
 // Первый экран смены: после действия пользователя браузер разрешит звуковые сигналы,
 // но их воспроизведение всё равно подчиняется персональным настройкам координатора.
 import { useState } from 'react';
+import { rememberOperatorBeforeStart } from '../lib/operator-session';
 
 export function StartOverlay({ name, onStart }: { name: string; onStart: (name: string) => void }) {
   const [value, setValue] = useState(name);
@@ -21,7 +22,7 @@ export function StartOverlay({ name, onStart }: { name: string; onStart: (name: 
         </label>
         <button className="btn btn-start" type="submit">Начать смену</button>
         <a className="start-settings-link" href="/settings" onClick={() => {
-          try { localStorage.setItem('operator', value.trim() || 'Координатор'); } catch { /* локальное хранилище недоступно */ }
+          rememberOperatorBeforeStart(value);
         }}>⚙ Настроить уведомления перед сменой</a>
       </form>
     </div>

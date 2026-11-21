@@ -5,7 +5,7 @@ let muted = false;
 
 export function unlockAudio() {
   ctx ??= new AudioContext();
-  if (ctx.state === 'suspended') void ctx.resume();
+  return ctx.state === 'suspended' ? ctx.resume() : Promise.resolve();
 }
 
 export const setMuted = (v: boolean) => { muted = v; };

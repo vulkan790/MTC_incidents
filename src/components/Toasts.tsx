@@ -4,11 +4,13 @@ import { openItsm } from '../lib/model';
 
 export interface Toast {
   id: string;
-  kind: 'resolved' | 'coord' | 'handoff' | 'mail' | 'info';
+  kind: 'critical' | 'resolved' | 'coord' | 'handoff' | 'mail' | 'info';
   title: string;
   text: string;
   incidentId: string | null;
   ttl: number;
+  mailId?: string;
+  expiresAt?: number;
 }
 
 function ToastItem({ t, onClose }: { t: Toast; onClose: (id: string) => void }) {
@@ -24,8 +26,11 @@ function ToastItem({ t, onClose }: { t: Toast; onClose: (id: string) => void }) 
     <div className={`toast toast-${t.kind}`} ref={ref} role="status">
       <button
         className="toast-body"
-        onClick={() => t.incidentId && openItsm(t.incidentId)}
-        disabled={!t.incidentId}
+        onClick={() => {
+          if (t.mailId) window.location.assign(`/cabinet/mail/${encodeURIComponent(t.mailId)}`);
+          else if (t.incidentId) openItsm(t.incidentId);
+        }}
+        disabled={!t.incidentId && !t.mailId}
       >
         <b>{t.title}</b>
         <span>{t.text}</span>
@@ -36,9 +41,17 @@ function ToastItem({ t, onClose }: { t: Toast; onClose: (id: string) => void }) 
   );
 }
 
-export function Toasts({ toasts, onClose }: { toasts: Toast[]; onClose: (id: string) => void }) {
+export function Toasts({ toasts, onClose, onCloseAll }: {
+  toasts: Toast[];
+  onClose: (id: string) => void;
+  onCloseAll: () => void;
+}) {
+  if (!toasts.length) return null;
   return (
     <div className="toasts" aria-live="polite">
+      <button type="button" className="toasts-hide-all" onClick={onCloseAll}>
+        Скрыть всё
+      </button>
       {toasts.map((t) => <ToastItem key={t.id} t={t} onClose={onClose} />)}
     </div>
   );

@@ -5,6 +5,8 @@ import type { Incident } from '../types';
 import { COORD_GROUP, STATE } from './model';
 
 export type AlertStatus = 0 | 2 | 20;
+// Представление категорий выбирается каждым координатором независимо.
+export type IncidentViewMode = 'cards' | 'compact';
 export const ALERT_STATUSES: { id: AlertStatus; label: string; description: string }[] = [
   { id: STATE.assigned, label: 'Назначен', description: 'Инцидент назначен на исполнителя' },
   { id: STATE.inProgress, label: 'Выполняется', description: 'Инцидент находится в работе' },
@@ -12,8 +14,10 @@ export const ALERT_STATUSES: { id: AlertStatus; label: string; description: stri
 ];
 
 export interface NotificationSettings {
+  incidentViewMode: IncidentViewMode;
   // Критические тревоги
   criticalModal: boolean;
+  criticalToasts: boolean;
   criticalStatuses: AlertStatus[];
   onlyCoordinatorTeam: boolean;
   criticalBanner: boolean;
@@ -31,7 +35,9 @@ export interface NotificationSettings {
 }
 
 export const DEFAULT_NOTIFICATION_SETTINGS: NotificationSettings = {
+  incidentViewMode: 'cards',
   criticalModal: true,
+  criticalToasts: true,
   criticalStatuses: [STATE.assigned, STATE.inProgress],
   onlyCoordinatorTeam: false,
   criticalBanner: true,
@@ -58,11 +64,14 @@ export function readNotificationSettings(operator: string): NotificationSettings
     const s = saved as Record<string, unknown>;
     const result: NotificationSettings = { ...DEFAULT_NOTIFICATION_SETTINGS, criticalStatuses: [...DEFAULT_NOTIFICATION_SETTINGS.criticalStatuses] };
     for (const key of Object.keys(result) as (keyof NotificationSettings)[]) {
-      if (key === 'criticalStatuses' || key === 'sirenRepeatSeconds') continue;
+      if (key === 'criticalStatuses' || key === 'sirenRepeatSeconds' || key === 'incidentViewMode') continue;
       if (typeof s[key] === 'boolean') {
         // TS не связывает динамический ключ со значением, кроме явного безопасного приведения.
         (result as unknown as Record<string, unknown>)[key] = s[key];
       }
+    }
+    if (s.incidentViewMode === 'cards' || s.incidentViewMode === 'compact') {
+      result.incidentViewMode = s.incidentViewMode;
     }
     if (Array.isArray(s.criticalStatuses)) {
       const selected: unknown[] = s.criticalStatuses;

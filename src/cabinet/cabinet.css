@@ -1,3 +1,4 @@
+/* Кабинет: нейтральная визуальная система дашборда, письмо и действия в духе Bitrix. */
 .profile-link { display:inline-flex;align-items:center;gap:.55rem;text-decoration:none;color:var(--muted);font-size:.77rem;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:.27rem .6rem .27rem .27rem;white-space:nowrap;transition:background .15s; }
 .profile-link:hover { background:var(--surface-3);color:var(--text); }
 .profile-avatar,.cabinet-mini-avatar { display:grid;place-items:center;border-radius:50%;width:2rem;height:2rem;background:var(--surface-3);color:var(--text);font-size:.86rem;font-weight:800;flex:none; }
@@ -85,7 +86,7 @@
 .cabinet-reader-empty .icon { font-size:3rem;color:var(--faint); }
 .cabinet-reader-empty h3 { margin:.9rem 0 0; }
 .cabinet-reader-empty p { max-width:18rem;font-size:.83rem; }
-.cabinet-reader-header h3 { font-size:1.15rem;letter-spacing:-.01em;line-height:1.35;margin:0 0:.85rem;overflow-wrap:anywhere; }
+.cabinet-reader-header h3 { font-size:1.15rem;letter-spacing:-.01em;line-height:1.35;margin:0 0 .85rem;overflow-wrap:anywhere; }
 .cabinet-reader-meta { display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.8rem;color:var(--muted);overflow-wrap:anywhere; }
 .cabinet-reader-meta b { color:var(--text); }
 .cabinet-reader-meta time { white-space:nowrap;color:var(--faint); }
@@ -140,3 +141,6 @@
   .profile-label { display:none; }
   .profile-link { padding:.27rem; }
 }
+
+.cabinet-profile-links { display:flex; align-items:center; justify-content:flex-end; gap:1rem; flex-wrap:wrap; }
+@media(max-width:810px){ .cabinet-profile-links { display:flex; } .cabinet-profile-links .cabinet-dashboard-link { display:inline; } }

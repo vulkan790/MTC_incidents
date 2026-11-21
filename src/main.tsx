@@ -11,6 +11,7 @@ import './itsm/itsm.css';
 import './cabinet/cabinet.css';
 import './settings/settings.css';
 import { LiveProvider } from './lib/live';
+import { GlobalAlertsProvider } from './lib/global-alerts';
 import { Dashboard } from './Dashboard';
 import { ItsmPage } from './itsm/ItsmPage';
 import { CabinetPage } from './cabinet/CabinetPage';
@@ -29,7 +30,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <LiveProvider>
-        {itsm ? <ItsmPage id={decodeURIComponent(itsm[1])} /> : settings ? <NotificationSettingsPage /> : cabinet ? <CabinetPage /> : <Dashboard />}
+        <GlobalAlertsProvider outsideDashboard={!!itsm || settings || cabinet} baseTitle={itsm ? `${decodeURIComponent(itsm[1])} · ITSM` : settings ? 'Настройки · Пульт МИ' : cabinet ? 'Личный кабинет · Пульт МИ' : 'Пульт МИ'}>
+          {itsm ? <ItsmPage id={decodeURIComponent(itsm[1])} /> : settings ? <NotificationSettingsPage /> : cabinet ? <CabinetPage /> : <Dashboard />}
+        </GlobalAlertsProvider>
       </LiveProvider>
     </QueryClientProvider>
   </StrictMode>,

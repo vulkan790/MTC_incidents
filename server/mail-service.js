@@ -1,3 +1,5 @@
+// Почтовый триаж. Исходные письма остаются в mail.json; прочитано/спам/оценки живут отдельно.
+// Ollama — бесплатная локальная модель; при её отсутствии честно используем правила, а не называем их ИИ.
 import crypto from 'node:crypto';
 import path from 'node:path';
 import { DATA_DIR, readJson, writeJson } from './store.js';
@@ -137,6 +139,7 @@ export async function analyzeMail(letter, { force = false } = {}) {
         result = { ...result, reason: `${result.reason}. ИИ временно недоступен` };
       }
     }
+    // Не перетираем ручной вердикт и результат для изменившегося письма.
     if (metadata[letter.id] === entry && entry.hash === signature(letter) && (entry.analysis?.source !== 'manual' || force)) {
       entry.analysis = result;
       entry.aiAttempted = true;

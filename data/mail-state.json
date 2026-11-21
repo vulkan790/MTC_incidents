@@ -21,7 +21,7 @@
       "confidence": 0.95,
       "reason": "Обнаружены признаки сбоя или недоступности сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T15:17:17.359Z"
+      "analyzedAt": "2026-11-21T16:03:31.946Z"
     },
     "aiAttempted": false
   },
@@ -635,6 +635,570 @@
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
       "analyzedAt": "2026-11-21T15:19:07.365Z"
+    }
+  },
+  "MSG-R5FPSWOE": {
+    "hash": "cd4dcbd74f9f2a30011553fd54fa5967c59087d2f413f5a2284fd8ad64be4082",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T15:22:30.551Z"
+    }
+  },
+  "MSG-WH3RC3UL": {
+    "hash": "c70eb615dd2d1ff5d1875e1b93c566389bec581e84f6840d8d890dfff0fba61d",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T15:22:46.424Z"
+    }
+  },
+  "MSG-SC5ESBUM": {
+    "hash": "3197012df37fec0f3cc4c87cc7b74f0f8e52cf9874e83e05e578190a88946b3d",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T15:34:09.250Z"
+    }
+  },
+  "MSG-012BYR2D": {
+    "hash": "bc1bf1d9bef4ed58eccec8cd298f821f7be056297f60dad8c954f83e5e92889c",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T15:34:14.838Z"
+    }
+  },
+  "MSG-QI7HSO6U": {
+    "hash": "6e12bcc61069bb253cd2b167ad9d133a1b5c2a27d85cf173f3faa0f7468b10a2",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T15:34:42.311Z"
+    }
+  },
+  "MSG-NC21UK8O": {
+    "hash": "338e9e2a6db20a7a6700e5e8679820871ac00bb382195c0327a9fb8981a19e6d",
+    "folder": "inbox",
+    "read": true,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T15:39:29.662Z"
+    }
+  },
+  "MSG-QR7IPKC4": {
+    "hash": "958587d83cc3cbc68f6317e320f9f851c4b3523eda93160c171f64811ac91c74",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T16:41:40.690Z"
+    }
+  },
+  "MSG-CBV6VZIC": {
+    "hash": "3812cde2bfc0c85bd29c02e3d72feae39e8695ca55164c6919c05c8af3d3043c",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:00:19.576Z"
+    }
+  },
+  "MSG-ROQ3D1PQ": {
+    "hash": "3e7c197572fa992152f082ef63d65d3978ec1f2e305aa612eb28d94eaf825151",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:18:27.249Z"
+    }
+  },
+  "MSG-G36Z2Q0E": {
+    "hash": "e4e9b154b3f798eeb69d019033d48fe1f14664dbb6292e37b16eb8ab19131c66",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:18:43.264Z"
+    }
+  },
+  "MSG-3HQDDYI4": {
+    "hash": "6bbbacc425a5c2a372e32653f35974b4df8a8e3b7dac3d3897e8c56f18081d62",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:19:15.271Z"
+    }
+  },
+  "MSG-Q1YU2VW9": {
+    "hash": "246638e29586a14bd904ddbbdc6e4b1a916a89d67d039d6d8f2aac1dc397e9fe",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:20:43.327Z"
+    }
+  },
+  "MSG-YQMCOLKN": {
+    "hash": "554d9fa91f922074b9ef822712e9a282999a2f0dfb2f62bc0a196565cc24120e",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:21:07.348Z"
+    }
+  },
+  "MSG-QTVVX5IR": {
+    "hash": "7749b34fbd3824ead15f7c4f44927b62d1a9ce0e911d525ee300a6e669cf11a1",
+    "folder": "inbox",
+    "read": true,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:21:47.386Z"
+    }
+  },
+  "MSG-3SHLM9ZK": {
+    "hash": "c61f5cf193b59546054281a75a31c4cbe6727800eeabe8fd5cfaf0d296b4aa33",
+    "folder": "inbox",
+    "read": true,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:22:11.394Z"
+    }
+  },
+  "MSG-204L12VJ": {
+    "hash": "7bd8825b513e57253153f6197acb3d680895b9e3063346043a4e99330d1eba4b",
+    "folder": "inbox",
+    "read": true,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:22:27.398Z"
+    }
+  },
+  "MSG-YNW5JDJA": {
+    "hash": "81f2b45fe53f4682febe813b8cfbe3b7519d426c29c004b30901e4626f7ec66e",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:23:15.423Z"
+    }
+  },
+  "MSG-1RRHW3AX": {
+    "hash": "fa35ffdcc524248d9e4f45e12d58890c01e579005bc4bd336a9b5f19d5751b2a",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:23:39.442Z"
+    }
+  },
+  "MSG-90ZRK6GC": {
+    "hash": "246638e29586a14bd904ddbbdc6e4b1a916a89d67d039d6d8f2aac1dc397e9fe",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:24:03.455Z"
+    }
+  },
+  "MSG-XYNOLRDY": {
+    "hash": "63338a8deed7560e62a4b4b4ddbb3d59cd1ef400772ba17bce1db3461405e7e2",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:25:07.528Z"
+    }
+  },
+  "MSG-0XNCGCSX": {
+    "hash": "76dc48b0cb749f8a5a14be6f695d37bfceaa02d9ae049dcacfe9f626f9e0353c",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:25:15.532Z"
+    }
+  },
+  "MSG-WRW75VKN": {
+    "hash": "6bbbacc425a5c2a372e32653f35974b4df8a8e3b7dac3d3897e8c56f18081d62",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:25:47.561Z"
+    }
+  },
+  "MSG-3VVMM8GG": {
+    "hash": "943bde55f63220a2a3714782054395af34342333c9ea6fad9835ee977e626e08",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:26:43.604Z"
+    }
+  },
+  "MSG-HKZ9706R": {
+    "hash": "5e172093b06f1a7b541a93434cc00a385d7e1ad1a8440fc721aa54da4ebc1259",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:26:51.614Z"
+    }
+  },
+  "MSG-WZLWQ70C": {
+    "hash": "179a18f5d2eb8e6cc10b91a44f407b9f945904fa91faefe5eef9fc7a3a88efdc",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:27:47.650Z"
+    }
+  },
+  "MSG-MUY32LX2": {
+    "hash": "183be5c6daaaa2479eae625a562a17999a205e4e7c21b8accb6fe12e7e169b20",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:28:11.695Z"
+    }
+  },
+  "MSG-TL605J2H": {
+    "hash": "47cee623909f1136b9ae65a1bc45bb0e61d0a5e19ef1081d937ce94b9b289fab",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:28:19.691Z"
+    }
+  },
+  "MSG-RV1W0VX6": {
+    "hash": "139753a1e83d0aedcd0f7329f09f92d620fd5e9d7116113b55daa843c677596c",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:31:54.936Z"
+    }
+  },
+  "MSG-RXQ1R7PV": {
+    "hash": "21877e91a8034ab2208baa52684bb3d720ab010254c50e0af3f4091b449bdad1",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:32:59.018Z"
+    }
+  },
+  "MSG-UA3F3ELP": {
+    "hash": "8bc743c4f8712fadfb2b31e7ff8bae58d5aa50eef55f05682028227dd4e8b8b7",
+    "folder": "inbox",
+    "read": true,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:34:35.108Z"
+    }
+  },
+  "MSG-QZ3WQX3P": {
+    "hash": "31919d6a7a09e4bf7c8b370e62f7d6f7bd3c7342cf2f0627e42cf2751bfe3082",
+    "folder": "inbox",
+    "read": true,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:34:59.111Z"
+    }
+  },
+  "MSG-P4Q3U9T2": {
+    "hash": "407efaacce5aec3753d4425f0b1c71a62c9197cd7f0fe0a2277942855632b33f",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:35:07.122Z"
+    }
+  },
+  "MSG-YPLIZCAL": {
+    "hash": "fa35ffdcc524248d9e4f45e12d58890c01e579005bc4bd336a9b5f19d5751b2a",
+    "folder": "inbox",
+    "read": true,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:35:15.123Z"
+    }
+  },
+  "MSG-4ZISSKP0": {
+    "hash": "2a4205f56c8bf0aa135233f2bb47f84cfdb0b7109f968327e049fedb11eeb42d",
+    "folder": "inbox",
+    "read": true,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:35:23.128Z"
+    }
+  },
+  "MSG-B2PUXSLN": {
+    "hash": "cc8c6b8437a5976e390747cb9f6a2cccff94d91d1ca94ad8c61ec6497c637754",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:37:47.230Z"
+    }
+  },
+  "MSG-B78EFAMF": {
+    "hash": "dbea08322737fe08619f133084ea9254e2a3410abd77d9ce4c187c152b83448e",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:37:55.243Z"
+    }
+  },
+  "MSG-AVHV340M": {
+    "hash": "78bb08ce84e58d4069e4ae0eaae644305470ff3657a3ed7f93d01fc627b75570",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:38:11.262Z"
+    }
+  },
+  "MSG-FIPJKCD2": {
+    "hash": "1e22c6604d4ae2b3a78835b8c1468a01a58f18d21cc662f66cbb69bde749d988",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:39:07.300Z"
+    }
+  },
+  "MSG-OP70W076": {
+    "hash": "bab4562824056f6f638769a422b82be8464f99d8fb6620078f57d5928497d8cc",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:40:11.363Z"
+    }
+  },
+  "MSG-VHB86JWF": {
+    "hash": "dc9c3fce398d6978869beacc43a22d0ae58f9121ab20b629e789505d520746b7",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:40:51.409Z"
+    }
+  },
+  "MSG-QZBNZC5T": {
+    "hash": "afe2cc295aae2be845bdb4b9975dee0b40b8d678414a106a0cf8cb51f5174181",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:41:39.453Z"
+    }
+  },
+  "MSG-LPHEBPLU": {
+    "hash": "9757e98026869390e600f15d8cac53d6ab5569b4bc18435092f08b8d398a76f7",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:42:11.486Z"
+    }
+  },
+  "MSG-IEDZZEYK": {
+    "hash": "81f2b45fe53f4682febe813b8cfbe3b7519d426c29c004b30901e4626f7ec66e",
+    "folder": "inbox",
+    "read": true,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:42:27.502Z"
+    }
+  },
+  "MSG-OHBWPAUS": {
+    "hash": "8a448dde4e8f6521d30671fb74c4df6dd2aa3ea927d6865809b6630ac9da9b2d",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:43:23.553Z"
+    }
+  },
+  "MSG-JMS559EO": {
+    "hash": "2008232774b25323bdb950470de1546d6817863e2f3657027d3a91225a17a7b2",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:44:03.588Z"
+    }
+  },
+  "MSG-WVYXLJUP": {
+    "hash": "460929d8972064c29892915baad49cdc5e6c0c76482f0adbc578ade66b00b1e3",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:44:51.612Z"
+    }
+  },
+  "MSG-TD5MUNRT": {
+    "hash": "20023b8cc169a214d7686437341f76981ae1a18df557dbf45f5074b7319dc3a3",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.86,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-21T17:47:47.755Z"
     }
   }
 }

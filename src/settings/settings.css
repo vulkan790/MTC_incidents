@@ -69,3 +69,25 @@
 
 .start-settings-link { text-align:center; color:var(--blue-ink); text-decoration:none; font-size:.85rem; font-weight:700; }
 .start-settings-link:hover { text-decoration:underline; }
+
+/* Выбор внешнего вида инцидентов (подробный / минималистичный) */
+.settings-view-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem; padding:1rem 0 .6rem; }
+.settings-view-choice { display:flex; align-items:flex-start; gap:.7rem; padding:1rem; background:var(--surface-3); border:1.5px solid var(--line); border-radius:13px; cursor:pointer; min-width:0; }
+.settings-view-choice.is-selected { border-color:var(--blue); background:color-mix(in srgb,var(--blue) 6%,var(--surface)); }
+.settings-view-choice:focus-within { outline:2px solid var(--blue); outline-offset:2px; }
+.settings-view-choice>input { flex:none; accent-color:var(--blue); margin-top:.17rem; width:1.1rem; height:1.1rem; }
+.settings-view-choice-content { display:flex; flex-direction:column; min-width:0; gap:.37rem; flex:1; }
+.settings-view-choice-content>strong { font-size:.87rem; }
+.settings-view-choice-content>small { font-size:.74rem; color:var(--muted); line-height:1.45; min-height:3.2em; }
+.settings-preview-card, .settings-preview-compact { background:var(--surface); border:1px solid var(--line); border-radius:9px; padding:.7rem; display:flex; gap:.25rem; color:var(--text); min-width:0; }
+.settings-preview-card { flex-direction:column; }
+.settings-preview-card>b, .settings-preview-compact>span, .settings-preview-compact>b { font-size:.69rem; }
+.settings-preview-card>span { font-size:.72rem; color:var(--text-2); }
+.settings-preview-card>i { font-size:.66rem; color:var(--muted); font-style:normal; }
+.settings-preview-compact { flex-wrap:nowrap; align-items:center; gap:4px; padding:6px; }
+.settings-preview-compact>span { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:15px; font-weight:650; }
+.settings-preview-compact>b { flex:none; white-space:nowrap; font-size:14px; font-variant-numeric:tabular-nums; }
+.settings-preview-compact>i { display:grid; place-items:center; flex:none; width:27px; height:30px; border-radius:7px; background:var(--surface-3); color:var(--text); font-size:18px; font-style:normal; }
+.settings-preview-compact>b { border-radius:5px; background:var(--blue-tint); color:var(--blue-ink); padding:.2rem .35rem; }
+.settings-view-note { margin:.25rem 0 0; color:var(--muted); font-size:.74rem; line-height:1.5; }
+@media(max-width:620px) { .settings-view-options { grid-template-columns:1fr; } .settings-view-choice-content>small { min-height:0; } }

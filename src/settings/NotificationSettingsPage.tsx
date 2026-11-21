@@ -1,6 +1,7 @@
 // Настройки уведомлений одного координатора. Ничего не меняют в ITSM или у коллег.
 import { useState } from 'react';
 import { useLiveState } from '../lib/live';
+import { readOperator } from '../lib/operator-session';
 import {
   ALERT_STATUSES, matchesCriticalAlert, useNotificationSettings,
   type AlertStatus,
@@ -19,9 +20,7 @@ function Switch({ checked, onChange, title, description }: {
 }
 
 export function NotificationSettingsPage() {
-  const [operator] = useState(() => {
-    try { return localStorage.getItem('operator') || 'Координатор'; } catch { return 'Координатор'; }
-  });
+  const [operator] = useState(() => readOperator() || 'Координатор');
   const { settings, update, reset } = useNotificationSettings(operator);
   const { data } = useLiveState();
   const [saved, setSaved] = useState(false);
@@ -52,21 +51,54 @@ export function NotificationSettingsPage() {
         <div className="settings-heading">
           <div>
             <div className="settings-eyebrow">Персональные параметры · {operator}</div>
-            <h1>Настройки уведомлений</h1>
-            <p>Управляйте критическими тревогами и дополнительными событиями. Настройки сохраняются автоматически в этом браузере для выбранного координатора.</p>
+            <h1>Настройки интерфейса и уведомлений</h1>
+            <p>Выбирайте отображение категорий и управляйте уведомлениями. Настройки сохраняются автоматически в этом браузере для выбранного координатора.</p>
           </div>
           <button className="settings-reset" onClick={() => {
-            if (window.confirm('Сбросить личные настройки уведомлений до стандартных?')) { reset(); setSaved(false); }
+            if (window.confirm('Сбросить настройки интерфейса и уведомлений до стандартных?')) { reset(); setSaved(false); }
           }}>Сбросить настройки</button>
         </div>
         <div className="settings-content">
           <div className="settings-main">
+            <section className="settings-section" aria-labelledby="view-mode-title">
+              <div className="settings-section-header">
+                <div className="settings-section-icon is-blue" aria-hidden="true">▤</div>
+                <div>
+                  <h2 id="view-mode-title">Отображение инцидентов</h2>
+                  <p>Выберите, как показывать инциденты внутри категорий дашборда</p>
+                </div>
+              </div>
+              <div className="settings-view-options" role="radiogroup" aria-label="Вид инцидентов в категориях">
+                <label className={`settings-view-choice ${settings.incidentViewMode === 'cards' ? 'is-selected' : ''}`}>
+                  <input type="radio" name="incidentViewMode" value="cards" checked={settings.incidentViewMode === 'cards'} onChange={() => change({ incidentViewMode: 'cards' })} />
+                  <span className="settings-view-choice-content">
+                    <strong>Подробные карточки</strong>
+                    <small>Описание, статус, сроки, исполнитель и дополнительные сведения</small>
+                    <span className="settings-preview-card" aria-hidden="true">
+                      <b>INC000000123 · Веб-портал</b><span>Проблема с доступностью сервиса</span><i>Ответственный · осталось 1 ч 12 мин</i>
+                    </span>
+                  </span>
+                </label>
+                <label className={`settings-view-choice ${settings.incidentViewMode === 'compact' ? 'is-selected' : ''}`}>
+                  <input type="radio" name="incidentViewMode" value="compact" checked={settings.incidentViewMode === 'compact'} onChange={() => change({ incidentViewMode: 'compact' })} />
+                  <span className="settings-view-choice-content">
+                    <strong>Минималистичный вид</strong>
+                    <small>Одна строка: продукт, дедлайн и быстрые действия. Остальное — в ITSM.</small>
+                    <span className="settings-preview-compact" aria-hidden="true">
+                      <span>Веб-портал</span><b>1:12:40</b><i>✓</i><i>↗</i>
+                    </span>
+                  </span>
+                </label>
+              </div>
+              <p className="settings-view-note">Выбор действует только для координатора «{operator}». Состав категорий, уведомления и действия с инцидентами не меняются.</p>
+            </section>
             <section className="settings-section" aria-labelledby="critical-title">
               <div className="settings-section-header">
                 <div className="settings-section-icon is-critical" aria-hidden="true">!</div>
                 <div><h2 id="critical-title">Критические инциденты</h2><p>Правила показа полноэкранной тревоги и её сопровождения</p></div>
               </div>
               <Switch title="Показывать модальное окно" description="Окно с кнопками «Принял, беру на контроль» и «Не беру на контроль»" checked={settings.criticalModal} onChange={(criticalModal) => change({ criticalModal })} />
+              <Switch title="Всплывающие уведомления о критических" description="Краткое сообщение на любой странице, даже если модальное окно отключено" checked={settings.criticalToasts} onChange={(criticalToasts) => change({ criticalToasts })} />
               <div className="settings-nested" role="group" aria-label="Статусы для критической тревоги">
                 <div className="settings-nested-title">При каких статусах показывать тревогу</div>
                 <p>Отбираются инциденты с наивысшим приоритетом. Решённые и закрытые не вызывают тревогу.</p>
@@ -81,7 +113,7 @@ export function NotificationSettingsPage() {
                 {selectedStatuses.length === 0 && <p className="settings-warning">Ни один статус не выбран — тревожное окно не появится.</p>}
               </div>
               <Switch title="Только на группе координаторов" description="Не показывать тревогу для инцидентов, назначенных другим командам" checked={settings.onlyCoordinatorTeam} onChange={(onlyCoordinatorTeam) => change({ onlyCoordinatorTeam })} />
-              <Switch title="Показывать красную полосу над доской" description="Отдельное постоянное напоминание об активных критических инцидентах" checked={settings.criticalBanner} onChange={(criticalBanner) => change({ criticalBanner })} />
+              <Switch title="Показывать красную полосу на всех страницах" description="Отдельное постоянное напоминание об активных критических инцидентах" checked={settings.criticalBanner} onChange={(criticalBanner) => change({ criticalBanner })} />
               <Switch title="Мигать названием вкладки" description="Помогает заметить неподтверждённые критические инциденты" checked={settings.blinkTitle} onChange={(blinkTitle) => change({ blinkTitle })} />
               <Switch title="Системные уведомления о критических" description="Уведомление браузера при новом критическом инциденте, когда вкладка неактивна" checked={settings.criticalDesktop} onChange={(criticalDesktop) => change({ criticalDesktop })} />
             </section>
@@ -91,7 +123,7 @@ export function NotificationSettingsPage() {
                 <div><h2 id="audio-title">Звуковое сопровождение</h2><p>Настройка звука без изменения сигналов у других координаторов</p></div>
               </div>
               <Switch title="Включить звуки" description="Общий переключатель: действует также на быструю кнопку в дашборде" checked={settings.soundEnabled} onChange={(soundEnabled) => change({ soundEnabled })} />
-              <Switch title="Сирена критической тревоги" description="Сирена работает, когда модальное окно включено и есть инцидент с выбранным статусом" checked={settings.siren} onChange={(siren) => change({ siren })} />
+              <Switch title="Сирена критической тревоги" description="Сирена работает независимо от модального окна, для инцидентов с выбранным статусом" checked={settings.siren} onChange={(siren) => change({ siren })} />
               <div className="settings-select-row">
                 <div><strong>Повторять сирену</strong><small>0 секунд — проиграть один раз, без повторения</small></div>
                 <select value={settings.sirenRepeatSeconds} disabled={!settings.siren} onChange={(e) => change({ sirenRepeatSeconds: Number(e.target.value) })} aria-label="Интервал повтора сирены">

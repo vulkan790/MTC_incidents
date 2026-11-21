@@ -7,6 +7,7 @@ import {
 } from '../lib/model';
 import { ack, patchIncident } from '../lib/live';
 import { reducedMotion } from '../lib/motion';
+import { PinButton } from './PinButton';
 
 const GROUP_CHIP: Record<GroupKey, string> = {
   critical: 'критический',
@@ -26,6 +27,9 @@ export interface CardProps {
   changedAt?: number;
   operator: string;
   teams: string[];
+  pinned?: boolean;
+  pinLimitReached?: boolean;
+  onTogglePin?: () => void;
 }
 
 function Deadline({ inc, sla, now }: { inc: Incident; sla: Sla; now: number }) {
@@ -71,7 +75,7 @@ function Deadline({ inc, sla, now }: { inc: Incident; sla: Sla; now: number }) {
   );
 }
 
-function Handoff({ inc, teams, onDone }: { inc: Incident; teams: string[]; onDone: () => void }) {
+export function Handoff({ inc, teams, onDone }: { inc: Incident; teams: string[]; onDone: () => void }) {
   const [q, setQ] = useState('');
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -111,7 +115,7 @@ function Handoff({ inc, teams, onDone }: { inc: Incident; teams: string[]; onDon
   );
 }
 
-function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, changedAt, operator, teams }: CardProps) {
+function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, changedAt, operator, teams, pinned, pinLimitReached, onTogglePin }: CardProps) {
   const ref = useRef<HTMLElement>(null);
   const flash = useRef<HTMLSpanElement>(null);
   const glow = useRef<HTMLSpanElement>(null);
@@ -161,6 +165,7 @@ function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, cha
       {criticalActive && <span className="glow" ref={glow} aria-hidden />}
 
       <div className="card-top">
+        {onTogglePin && <PinButton pinned={!!pinned} limitReached={!!pinLimitReached} onToggle={onTogglePin} />}
         <span className="inc-id">{inc.id}</span>
         <span className={`state state-${inc.stateId}`}>{inc.state}</span>
         {critical && resolved && <span className="stamp">Решён</span>}

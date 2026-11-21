@@ -1,9 +1,12 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap, Flip, reducedMotion } from '../lib/motion';
 import type { GroupKey } from '../lib/model';
 import type { ColumnDnd } from '../lib/layout';
 import { IncidentCard, type CardProps } from './IncidentCard';
-import { Icon } from './Icon';
+import { CompactIncidentRow } from './CompactIncidentRow';
+import type { IncidentViewMode } from '../lib/notification-settings';
+import { Icon, type IconName } from './Icon';
+import { boardStorageKey, PIN_LIMIT, pinnedFirst, prunePins, readPins, saveBoardValue, togglePin } from '../lib/personal-board';
 
 const EMPTY: Record<GroupKey, string> = {
   critical: 'Активных критических инцидентов нет',
@@ -23,30 +26,52 @@ export interface LaneKpi {
 
 interface Props {
   group: { key: GroupKey; title: string; hint: string };
-  items: Omit<CardProps, 'lane' | 'now' | 'operator' | 'teams'>[];
+  items: (Omit<CardProps, 'lane' | 'now' | 'operator' | 'teams' | 'pinned' | 'pinLimitReached' | 'onTogglePin'> & { criticalUnacked?: boolean })[];
+  eligibleIds: ReadonlySet<string>;
+  viewMode: IncidentViewMode;
   activeCount: number;
   kpi: LaneKpi;
   now: number;
   operator: string;
   teams: string[];
   note?: string;
+  filtered?: boolean;
+  icon?: IconName;
   /** Перетаскивание колонки и её текущее место на доске. */
   dnd?: ColumnDnd;
   position?: number;
 }
 
-export function Lane({ group, items, activeCount, kpi, now, operator, teams, note, dnd, position }: Props) {
+export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operator, teams, note, dnd, position, viewMode, filtered, icon }: Props) {
   const list = useRef<HTMLDivElement>(null);
   const count = useRef<HTMLSpanElement>(null);
   const flipState = useRef<Flip.FlipState | null>(null);
+  const previousViewMode = useRef(viewMode);
   const prevCount = useRef(activeCount);
-  const order = items.map((x) => x.inc.id).join('|');
+  const storageKey = boardStorageKey(operator, `pins:${group.key}`);
+  const [savedPins, setSavedPins] = useState(() => readPins(storageKey));
+  // Фильтры не сбрасывают закрепления. Очищаем только инциденты, покинувшие категорию.
+  const pins = prunePins(savedPins, eligibleIds);
+  useEffect(() => {
+    if (pins !== savedPins) setSavedPins(pins);
+    saveBoardValue(storageKey, pins);
+  }, [pins, savedPins, storageKey]);
+  const orderedItems = pinnedFirst(items, pins, (x) => x.inc.id);
+  const order = orderedItems.map((x) => x.inc.id).join('|');
+  const pinProps = (id: string) => ({
+    pinned: pins.includes(id),
+    pinLimitReached: pins.length >= PIN_LIMIT,
+    onTogglePin: () => setSavedPins((current) => togglePin(prunePins(current, eligibleIds), id)),
+  });
 
   // Карточки плавно переезжают на новые места, новые — въезжают.
   useLayoutEffect(() => {
     if (!list.current) return;
     const els = list.current.querySelectorAll<HTMLElement>(':scope > [data-flip-id]');
-    if (flipState.current && !reducedMotion()) {
+    // При смене вида элементы пересоздаются: прежнее Flip-состояние использовать нельзя.
+    const sameMode = previousViewMode.current === viewMode;
+    previousViewMode.current = viewMode;
+    if (sameMode && flipState.current && !reducedMotion()) {
       Flip.from(flipState.current, {
         targets: els,
         duration: 0.6,
@@ -56,7 +81,7 @@ export function Lane({ group, items, activeCount, kpi, now, operator, teams, not
       });
     }
     flipState.current = Flip.getState(els);
-  }, [order]);
+  }, [order, viewMode]);
 
   // Колонку перетащили на другое место: запоминаем новые позиции карточек, чтобы они не прилетали со старого.
   useLayoutEffect(() => {
@@ -80,7 +105,7 @@ export function Lane({ group, items, activeCount, kpi, now, operator, teams, not
     >
       <header className="kpi" {...dnd?.handle}>
         <div className="kpi-title">
-          <span className="kpi-icon"><Icon name={group.key} /></span>
+          <span className="kpi-icon"><Icon name={icon ?? group.key} /></span>
           <h2 className="kpi-label">{group.title}</h2>
         </div>
         {dnd && <span className="kpi-grip" aria-hidden>⠿</span>}
@@ -90,11 +115,12 @@ export function Lane({ group, items, activeCount, kpi, now, operator, teams, not
       <div className="lane-body">
         <p className="lane-hint">{group.hint}</p>
         {note && <p className="lane-note">{note}</p>}
-        <div className="lane-list" ref={list}>
-          {items.map((x) => (
-            <IncidentCard key={x.inc.id} {...x} lane={group.key} now={now} operator={operator} teams={teams} />
-          ))}
-          {!items.length && <p className="lane-empty">{EMPTY[group.key]}</p>}
+        <div className={`lane-list ${viewMode === 'compact' ? 'is-compact-list' : ''}`} ref={list}>
+          {orderedItems.map((x) => viewMode === 'compact'
+            ? <CompactIncidentRow key={x.inc.id} {...x} {...pinProps(x.inc.id)} lane={group.key} now={now} operator={operator} teams={teams} />
+            : <IncidentCard key={x.inc.id} {...x} {...pinProps(x.inc.id)} lane={group.key} now={now} operator={operator} teams={teams} />
+          )}
+          {!items.length && <p className="lane-empty">{filtered ? 'Нет инцидентов по выбранному фильтру' : EMPTY[group.key]}</p>}
         </div>
       </div>
     </section>

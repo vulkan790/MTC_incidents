@@ -29,6 +29,7 @@ export function useLiveState() {
     queryFn: fetchState,
     staleTime: Infinity,
     refetchInterval: connection === 'online' ? false : 5000,
+    refetchIntervalInBackground: true,
   });
 }
 

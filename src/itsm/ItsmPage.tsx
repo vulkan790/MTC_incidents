@@ -139,9 +139,6 @@ export function ItsmPage({ id }: { id: string }) {
   const now = useNow(1000);
   const inc = data?.incidents.find((i) => i.id === id);
 
-  useEffect(() => {
-    document.title = `${id} · ITSM`;
-  }, [id]);
 
   if (!data) return <div className="it-page"><p className="it-empty">Загрузка…</p></div>;
   if (!inc) {
