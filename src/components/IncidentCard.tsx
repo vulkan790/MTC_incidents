@@ -128,6 +128,11 @@ function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, cri
   const criticalActive = critical && active;
   const resolved = !active && inc.stateId !== STATE.research;
   const onCoord = inc.assignedGroupName === COORD_GROUP && inc.stateId !== STATE.closed;
+  // Назначение в ITSM является источником истины: старый ACK мог быть очищен,
+  // но уже назначенный исполнитель всё равно означает «взято на контроль».
+  const effectiveCriticalAck = inc.assignedEmployee
+    ? { by: personName(inc.assignedEmployee) || inc.assignedEmployee, at: '' }
+    : criticalAck;
 
   useEffect(() => {
     if (!changedAt || !flash.current || reducedMotion()) return;
@@ -173,7 +178,7 @@ function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, cri
         {mailCount > 0 && <span className="mail-badge" title="Письма по инциденту">✉ {mailCount}</span>}
       </div>
 
-      {criticalActive && <div className="card-critical-owner"><CriticalAcceptedBadge ack={criticalAck} showPending minimal /></div>}
+      {criticalActive && <div className="card-critical-owner"><CriticalAcceptedBadge ack={effectiveCriticalAck} showPending minimal /></div>}
 
       <h3 className="card-title">{inc.header}</h3>
       <p className="product"><b>{inc.productName}</b> {serviceShort(inc)}</p>

@@ -20,6 +20,9 @@ function CompactIncidentRowImpl({ inc, sla, operator, teams, unacked, criticalUn
   const active = isActive(inc);
   const onCoord = inc.assignedGroupName === COORD_GROUP && inc.stateId !== STATE.closed;
   const canTransfer = inc.stateId !== STATE.closed && inc.stateId !== STATE.resolved;
+  const effectiveCriticalAck = inc.assignedEmployee
+    ? { by: personName(inc.assignedEmployee) || inc.assignedEmployee, at: '' }
+    : criticalAck;
   const product = inc.productName || 'Без продукта';
   const compactDuration = (ms: number) => fmtDuration(ms, true).replace(' дн ', 'д ').replace(' ч', 'ч');
   const deadlineLabel = inc.stateId === STATE.research ? 'Разбор'
@@ -61,8 +64,8 @@ function CompactIncidentRowImpl({ inc, sla, operator, teams, unacked, criticalUn
           <span className="compact-product-name">{product}</span>
           <span className={`compact-deadline risk-${sla.risk}`} title={deadlineTitle} aria-label={deadlineTitle}>{deadlineLabel}</span>
         </button>
-        {isCritical(inc) && active && criticalAck && (
-          <CriticalAcceptedBadge ack={criticalAck} compact minimal />
+        {isCritical(inc) && active && effectiveCriticalAck && (
+          <CriticalAcceptedBadge ack={effectiveCriticalAck} compact minimal />
         )}
         <div className="compact-actions" aria-label={`Действия с ${inc.id}`}>
           {criticalUnacked && (
@@ -96,7 +99,7 @@ function CompactIncidentRowImpl({ inc, sla, operator, teams, unacked, criticalUn
             <span className={`state state-${inc.stateId}`}>{inc.state}</span>
           </div>
           {isCritical(inc) && active && (
-            <div className="compact-detail-owner"><CriticalAcceptedBadge ack={criticalAck} showPending /></div>
+            <div className="compact-detail-owner"><CriticalAcceptedBadge ack={effectiveCriticalAck} showPending /></div>
           )}
           <div className="compact-detail-problem">
             <span className="compact-detail-label">Суть проблемы</span>
