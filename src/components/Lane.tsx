@@ -37,13 +37,15 @@ interface Props {
   note?: string;
   filtered?: boolean;
   filterKey?: DeadlineFilter;
+  hideHeader?: boolean;
+  pinStorageKey?: string;
   icon?: IconName;
   /** Перетаскивание колонки и её текущее место на доске. */
   dnd?: ColumnDnd;
   position?: number;
 }
 
-export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operator, teams, note, dnd, position, viewMode, filtered, filterKey = 'all', icon }: Props) {
+export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operator, teams, note, dnd, position, viewMode, filtered, filterKey = 'all', hideHeader = false, pinStorageKey, icon }: Props) {
   const list = useRef<HTMLDivElement>(null);
   const count = useRef<HTMLSpanElement>(null);
   const flipState = useRef<Flip.FlipState | null>(null);
@@ -51,7 +53,7 @@ export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operato
   const previousFilterKey = useRef(filterKey);
   const filterChanged = previousFilterKey.current !== filterKey;
   const prevCount = useRef(activeCount);
-  const storageKey = boardStorageKey(operator, `pins:${group.key}`);
+  const storageKey = boardStorageKey(operator, pinStorageKey ?? `pins:${group.key}`);
   const [savedPins, setSavedPins] = useState(() => readPins(storageKey));
   // Фильтры не сбрасывают закрепления. Очищаем только инциденты, покинувшие категорию.
   const pins = prunePins(savedPins, eligibleIds);
@@ -109,7 +111,7 @@ export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operato
       data-col={group.key}
       {...dnd?.zone}
     >
-      <header className="kpi" {...dnd?.handle}>
+      {!hideHeader && <header className="kpi" {...dnd?.handle}>
         <div className="kpi-title">
           <span className="kpi-icon"><Icon name={icon ?? group.key} /></span>
           <h2 className="kpi-label">{group.title}</h2>
@@ -117,9 +119,9 @@ export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operato
         {dnd && <span className="kpi-grip" aria-hidden>⠿</span>}
         <span className="kpi-value" ref={count}>{activeCount}</span>
         <span className={`kpi-sub ${kpi.warn ? 'is-warn' : ''}`}>{kpi.sub}</span>
-      </header>
+      </header>}
       <div className="lane-body">
-        <p className="lane-hint">{group.hint}</p>
+        {!hideHeader && <p className="lane-hint">{group.hint}</p>}
         {note && <p className="lane-note">{note}</p>}
         <div className={`lane-list ${viewMode === 'compact' ? 'is-compact-list' : ''}`} ref={list}>
           {orderedItems.map((x) => viewMode === 'compact'

@@ -1,4 +1,4 @@
-import { type CSSProperties, type TouchEvent, useMemo, useRef, useState } from 'react';
+import { type CSSProperties, type TouchEvent, useEffect, useMemo, useRef, useState } from 'react';
 import type { Incident } from './types';
 import {
   GROUPS, GROUP_RULES, type GroupKey, COORD_GROUP, fmtClock, fmtAgo, groupsOf, isActive,
@@ -7,7 +7,7 @@ import {
 import { useConnection, useLiveState, useNow } from './lib/live';
 import { unlockAudio } from './lib/sound';
 import { gsap, reducedMotion } from './lib/motion';
-import { DEFAULT_ORDER, useColumnLayout } from './lib/layout';
+import { DEFAULT_ORDER, type ColumnDnd, useColumnLayout } from './lib/layout';
 import { swipeDirection, useMobileLayout } from './lib/mobile';
 import { Lane, type LaneKpi } from './components/Lane';
 import { Sidebar } from './components/Sidebar';
@@ -26,6 +26,77 @@ interface Filters {
   deadline: DeadlineFilter;
 }
 const NO_FILTERS: Filters = { q: '', product: '', serviceType: '', deadline: 'all' };
+type ResolvedPlacement = 'footer' | 'column';
+
+const store = {
+  get(key: string, fallback: string) {
+    try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; }
+  },
+  set(key: string, value: string) {
+    try { localStorage.setItem(key, value); } catch { /* приватный режим */ }
+  },
+};
+
+function ResolvedItems({ items, now }: { items: Incident[]; now: number }) {
+  return <div className="resolved-list">
+    {items.map((i) => (
+      <button key={i.id} className={`resolved-chip ${isCritical(i) ? 'is-crit' : ''}`} onClick={() => openItsm(i.id)}>
+        <b>{i.productName}</b>
+        <span>{i.id}, решён {i.completionDate ? fmtAgo(i.completionDate, now) : ''}</span>
+        {i.isNeedUp && <em>нужно устранить последствия</em>}
+      </button>
+    ))}
+  </div>;
+}
+
+function ResolvedColumn({ items, now, stats, mailCount, operator, teams, viewMode, collapsed, onToggle, onMoveToFooter, dnd }: {
+  items: Incident[];
+  now: number;
+  stats: Record<number, number>;
+  mailCount: Record<string, number>;
+  operator: string;
+  teams: string[];
+  viewMode: Parameters<typeof Lane>[0]['viewMode'];
+  collapsed: boolean;
+  onToggle: () => void;
+  onMoveToFooter: () => void;
+  dnd: ColumnDnd;
+}) {
+  const laneItems: Parameters<typeof Lane>[0]['items'] = items.map((inc) => ({
+    inc,
+    sla: slaOf(inc, now, stats),
+    groups: [] as GroupKey[],
+    mailCount: mailCount[inc.id] ?? 0,
+    unacked: false,
+    criticalUnacked: false,
+    changedAt: undefined,
+  }));
+  return <section className={`lane resolved-column ${collapsed ? 'is-collapsed' : ''} ${dnd.className}`} data-col="resolved" aria-label="Решены, но не закрыты" {...dnd.zone}>
+    <header className="kpi resolved-column-kpi">
+      <div className="kpi-title"><span className="kpi-icon"><Icon name="check" /></span><h2 className="kpi-label">Решены, но не закрыты</h2></div>
+      <span className="kpi-value">{items.length}</span>
+      <span className="kpi-sub">К ним могут вернуться</span>
+      <div className="resolved-column-actions">
+        <button className="resolved-column-drag" type="button" {...dnd.handle} aria-label="Перетащить колонку решённых инцидентов">⋮⋮</button>
+        <button className="resolved-column-action" type="button" onClick={onMoveToFooter} title="Вернуть в нижнюю полосу" aria-label="Вернуть в нижнюю полосу">↶</button>
+        <button className="resolved-column-action" type="button" onClick={onToggle} aria-expanded={!collapsed} title={collapsed ? 'Развернуть' : 'Свернуть'} aria-label={collapsed ? 'Развернуть' : 'Свернуть'}>{collapsed ? '+' : '−'}</button>
+      </div>
+    </header>
+    {!collapsed && <Lane
+      group={{ key: 'research', title: 'Решены, но не закрыты', hint: 'Решённые инциденты, которые ещё не закрыты' }}
+      items={laneItems}
+      eligibleIds={new Set(items.map((inc) => inc.id))}
+      activeCount={items.length}
+      kpi={{ sub: 'К ним могут вернуться' }}
+      now={now}
+      operator={operator}
+      teams={teams}
+      viewMode={viewMode}
+      hideHeader
+      pinStorageKey="pins:resolved"
+    />}
+  </section>;
+}
 
 function matches(i: Incident, f: Filters) {
   if (f.product && i.productName !== f.product) return false;
@@ -49,9 +120,35 @@ export function Dashboard() {
   const mobile = useMobileLayout();
   const [mobileGroup, setMobileGroup] = useState<GroupKey>('critical');
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [resolvedPlacement, setResolvedPlacement] = useState<ResolvedPlacement>('footer');
+  const [resolvedCollapsed, setResolvedCollapsed] = useState(false);
   const mobileTabs = useRef<HTMLElement>(null);
   const touch = useRef<{ x: number; y: number } | null>(null);
   const mobileIndex = GROUPS.findIndex((group) => group.key === mobileGroup);
+  const resolvedSettingsKey = `mi:resolved-layout:v1:${operator.trim().toLocaleLowerCase('ru-RU') || 'координатор'}`;
+  useEffect(() => {
+    setResolvedPlacement(store.get(`${resolvedSettingsKey}:placement`, 'footer') === 'column' ? 'column' : 'footer');
+    setResolvedCollapsed(store.get(`${resolvedSettingsKey}:collapsed`, '0') === '1');
+  }, [resolvedSettingsKey]);
+  useEffect(() => {
+    if (resolvedPlacement === 'column' && !mobile) layout.add('resolved');
+    else layout.remove('resolved');
+  }, [resolvedPlacement, mobile]);
+  const changeResolvedPlacement = (placement: ResolvedPlacement) => {
+    setResolvedPlacement(placement);
+    store.set(`${resolvedSettingsKey}:placement`, placement);
+    if (placement === 'column') {
+      setResolvedCollapsed(false);
+      store.set(`${resolvedSettingsKey}:collapsed`, '0');
+    }
+  };
+  const toggleResolvedCollapsed = () => {
+    setResolvedCollapsed((old) => {
+      const next = !old;
+      store.set(`${resolvedSettingsKey}:collapsed`, next ? '1' : '0');
+      return next;
+    });
+  };
 
   function selectMobileGroup(key: GroupKey) {
     setMobileGroup(key);
@@ -135,6 +232,7 @@ export function Dashboard() {
       .sort((a, b) => Date.parse(b.completionDate ?? '0') - Date.parse(a.completionDate ?? '0')),
     [incidents],
   );
+  const resolvedInColumn = resolvedPlacement === 'column' && !mobile;
 
   const products = useMemo(() => [...new Set(incidents.map((i) => i.productName))].sort(), [incidents]);
 
@@ -261,6 +359,7 @@ export function Dashboard() {
           </div>
         </nav>}
         {(mobile ? DEFAULT_ORDER : layout.order).map((key, position) => {
+          if (key === 'resolved') return <ResolvedColumn key="resolved" items={resolvedOpen} now={now} stats={stats} mailCount={mailCount} operator={operator} teams={data.meta.teams} viewMode={preferences.incidentViewMode} collapsed={resolvedCollapsed} onToggle={toggleResolvedCollapsed} onMoveToFooter={() => changeResolvedPlacement('footer')} dnd={layout.dnd('resolved')} />;
           if (key === 'side') {
             return <Sidebar key={`side:${operator}`} mobile={mobile} operator={operator} events={data.events} mail={data.mail} now={now} summary={summary} deadlineFilter={filters.deadline} onDeadlineFilter={(value) => {
               const next = filters.deadline === value ? 'all' : value;
@@ -294,20 +393,17 @@ export function Dashboard() {
         })}
       </main>
 
-      {!deadlineFiltering && <footer className="resolved">
-        <span className="resolved-title">
-          <Icon name="check" />
-          <b>{resolvedOpen.length}</b> решены, но не закрыты. К ним могут вернуться
-        </span>
-        <div className="resolved-list">
-          {resolvedOpen.map((i) => (
-            <button key={i.id} className={`resolved-chip ${isCritical(i) ? 'is-crit' : ''}`} onClick={() => openItsm(i.id)}>
-              <b>{i.productName}</b>
-              <span>{i.id}, решён {i.completionDate ? fmtAgo(i.completionDate, now) : ''}</span>
-              {i.isNeedUp && <em>нужно устранить последствия</em>}
-            </button>
-          ))}
+      {!deadlineFiltering && !resolvedInColumn && <footer className={`resolved ${resolvedCollapsed ? 'is-collapsed' : ''}`}>
+        <div className="resolved-head">
+          <button className="resolved-title" type="button" onClick={toggleResolvedCollapsed} aria-expanded={!resolvedCollapsed}>
+            <Icon name="check" /><b>{resolvedOpen.length}</b><span>Решены, но не закрыты. К ним могут вернуться</span>
+          </button>
+          <div className="resolved-actions">
+            <button type="button" onClick={() => changeResolvedPlacement('column')}>В колонку</button>
+            <button type="button" onClick={toggleResolvedCollapsed}>{resolvedCollapsed ? 'Развернуть' : 'Свернуть'}</button>
+          </div>
         </div>
+        {!resolvedCollapsed && <ResolvedItems items={resolvedOpen} now={now} />}
       </footer>}
 
       {demoOpen && <DemoPanel auto={data.auto} onClose={() => setDemoOpen(false)} />}

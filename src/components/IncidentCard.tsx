@@ -9,6 +9,7 @@ import {
 import { ack, patchIncident } from '../lib/live';
 import { reducedMotion } from '../lib/motion';
 import { PinButton } from './PinButton';
+import { Icon } from './Icon';
 
 const GROUP_CHIP: Record<GroupKey, string> = {
   critical: 'критический',
@@ -177,6 +178,18 @@ function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, cri
       <h3 className="card-title">{inc.header}</h3>
       <p className="product"><b>{inc.productName}</b> {serviceShort(inc)}</p>
 
+      {inc.assignedEmployee ? (
+        <div className="responsibility-status is-assigned" role="status">
+          <Icon name="check" />
+          <span><b>Взято на контроль</b><small>Ответственный: {personName(inc.assignedEmployee)}</small></span>
+        </div>
+      ) : active ? (
+        <div className="responsibility-status is-pending" role="status">
+          <Icon name="coord" />
+          <span><b>{onCoord ? 'Ожидает принятия' : 'Не взято на контроль'}</b><small>Ответственный ещё не назначен</small></span>
+        </div>
+      ) : null}
+
       <dl className="facts">
         <div>
           <dt>Решает</dt>
@@ -209,7 +222,7 @@ function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, cri
 
       {onCoord && (
         <div className="card-actions" onClick={(e) => e.stopPropagation()}>
-          {unacked && (
+          {unacked && !inc.assignedEmployee && (
             <button className="btn btn-accept" onClick={() => ack(`coord:${inc.id}`, operator)}>Принял</button>
           )}
           <button className="btn btn-handoff" aria-expanded={handoff} onClick={() => setHandoff((v) => !v)}>
