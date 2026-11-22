@@ -49,14 +49,28 @@ function ResolvedItems({ items, now }: { items: Incident[]; now: number }) {
   </div>;
 }
 
-function ResolvedColumn({ items, now, collapsed, onToggle, onMoveToFooter, dnd }: {
+function ResolvedColumn({ items, now, stats, mailCount, operator, teams, viewMode, collapsed, onToggle, onMoveToFooter, dnd }: {
   items: Incident[];
   now: number;
+  stats: Record<number, number>;
+  mailCount: Record<string, number>;
+  operator: string;
+  teams: string[];
+  viewMode: Parameters<typeof Lane>[0]['viewMode'];
   collapsed: boolean;
   onToggle: () => void;
   onMoveToFooter: () => void;
   dnd: ColumnDnd;
 }) {
+  const laneItems: Parameters<typeof Lane>[0]['items'] = items.map((inc) => ({
+    inc,
+    sla: slaOf(inc, now, stats),
+    groups: [] as GroupKey[],
+    mailCount: mailCount[inc.id] ?? 0,
+    unacked: false,
+    criticalUnacked: false,
+    changedAt: undefined,
+  }));
   return <section className={`lane resolved-column ${collapsed ? 'is-collapsed' : ''} ${dnd.className}`} data-col="resolved" aria-label="Решены, но не закрыты" {...dnd.zone}>
     <header className="kpi resolved-column-kpi">
       <div className="kpi-title"><span className="kpi-icon"><Icon name="check" /></span><h2 className="kpi-label">Решены, но не закрыты</h2></div>
@@ -68,7 +82,19 @@ function ResolvedColumn({ items, now, collapsed, onToggle, onMoveToFooter, dnd }
         <button className="resolved-column-action" type="button" onClick={onToggle} aria-expanded={!collapsed} title={collapsed ? 'Развернуть' : 'Свернуть'} aria-label={collapsed ? 'Развернуть' : 'Свернуть'}>{collapsed ? '+' : '−'}</button>
       </div>
     </header>
-    {!collapsed && <div className="lane-body"><p className="lane-hint">Решённые инциденты, которые ещё не закрыты</p><ResolvedItems items={items} now={now} /></div>}
+    {!collapsed && <Lane
+      group={{ key: 'research', title: 'Решены, но не закрыты', hint: 'Решённые инциденты, которые ещё не закрыты' }}
+      items={laneItems}
+      eligibleIds={new Set(items.map((inc) => inc.id))}
+      activeCount={items.length}
+      kpi={{ sub: 'К ним могут вернуться' }}
+      now={now}
+      operator={operator}
+      teams={teams}
+      viewMode={viewMode}
+      hideHeader
+      pinStorageKey="pins:resolved"
+    />}
   </section>;
 }
 
@@ -332,7 +358,7 @@ export function Dashboard() {
           </div>
         </nav>}
         {(mobile ? DEFAULT_ORDER : layout.order).map((key, position) => {
-          if (key === 'resolved') return <ResolvedColumn key="resolved" items={resolvedOpen} now={now} collapsed={resolvedCollapsed} onToggle={toggleResolvedCollapsed} onMoveToFooter={() => changeResolvedPlacement('footer')} dnd={layout.dnd('resolved')} />;
+          if (key === 'resolved') return <ResolvedColumn key="resolved" items={resolvedOpen} now={now} stats={stats} mailCount={mailCount} operator={operator} teams={data.meta.teams} viewMode={preferences.incidentViewMode} collapsed={resolvedCollapsed} onToggle={toggleResolvedCollapsed} onMoveToFooter={() => changeResolvedPlacement('footer')} dnd={layout.dnd('resolved')} />;
           if (key === 'side') {
             return <Sidebar key={`side:${operator}`} mobile={mobile} operator={operator} events={data.events} mail={data.mail} now={now} summary={summary} deadlineFilter={filters.deadline} onDeadlineFilter={(value) => {
               const next = filters.deadline === value ? 'all' : value;
