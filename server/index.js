@@ -277,11 +277,25 @@ app.post('/api/mail/:id/incident', (req, res) => {
 app.post('/api/ack', (req, res) => {
   const { key, by } = req.body ?? {};
   if (!/^(crit|coord):[\w-]+$/.test(key ?? '')) return res.status(400).json({ error: 'Неверный ключ подтверждения' });
-  state.acks[key] = { by: String(by || 'Координатор').slice(0, 60), at: iso(Date.now()) };
+  const [, kind, id] = String(key).match(/^(crit|coord):([\w-]+)$/) ?? [];
+  const operator = String(by || 'Координатор').trim().slice(0, 60) || 'Координатор';
+  const incident = state.incidents.find((item) => item.id === id);
+  if (!incident) return res.status(404).json({ error: `Инцидент ${id} не найден` });
+  // «Беру на контроль» — это не только локальная отметка: текущий координатор
+  // становится ответственным в демо-ITSM и появляется в его личном кабинете.
+  updateIncidents((list) => {
+    const target = list.find((item) => item.id === id);
+    if (target) {
+      target.assignedEmployee = operator;
+      target.assignedEmployeeLogin = operator.toLocaleLowerCase('ru-RU').replace(/[^\p{L}\p{N}]+/gu, '_').replace(/^_|_$/g, '').slice(0, 80) || 'coordinator';
+    }
+  });
+  refresh(['incidents']);
+  state.acks[key] = { by: operator, at: iso(Date.now()) };
   saveAcks();
   state.version += 1;
   broadcast({ type: 'state', state: snapshot(), events: [] });
-  res.json({ ok: true });
+  res.json({ ok: true, kind, incidentId: id, assignedEmployee: operator });
 });
 
 app.get('/api/scenarios', (_req, res) =>

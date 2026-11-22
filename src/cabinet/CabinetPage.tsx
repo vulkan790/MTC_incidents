@@ -124,6 +124,17 @@ export function CabinetPage() {
     setEditingName(false);
   };
 
+  const responsible = useMemo(() => {
+    const name = operator.trim().toLocaleLowerCase('ru-RU');
+    return (data?.incidents ?? [])
+      .filter((inc) => {
+        const employee = (inc.assignedEmployee ?? '').toLocaleLowerCase('ru-RU');
+        const login = (inc.assignedEmployeeLogin ?? '').toLocaleLowerCase('ru-RU');
+        return Boolean(name) && (employee === name || employee.startsWith(`${name} (`) || login === name);
+      })
+      .sort((a, b) => Number(Date.parse(a.deadline ?? '') || Infinity) - Number(Date.parse(b.deadline ?? '') || Infinity));
+  }, [data?.incidents, operator]);
+
   if (!data) return <div className="boot">{isError ? 'Нет связи с сервером почты. Проверьте npm run dev.' : 'Загрузка личного кабинета…'}</div>;
 
   const assignedTeam = team || data.meta.coordGroup;
@@ -158,6 +169,20 @@ export function CabinetPage() {
           </div>
           <div className="cabinet-profile-field"><span>Команда</span><strong>{data.meta.coordGroup}</strong></div>
           <div className="cabinet-profile-field"><span>Почтовый ящик</span><strong>Демо-почта координатора</strong><small>Источник: data/mail.json</small></div>
+        </section>
+
+        <section className="cabinet-responsible" aria-label="Мои инциденты">
+          <div className="cabinet-responsible-heading">
+            <div><h2><Icon name="check" /> Мои инциденты</h2><p>Инциденты, где вы указаны ответственным</p></div>
+            <b>{responsible.length}</b>
+          </div>
+          {responsible.length ? <div className="cabinet-responsible-list">
+            {responsible.map((inc) => <button key={inc.id} type="button" className="cabinet-responsible-item" onClick={() => openItsm(inc.id)}>
+              <span><b>{inc.productName}</b><small>{inc.id}</small></span>
+              <strong>{inc.header}</strong>
+              <em>{inc.state}{inc.deadline ? ` · срок ${fmtTime(inc.deadline)}` : ''}</em>
+            </button>)}
+          </div> : <p className="cabinet-responsible-empty">Пока нет инцидентов, взятых вами на контроль.</p>}
         </section>
 
         <section ref={mailPanel} className="cabinet-mail-panel" aria-label="Рабочая почта">
