@@ -111,6 +111,10 @@ export function Dashboard() {
   const changeResolvedPlacement = (placement: ResolvedPlacement) => {
     setResolvedPlacement(placement);
     store.set(`${resolvedSettingsKey}:placement`, placement);
+    if (placement === 'column') {
+      setResolvedCollapsed(false);
+      store.set(`${resolvedSettingsKey}:collapsed`, '0');
+    }
   };
   const toggleResolvedCollapsed = () => {
     setResolvedCollapsed((old) => {
