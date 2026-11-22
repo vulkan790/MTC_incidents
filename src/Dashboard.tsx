@@ -18,6 +18,8 @@ import { ThemeSwitch } from './components/ThemeSwitch';
 import { readNotificationSettings, useNotificationSettings } from './lib/notification-settings';
 import { startShift } from './lib/operator-session';
 import { CriticalStrips, useGlobalAlerts } from './lib/global-alerts';
+import { boardStorageKey, readBoardValue, saveBoardValue } from './lib/personal-board';
+import { normalizeCriticalSort, type CriticalSortSettings } from './lib/critical-sort';
 
 interface Filters {
   q: string;
@@ -49,7 +51,7 @@ function ResolvedItems({ items, now }: { items: Incident[]; now: number }) {
   </div>;
 }
 
-function ResolvedColumn({ items, now, stats, mailCount, operator, teams, viewMode, collapsed, onToggle, onMoveToFooter, dnd }: {
+function ResolvedColumn({ items, now, stats, mailCount, operator, teams, viewMode, collapsed, onToggle, onMoveToFooter, dnd, sortSettings }: {
   items: Incident[];
   now: number;
   stats: Record<number, number>;
@@ -61,6 +63,7 @@ function ResolvedColumn({ items, now, stats, mailCount, operator, teams, viewMod
   onToggle: () => void;
   onMoveToFooter: () => void;
   dnd: ColumnDnd;
+  sortSettings: CriticalSortSettings;
 }) {
   const laneItems: Parameters<typeof Lane>[0]['items'] = items.map((inc) => ({
     inc,
@@ -78,7 +81,7 @@ function ResolvedColumn({ items, now, stats, mailCount, operator, teams, viewMod
       <span className="kpi-sub">К ним могут вернуться</span>
       <div className="resolved-column-actions">
         <button className="resolved-column-drag" type="button" {...dnd.handle} aria-label="Перетащить колонку решённых инцидентов">⋮⋮</button>
-        <button className="resolved-column-action" type="button" onClick={onMoveToFooter} title="Вернуть в нижнюю полосу" aria-label="Вернуть в нижнюю полосу">↶</button>
+        <button className="resolved-column-action" type="button" onClick={onMoveToFooter} title="Вернуть в нижнюю полосу" aria-label="Вернуть в нижнюю полосу">↓</button>
         <button className="resolved-column-action" type="button" onClick={onToggle} aria-expanded={!collapsed} title={collapsed ? 'Развернуть' : 'Свернуть'} aria-label={collapsed ? 'Развернуть' : 'Свернуть'}>{collapsed ? '+' : '−'}</button>
       </div>
     </header>
@@ -93,6 +96,7 @@ function ResolvedColumn({ items, now, stats, mailCount, operator, teams, viewMod
       teams={teams}
       viewMode={viewMode}
       hideHeader
+      criticalSort={sortSettings}
       pinStorageKey="pins:resolved"
     />}
   </section>;
@@ -122,6 +126,20 @@ export function Dashboard() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [resolvedPlacement, setResolvedPlacement] = useState<ResolvedPlacement>('footer');
   const [resolvedCollapsed, setResolvedCollapsed] = useState(false);
+  const criticalSortKey = boardStorageKey(operator, 'critical-sort');
+  const [criticalSort, setCriticalSort] = useState<CriticalSortSettings>(() =>
+    normalizeCriticalSort(readBoardValue(criticalSortKey))
+  );
+  const loadedCriticalSortKey = useRef(criticalSortKey);
+  // При смене координатора сначала восстанавливаем его настройки, не перезаписывая чужие.
+  useEffect(() => {
+    if (loadedCriticalSortKey.current !== criticalSortKey) {
+      loadedCriticalSortKey.current = criticalSortKey;
+      setCriticalSort(normalizeCriticalSort(readBoardValue(criticalSortKey)));
+      return;
+    }
+    saveBoardValue(criticalSortKey, criticalSort);
+  }, [criticalSortKey, criticalSort]);
   const mobileTabs = useRef<HTMLElement>(null);
   const touch = useRef<{ x: number; y: number } | null>(null);
   const mobileIndex = GROUPS.findIndex((group) => group.key === mobileGroup);
@@ -332,13 +350,38 @@ export function Dashboard() {
         </select>
         {filtering && <button className="btn btn-quiet" onClick={() => setFilters(NO_FILTERS)}>Сбросить фильтры</button>}
         {!mobile && !layout.isDefault && <button className="btn btn-quiet" onClick={layout.reset}>Вернуть колонки на место</button>}
+        <div className="toolbar-sort" aria-label="Сортировка инцидентов во всех категориях">
+          <label htmlFor="global-priority-sort">Порядок</label>
+          <select id="global-priority-sort" value={criticalSort.priority}
+            onChange={(event) => setCriticalSort((previous) => ({ ...previous, priority: event.target.value as CriticalSortSettings['priority'] }))}>
+            <option value="unassigned">Без ответственного сверху</option>
+            <option value="time">По времени</option>
+          </select>
+          <label htmlFor="global-time-sort">Время</label>
+          <select id="global-time-sort" value={criticalSort.timeOrder}
+            onChange={(event) => setCriticalSort((previous) => ({ ...previous, timeOrder: event.target.value as CriticalSortSettings['timeOrder'] }))}>
+            <option value="oldest">Старые сначала</option>
+            <option value="newest">Новые сначала</option>
+          </select>
+        </div>
         <span className="spacer" />
         <span className="operator">На смене: {operator || 'не указан'}</span>
         <button className={`btn btn-quiet ${preferences.soundEnabled ? '' : 'is-off'}`} onClick={() => updatePreferences({ soundEnabled: !preferences.soundEnabled })} aria-pressed={!preferences.soundEnabled}>
           {preferences.soundEnabled ? 'Звук включён' : 'Звук выключен'}
         </button>
         <button className="btn btn-quiet" onClick={() => setDemoOpen((v) => !v)} aria-pressed={demoOpen}>Имитация ITSM</button>
+
       </div>
+
+      <section className="critical-sortbar" aria-label="Счётчики критических инцидентов">
+        <div className="critical-sortbar-summary" aria-live="polite">
+          <span className="critical-sortbar-title"><Icon name="critical" /> Критические</span>
+          <span>Всего <strong>{crit.active}</strong></span>
+          <span className={visibleUnackedCritical ? 'is-unassigned' : ''}>Без ответственного <strong>{visibleUnackedCritical}</strong></span>
+          <span>Принято <strong>{crit.active - visibleUnackedCritical}</strong></span>
+        </div>
+
+      </section>
 
       {data.error && (
         <div className="data-error">
@@ -359,7 +402,7 @@ export function Dashboard() {
           </div>
         </nav>}
         {(mobile ? DEFAULT_ORDER : layout.order).map((key, position) => {
-          if (key === 'resolved') return <ResolvedColumn key="resolved" items={resolvedOpen} now={now} stats={stats} mailCount={mailCount} operator={operator} teams={data.meta.teams} viewMode={preferences.incidentViewMode} collapsed={resolvedCollapsed} onToggle={toggleResolvedCollapsed} onMoveToFooter={() => changeResolvedPlacement('footer')} dnd={layout.dnd('resolved')} />;
+          if (key === 'resolved') return <ResolvedColumn key="resolved" items={resolvedOpen} now={now} stats={stats} mailCount={mailCount} operator={operator} teams={data.meta.teams} viewMode={preferences.incidentViewMode} collapsed={resolvedCollapsed} onToggle={toggleResolvedCollapsed} onMoveToFooter={() => changeResolvedPlacement('footer')} dnd={layout.dnd('resolved')} sortSettings={criticalSort} />;
           if (key === 'side') {
             return <Sidebar key={`side:${operator}`} mobile={mobile} operator={operator} events={data.events} mail={data.mail} now={now} summary={summary} deadlineFilter={filters.deadline} onDeadlineFilter={(value) => {
               const next = filters.deadline === value ? 'all' : value;
@@ -388,6 +431,7 @@ export function Dashboard() {
               filtered={deadlineFiltering}
               dnd={mobile ? undefined : layout.dnd(g.key)}
               position={position}
+              criticalSort={criticalSort}
             />
           );
         })}
@@ -396,7 +440,9 @@ export function Dashboard() {
       {!deadlineFiltering && !resolvedInColumn && <footer className={`resolved ${resolvedCollapsed ? 'is-collapsed' : ''}`}>
         <div className="resolved-head">
           <button className="resolved-title" type="button" onClick={toggleResolvedCollapsed} aria-expanded={!resolvedCollapsed}>
-            <Icon name="check" /><b>{resolvedOpen.length}</b><span>Решены, но не закрыты. К ним могут вернуться</span>
+            <span className="resolved-icon"><Icon name="check" /></span>
+            <span className="resolved-title-copy"><strong>Решены, но не закрыты</strong><small>К ним могут вернуться</small></span>
+            <b className="resolved-count">{resolvedOpen.length}</b>
           </button>
           <div className="resolved-actions">
             <button type="button" onClick={() => changeResolvedPlacement('column')}>В колонку</button>

@@ -24,7 +24,6 @@ if (!fs.existsSync(FILES.incidents)) {
   seed();
 }
 
-// ---------- Состояние ----------
 const state = {
   version: 0,
   updatedAt: iso(Date.now()),
@@ -163,7 +162,6 @@ setInterval(() => {
   }
 }, 500);
 
-// ---------- HTTP ----------
 const app = express();
 app.use(express.json());
 
@@ -178,7 +176,6 @@ app.post('/api/incidents/:id', (req, res) => {
   res.json(inc);
 });
 
-// ---------- Почта: чтение, папки, оценки, явное преобразование в инцидент ----------
 app.get('/api/ai/status', async (_req, res) => res.json(await probeOllama()));
 
 app.post('/api/mail/analyze', async (_req, res) => {
@@ -262,27 +259,39 @@ app.post('/api/mail/:id/incident', (req, res) => {
 app.post('/api/ack', (req, res) => {
   const { key, by } = req.body ?? {};
   if (!/^(crit|coord):[\w-]+$/.test(key ?? '')) return res.status(400).json({ error: 'Неверный ключ подтверждения' });
-<<<<<<< HEAD
-  // Первое подтверждение сохраняется за первым принявшим, даже если другой клиент отправил ACK позднее.
-  if (state.acks[key]) return res.json({ ok: true, alreadyAcknowledged: true, ack: state.acks[key] });
-  state.acks[key] = { by: String(by || 'Координатор').slice(0, 60), at: iso(Date.now()) };
-=======
+
   const [, kind, id] = String(key).match(/^(crit|coord):([\w-]+)$/) ?? [];
-  const operator = String(by || 'Координатор').trim().slice(0, 60) || 'Координатор';
+
+  if (!kind || !id) {
+    return res.status(400).json({
+      error: 'Некорректный ключ подтверждения'
+    });
+  }
+
   const incident = state.incidents.find((item) => item.id === id);
-  if (!incident) return res.status(404).json({ error: `Инцидент ${id} не найден` });
-  // «Беру на контроль» — это не только локальная отметка: текущий координатор
-  // становится ответственным в демо-ITSM и появляется в его личном кабинете.
-  updateIncidents((list) => {
-    const target = list.find((item) => item.id === id);
-    if (target) {
-      target.assignedEmployee = operator;
-      target.assignedEmployeeLogin = operator.toLocaleLowerCase('ru-RU').replace(/[^\p{L}\p{N}]+/gu, '_').replace(/^_|_$/g, '').slice(0, 80) || 'coordinator';
-    }
-  });
-  refresh(['incidents']);
-  state.acks[key] = { by: operator, at: iso(Date.now()) };
->>>>>>> 3915c2c39789b3fb1c6cb13cedb5bf1e2c675c97
+
+  if (!incident) {
+    return res.status(404).json({
+      error: `Инцидент ${id} не найден`
+    });
+  }
+
+  if (state.acks[key]) {
+    return res.json({
+      ok: true,
+      alreadyAcknowledged: true,
+      ack: state.acks[key]
+    });
+  }
+
+  const operator =
+    String(by || 'Координатор').trim().slice(0, 60) || 'Координатор';
+
+  state.acks[key] = {
+    by: operator,
+    at: iso(Date.now())
+  };
+
   saveAcks();
   state.version += 1;
   broadcast({ type: 'state', state: snapshot(), events: [] });

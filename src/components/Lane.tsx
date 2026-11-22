@@ -1,12 +1,13 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap, Flip, reducedMotion } from '../lib/motion';
-import type { DeadlineFilter, GroupKey } from '../lib/model';
+import type { GroupKey } from '../lib/model';
 import type { ColumnDnd } from '../lib/layout';
 import { IncidentCard, type CardProps } from './IncidentCard';
 import { CompactIncidentRow } from './CompactIncidentRow';
 import type { IncidentViewMode } from '../lib/notification-settings';
 import { Icon, type IconName } from './Icon';
-import { boardStorageKey, PIN_LIMIT, pinnedFirst, prunePins, readPins, saveBoardValue, togglePin } from '../lib/personal-board';
+import { boardStorageKey, PIN_LIMIT, prunePins, readPins, saveBoardValue, togglePin } from '../lib/personal-board';
+import { DEFAULT_CRITICAL_SORT, sortCriticalRows, type CriticalSortSettings } from '../lib/critical-sort';
 
 const EMPTY: Record<GroupKey, string> = {
   critical: 'Активных критических инцидентов нет',
@@ -36,22 +37,23 @@ interface Props {
   teams: string[];
   note?: string;
   filtered?: boolean;
-  filterKey?: DeadlineFilter;
-  hideHeader?: boolean;
-  pinStorageKey?: string;
   icon?: IconName;
   /** Перетаскивание колонки и её текущее место на доске. */
   dnd?: ColumnDnd;
   position?: number;
+  /** Встроенная очередь без повторного заголовка KPI. */
+  hideHeader?: boolean;
+  /** Отдельный ключ закреплений для вынесенных решённых инцидентов. */
+  pinStorageKey?: string;
+  /** Настройка сортировки вынесена в верхнюю панель дашборда. */
+  criticalSort?: CriticalSortSettings;
 }
 
-export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operator, teams, note, dnd, position, viewMode, filtered, filterKey = 'all', hideHeader = false, pinStorageKey, icon }: Props) {
+export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operator, teams, note, dnd, position, viewMode, filtered, icon, hideHeader = false, pinStorageKey, criticalSort = DEFAULT_CRITICAL_SORT }: Props) {
   const list = useRef<HTMLDivElement>(null);
   const count = useRef<HTMLSpanElement>(null);
   const flipState = useRef<Flip.FlipState | null>(null);
   const previousViewMode = useRef(viewMode);
-  const previousFilterKey = useRef(filterKey);
-  const filterChanged = previousFilterKey.current !== filterKey;
   const prevCount = useRef(activeCount);
   const storageKey = boardStorageKey(operator, pinStorageKey ?? `pins:${group.key}`);
   const [savedPins, setSavedPins] = useState(() => readPins(storageKey));
@@ -61,7 +63,7 @@ export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operato
     if (pins !== savedPins) setSavedPins(pins);
     saveBoardValue(storageKey, pins);
   }, [pins, savedPins, storageKey]);
-  const orderedItems = pinnedFirst(items, pins, (x) => x.inc.id);
+  const orderedItems = sortCriticalRows(items, pins, criticalSort, group.key);
   const order = orderedItems.map((x) => x.inc.id).join('|');
   const pinProps = (id: string) => ({
     pinned: pins.includes(id),
@@ -76,10 +78,7 @@ export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operato
     // При смене вида элементы пересоздаются: прежнее Flip-состояние использовать нельзя.
     const sameMode = previousViewMode.current === viewMode;
     previousViewMode.current = viewMode;
-    previousFilterKey.current = filterKey;
-    // Фильтр должен менять список сразу; анимация перестановки здесь только
-    // создаёт ощущение задержки при переключении «Просрочено/Под угрозой».
-    if (sameMode && !filterChanged && flipState.current && !filtered && !reducedMotion()) {
+    if (sameMode && flipState.current && !reducedMotion()) {
       Flip.from(flipState.current, {
         targets: els,
         duration: 0.6,
@@ -89,7 +88,7 @@ export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operato
       });
     }
     flipState.current = Flip.getState(els);
-  }, [order, viewMode, filtered, filterKey]);
+  }, [order, viewMode]);
 
   // Колонку перетащили на другое место: запоминаем новые позиции карточек, чтобы они не прилетали со старого.
   useLayoutEffect(() => {
@@ -97,16 +96,16 @@ export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operato
   }, [position]);
 
   useLayoutEffect(() => {
-    if (prevCount.current !== activeCount && count.current && !filtered && !filterChanged && !reducedMotion()) {
+    if (prevCount.current !== activeCount && count.current && !reducedMotion()) {
       gsap.fromTo(count.current, { scale: 1.3 }, { scale: 1, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
     }
     prevCount.current = activeCount;
-  }, [activeCount, filtered, filterKey]);
+  }, [activeCount]);
 
   const calm = activeCount === 0;
   return (
     <section
-      className={`lane lane-${group.key} ${calm ? 'is-calm' : ''} ${kpi.alert ? 'is-alert' : ''} ${dnd?.className ?? ''}`}
+      className={`lane lane-${group.key} ${calm ? 'is-calm' : ''} ${kpi.alert ? 'is-alert' : ''} ${hideHeader ? 'lane-embedded' : ''} ${dnd?.className ?? ''}`}
       aria-label={group.title}
       data-col={group.key}
       {...dnd?.zone}
@@ -121,7 +120,7 @@ export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operato
         <span className={`kpi-sub ${kpi.warn ? 'is-warn' : ''}`}>{kpi.sub}</span>
       </header>}
       <div className="lane-body">
-        {!hideHeader && <p className="lane-hint">{group.hint}</p>}
+        <p className="lane-hint">{group.hint}</p>
         {note && <p className="lane-note">{note}</p>}
         <div className={`lane-list ${viewMode === 'compact' ? 'is-compact-list' : ''}`} ref={list}>
           {orderedItems.map((x) => viewMode === 'compact'

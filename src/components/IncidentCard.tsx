@@ -178,17 +178,17 @@ function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, cri
       <h3 className="card-title">{inc.header}</h3>
       <p className="product"><b>{inc.productName}</b> {serviceShort(inc)}</p>
 
-      {inc.assignedEmployee ? (
-        <div className="responsibility-status is-assigned" role="status">
-          <Icon name="check" />
-          <span><b>Взято на контроль</b><small>Ответственный: {personName(inc.assignedEmployee)}</small></span>
+      {/* Подтверждение критического инцидента хранится в acks; ITSM-исполнитель — другое поле.
+          Не выводим противоречивое «Не взято на контроль» под подтверждённым критическим. */}
+      {!criticalActive && onCoord && active && (
+        <div className={`responsibility-status ${unacked ? 'is-pending' : 'is-assigned'}`} role="status">
+          <Icon name={unacked ? 'coord' : 'check'} />
+          <span>
+            <b>{unacked ? 'Ожидает принятия координатором' : 'Принято координатором'}</b>
+            <small>{inc.assignedEmployee ? `Исполнитель: ${personName(inc.assignedEmployee)}` : 'Исполнитель пока не назначен'}</small>
+          </span>
         </div>
-      ) : active ? (
-        <div className="responsibility-status is-pending" role="status">
-          <Icon name="coord" />
-          <span><b>{onCoord ? 'Ожидает принятия' : 'Не взято на контроль'}</b><small>Ответственный ещё не назначен</small></span>
-        </div>
-      ) : null}
+      )}
 
       <dl className="facts">
         <div>
@@ -222,7 +222,7 @@ function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, cri
 
       {onCoord && (
         <div className="card-actions" onClick={(e) => e.stopPropagation()}>
-          {unacked && !inc.assignedEmployee && (
+          {unacked && (
             <button className="btn btn-accept" onClick={() => ack(`coord:${inc.id}`, operator)}>Принял</button>
           )}
           <button className="btn btn-handoff" aria-expanded={handoff} onClick={() => setHandoff((v) => !v)}>
