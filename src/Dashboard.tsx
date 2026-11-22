@@ -63,7 +63,7 @@ function ResolvedColumn({ items, now, collapsed, onToggle, onMoveToFooter, dnd }
       <span className="kpi-value">{items.length}</span>
       <span className="kpi-sub">К ним могут вернуться</span>
       <div className="resolved-column-actions">
-        <button className="resolved-column-drag" type="button" {...dnd.handle} aria-label="Перетащить колонку решённых инцидентов">⠿</button>
+        <button className="resolved-column-drag" type="button" {...dnd.handle} aria-label="Перетащить колонку решённых инцидентов">⋮⋮</button>
         <button className="resolved-column-action" type="button" onClick={onMoveToFooter} title="Вернуть в нижнюю полосу" aria-label="Вернуть в нижнюю полосу">↶</button>
         <button className="resolved-column-action" type="button" onClick={onToggle} aria-expanded={!collapsed} title={collapsed ? 'Развернуть' : 'Свернуть'} aria-label={collapsed ? 'Развернуть' : 'Свернуть'}>{collapsed ? '+' : '−'}</button>
       </div>
