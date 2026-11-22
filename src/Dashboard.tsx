@@ -63,7 +63,7 @@ function ResolvedColumn({ items, now, collapsed, onToggle, onMoveToFooter, dnd }
         <Icon name="check" /><b>{items.length}</b><span>Решены, но не закрыты</span>
       </button>
       <button className="resolved-column-drag" type="button" {...dnd.handle} aria-label="Перетащить колонку решённых инцидентов">⠿</button>
-      <button className="resolved-column-action" type="button" onClick={onMoveToFooter}>В нижнюю полосу</button>
+      <button className="resolved-column-action" type="button" onClick={onMoveToFooter}>Вернуть</button>
     </header>
     {!collapsed && <ResolvedItems items={items} now={now} />}
   </section>;
