@@ -3,7 +3,7 @@ import { type HTMLAttributes, type RefObject, useLayoutEffect, useRef, useState 
 import { Flip, reducedMotion } from './motion';
 import type { GroupKey } from './model';
 
-export type ColKey = GroupKey | 'side';
+export type ColKey = GroupKey | 'side' | 'resolved';
 
 export const DEFAULT_ORDER: ColKey[] = ['critical', 'coord', 'high', 'research', 'side'];
 
@@ -14,6 +14,7 @@ const WIDTH: Record<ColKey, string> = {
   high: 'minmax(0, 1fr)',
   research: 'minmax(0, 1fr)',
   side: 'minmax(var(--side-min), 0.85fr)',
+  resolved: 'minmax(18rem, 1fr)',
 };
 
 const STORAGE_KEY = 'layout';
@@ -103,6 +104,8 @@ export function useColumnLayout(board: RefObject<HTMLElement | null>) {
     order,
     columns: order.map((k) => WIDTH[k]).join(' '),
     dnd,
+    add: (key: ColKey) => { if (!order.includes(key)) apply([...order, key]); },
+    remove: (key: ColKey) => { if (order.includes(key)) apply(order.filter((item) => item !== key)); },
     reset: () => apply(DEFAULT_ORDER),
     isDefault: order.join() === DEFAULT_ORDER.join(),
   };

@@ -7,7 +7,7 @@ import {
 import { useConnection, useLiveState, useNow } from './lib/live';
 import { unlockAudio } from './lib/sound';
 import { gsap, reducedMotion } from './lib/motion';
-import { DEFAULT_ORDER, useColumnLayout } from './lib/layout';
+import { DEFAULT_ORDER, type ColumnDnd, useColumnLayout } from './lib/layout';
 import { swipeDirection, useMobileLayout } from './lib/mobile';
 import { Lane, type LaneKpi } from './components/Lane';
 import { Sidebar } from './components/Sidebar';
@@ -49,6 +49,26 @@ function ResolvedItems({ items, now }: { items: Incident[]; now: number }) {
   </div>;
 }
 
+function ResolvedColumn({ items, now, collapsed, onToggle, onMoveToFooter, dnd }: {
+  items: Incident[];
+  now: number;
+  collapsed: boolean;
+  onToggle: () => void;
+  onMoveToFooter: () => void;
+  dnd: ColumnDnd;
+}) {
+  return <section className={`resolved-column ${collapsed ? 'is-collapsed' : ''} ${dnd.className}`} data-col="resolved" aria-label="Решены, но не закрыты" {...dnd.zone}>
+    <header className="resolved-column-head">
+      <button className="resolved-column-title" type="button" onClick={onToggle} aria-expanded={!collapsed}>
+        <Icon name="check" /><b>{items.length}</b><span>Решены, но не закрыты</span>
+      </button>
+      <button className="resolved-column-drag" type="button" {...dnd.handle} aria-label="Перетащить колонку решённых инцидентов">⠿</button>
+      <button className="resolved-column-action" type="button" onClick={onMoveToFooter}>В нижнюю полосу</button>
+    </header>
+    {!collapsed && <ResolvedItems items={items} now={now} />}
+  </section>;
+}
+
 function matches(i: Incident, f: Filters) {
   if (f.product && i.productName !== f.product) return false;
   if (f.serviceType && i.serviceType !== f.serviceType) return false;
@@ -81,6 +101,10 @@ export function Dashboard() {
     setResolvedPlacement(store.get(`${resolvedSettingsKey}:placement`, 'footer') === 'column' ? 'column' : 'footer');
     setResolvedCollapsed(store.get(`${resolvedSettingsKey}:collapsed`, '0') === '1');
   }, [resolvedSettingsKey]);
+  useEffect(() => {
+    if (resolvedPlacement === 'column' && !mobile) layout.add('resolved');
+    else layout.remove('resolved');
+  }, [resolvedPlacement, mobile]);
   const changeResolvedPlacement = (placement: ResolvedPlacement) => {
     setResolvedPlacement(placement);
     store.set(`${resolvedSettingsKey}:placement`, placement);
@@ -175,7 +199,6 @@ export function Dashboard() {
     [incidents],
   );
   const resolvedInColumn = resolvedPlacement === 'column' && !mobile;
-  const boardColumns = resolvedInColumn ? `${layout.columns} minmax(15rem, .85fr)` : layout.columns;
 
   const products = useMemo(() => [...new Set(incidents.map((i) => i.productName))].sort(), [incidents]);
 
@@ -291,7 +314,7 @@ export function Dashboard() {
 
       <CriticalStrips />
 
-      <main className={`board ${preferences.incidentViewMode === 'compact' ? 'is-compact-board' : ''} ${mobile ? 'is-mobile-board' : ''}`} ref={board} style={{ '--cols': boardColumns } as CSSProperties}
+      <main className={`board ${preferences.incidentViewMode === 'compact' ? 'is-compact-board' : ''} ${mobile ? 'is-mobile-board' : ''}`} ref={board} style={{ '--cols': layout.columns } as CSSProperties}
         data-mobile-group={mobile ? mobileGroup : undefined} onTouchStart={beginSwipe} onTouchEnd={endSwipe} onTouchCancel={() => { touch.current = null; }}>
         {mobile && <nav className="mobile-category-nav" ref={mobileTabs} aria-label="Категории инцидентов">
           <div className="mobile-category-head"><b>Инциденты</b><span>{mobileIndex + 1} / {GROUPS.length} · свайп ← →</span></div>
@@ -302,6 +325,7 @@ export function Dashboard() {
           </div>
         </nav>}
         {(mobile ? DEFAULT_ORDER : layout.order).map((key, position) => {
+          if (key === 'resolved') return <ResolvedColumn key="resolved" items={resolvedOpen} now={now} collapsed={resolvedCollapsed} onToggle={toggleResolvedCollapsed} onMoveToFooter={() => changeResolvedPlacement('footer')} dnd={layout.dnd('resolved')} />;
           if (key === 'side') {
             return <Sidebar key={`side:${operator}`} mobile={mobile} operator={operator} events={data.events} mail={data.mail} now={now} summary={summary} deadlineFilter={filters.deadline} onDeadlineFilter={(value) => {
               const next = filters.deadline === value ? 'all' : value;
@@ -334,15 +358,6 @@ export function Dashboard() {
             />
           );
         })}
-        {resolvedInColumn && <section className={`resolved-column ${resolvedCollapsed ? 'is-collapsed' : ''}`} data-col="resolved" aria-label="Решены, но не закрыты">
-          <header className="resolved-column-head">
-            <button className="resolved-column-title" type="button" onClick={toggleResolvedCollapsed} aria-expanded={!resolvedCollapsed}>
-              <Icon name="check" /><b>{resolvedOpen.length}</b><span>Решены, но не закрыты</span>
-            </button>
-            <button className="resolved-column-action" type="button" onClick={() => changeResolvedPlacement('footer')}>В нижнюю полосу</button>
-          </header>
-          {!resolvedCollapsed && <ResolvedItems items={resolvedOpen} now={now} />}
-        </section>}
       </main>
 
       {!deadlineFiltering && !resolvedInColumn && <footer className={`resolved ${resolvedCollapsed ? 'is-collapsed' : ''}`}>

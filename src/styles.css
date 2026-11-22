@@ -381,18 +381,18 @@ button { cursor: pointer; }
 .mail-body { color: var(--faint); font-size: 0.76rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 
 .resolved {
-  display: flex; flex-direction: column; align-items: stretch; gap: .55rem; padding: 0.7rem var(--pad-x) 0.8rem;
+  display: flex; flex-direction: row; align-items: center; gap: var(--gap); padding: 0.7rem var(--pad-x) 0.8rem;
   min-height: 3.8rem; background: var(--header); box-shadow: 0 -1px 0 var(--line);
 }
-.resolved-head { display:flex; align-items:center; justify-content:space-between; gap:1rem; min-width:0; }
-.resolved-title { flex: 1; min-width:0; display: flex; align-items: center; gap: 0.5rem; border:0; padding:0; background:transparent; color: var(--muted); font-size: 0.88rem; font-weight: 500; text-align:left; }
+.resolved-head { display:contents; }
+.resolved-title { flex: none; max-width:17rem; min-width:0; display: flex; align-items: center; gap: 0.5rem; border:0; padding:0; background:transparent; color: var(--muted); font-size: 0.88rem; font-weight: 500; text-align:left; }
 .resolved-title .icon { color: var(--ok); font-size: 1.3rem; }
 .resolved-title b { color: var(--text); font-weight: 800; font-size: 1.4rem; margin-right: 0.3rem; }
 .resolved-title span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.resolved-actions { display:flex; gap:.4rem; flex:none; }
+.resolved-actions { display:flex; gap:.4rem; flex:none; order:3; }
 .resolved-actions button,.resolved-column-action { border:1px solid var(--line); border-radius:9px; padding:.38rem .65rem; background:var(--surface-3); color:var(--muted); font-size:.74rem; font-weight:700; white-space:nowrap; }
 .resolved-actions button:hover,.resolved-column-action:hover { color:var(--text); background:var(--surface-2); }
-.resolved-list { display: flex; gap: 0.6rem; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--line) transparent; padding-bottom: 2px; min-width:0; }
+.resolved-list { display: flex; flex:1; gap: 0.6rem; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--line) transparent; padding-bottom: 2px; min-width:0; }
 .resolved-chip {
   flex: none; display: flex; flex-direction: column; align-items: flex-start; text-align: left;
   background: var(--surface-3); border: 0; border-radius: 12px; padding: 0.4rem 0.8rem; font-size: 0.8rem;
@@ -406,8 +406,10 @@ button { cursor: pointer; }
 .resolved-column-title { min-width:0; display:flex; align-items:center; gap:.45rem; border:0; padding:0; background:transparent; color:var(--text); font-size:.86rem; font-weight:700; text-align:left; }
 .resolved-column-title .icon { color:var(--ok); flex:none; }
 .resolved-column-title b { font-size:1.25rem; }
-.resolved-column-title span { min-width:0; overflow-wrap:anywhere; }
-.resolved-column .resolved-list { flex-direction:column; overflow-y:auto; overflow-x:hidden; padding:.55rem; }
+.resolved-column-title span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.resolved-column-drag { flex:none; width:2rem; height:2rem; padding:0; border:0; border-radius:8px; background:transparent; color:var(--muted); cursor:grab; font-size:1.2rem; line-height:1; }
+.resolved-column-drag:hover,.resolved-column-drag:focus-visible { background:var(--surface-3); color:var(--text); }
+.resolved-column .resolved-list { flex:none; flex-direction:column; overflow-y:auto; overflow-x:hidden; padding:.55rem; }
 .resolved-column .resolved-chip { width:100%; }
 
 .alarm { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; }
@@ -538,7 +540,9 @@ button { cursor: pointer; }
   .alarm-panel { padding: 1.2rem; }
   .alarm h1 { font-size: 1.8rem; }
   .alarm-timer b { font-size: 2.8rem; }
-  .resolved-head { align-items:flex-start; flex-direction:column; }
+  .resolved { flex-direction:column; align-items:stretch; }
+  .resolved-head { display:flex; align-items:flex-start; flex-direction:column; }
+  .resolved-title { max-width:none; }
   .resolved-actions { width:100%; }
   .resolved-actions button { flex:1; }
 }
