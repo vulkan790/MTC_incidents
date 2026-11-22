@@ -409,7 +409,11 @@ button { cursor: pointer; }
 .resolved-column-drag { flex:none; width:2rem; height:2rem; padding:0; border:0; border-radius:8px; background:transparent; color:var(--muted); cursor:grab; font-size:1.2rem; line-height:1; }
 .resolved-column-drag:hover,.resolved-column-drag:focus-visible { background:var(--surface-3); color:var(--text); }
 .resolved-column-action { padding:.35rem .5rem; }
-.resolved-column .resolved-list { flex:none; flex-direction:column; overflow-y:auto; overflow-x:hidden; padding:.55rem 0 0; }
+.resolved-column .lane-body { min-height:0; overflow:hidden; }
+.resolved-column .resolved-list { flex:1; min-height:0; flex-direction:column; overflow-y:auto; overflow-x:hidden; padding:.55rem 0 0; scrollbar-width:auto; scrollbar-gutter:stable; }
+.resolved-column .resolved-list::-webkit-scrollbar { width:12px; }
+.resolved-column .resolved-list::-webkit-scrollbar-track { background:var(--surface-3); }
+.resolved-column .resolved-list::-webkit-scrollbar-thumb { background:var(--faint); border:3px solid var(--surface-3); border-radius:999px; }
 .resolved-column .resolved-chip { width:100%; }
 
 .alarm { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; }
