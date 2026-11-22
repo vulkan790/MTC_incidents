@@ -314,6 +314,20 @@ button { cursor: pointer; }
 .product { margin: 0 0 0.55rem; color: var(--muted); font-size: 0.86rem; }
 .product b { color: var(--text); font-weight: 600; }
 
+.responsibility-status {
+  display: flex; align-items: center; gap: 0.55rem; min-width: 0;
+  margin: 0 0 0.65rem; padding: 0.5rem 0.65rem;
+  border: 1px solid var(--line); border-radius: 10px;
+}
+.responsibility-status .icon { flex: none; width: 1.1rem; height: 1.1rem; }
+.responsibility-status span { display: flex; flex-direction: column; min-width: 0; gap: 0.08rem; }
+.responsibility-status b { font-size: 0.78rem; line-height: 1.2; }
+.responsibility-status small { overflow-wrap: anywhere; color: var(--muted); font-size: 0.75rem; line-height: 1.25; }
+.responsibility-status.is-assigned { background: var(--ok-tint); border-color: color-mix(in srgb, var(--ok) 32%, var(--line)); }
+.responsibility-status.is-assigned .icon, .responsibility-status.is-assigned b { color: var(--ok-ink); }
+.responsibility-status.is-pending { background: var(--risk-tint); border-color: color-mix(in srgb, var(--risk) 28%, var(--line)); }
+.responsibility-status.is-pending .icon, .responsibility-status.is-pending b { color: var(--risk-ink); }
+
 .facts { margin: 0; display: grid; gap: 0.2rem; font-size: 0.84rem; }
 .facts div { display: grid; grid-template-columns: 5.2rem 1fr; gap: 0.4rem; }
 .facts dt { color: var(--faint); font-weight: 500; }
