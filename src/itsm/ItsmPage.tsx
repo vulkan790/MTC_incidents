@@ -2,6 +2,7 @@ import { ThemeSwitch } from '../components/ThemeSwitch';
 import { useEffect, useState, type ReactNode } from 'react';
 import type { Incident } from '../types';
 import { useLiveState, useNow, patchIncident } from '../lib/live';
+import { CriticalAcceptedBadge } from '../components/CriticalAcceptedBadge';
 import { COORD_GROUP, fmtDuration, fmtTime, resolutionStats, slaOf, isActive } from '../lib/model';
 
 const STATES: [number, string][] = [[0, 'Назначен'], [2, 'Выполняется'], [7, 'Завершен'], [20, 'Исследование ситуации'], [10, 'Закрыт']];
@@ -160,6 +161,11 @@ export function ItsmPage({ id }: { id: string }) {
             <span className={`it-prio it-prio-${inc.priorityId}`}>{inc.priority}</span>
             <h1>{inc.id}: {inc.header}</h1>
           </div>
+          {inc.priorityId === 4 && isActive(inc) && (
+            <div className="it-critical-accepted">
+              <CriticalAcceptedBadge ack={data.acks[`crit:${inc.id}`]} showPending />
+            </div>
+          )}
           <p className="it-desc">{inc.description}</p>
           <div className="it-sla">
             {sla.left !== null ? (

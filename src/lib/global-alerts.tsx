@@ -1,4 +1,3 @@
-// Единый центр оповещений: работает на всех страницах приложения.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { Incident, Ack } from '../types';
 import { CriticalAlarm } from '../components/CriticalAlarm';
@@ -54,7 +53,7 @@ export function CriticalStrips() {
           <span className="crit-text">{i.productName}: {i.header}.{' '}
             {left === null ? 'Срок не задан' : left > 0 ? `Осталось ${fmtDuration(left, true)}` : `Просрочен на ${fmtDuration(-left, true)}`}
           </span>
-          {acks[`crit:${i.id}`] && <span className="crit-ack">на контроле: {acks[`crit:${i.id}`].by}</span>}
+          <span className="crit-ack">Ответственный: {acks[`crit:${i.id}`]?.by?.trim() || 'не назначен'}</span>
         </button>
         <button type="button" className="crit-strip-close" onClick={() => hideStrip(i.id)} aria-label={`Скрыть полосу ${i.id}`} title="Скрыть только у себя">×</button>
       </div>;
@@ -70,7 +69,6 @@ export function GlobalAlertsProvider(props: Props) {
     window.addEventListener(SHIFT_CHANGED_EVENT, sync);
     return () => window.removeEventListener(SHIFT_CHANGED_EVENT, sync);
   }, []);
-  // При смене координатора состояние отказов и уведомлений не переносится к другому имени.
   return <AlertRuntime key={`${session.operator}:${session.started}`} {...props} {...session} />;
 }
 
@@ -81,7 +79,6 @@ function AlertRuntime({ children, outsideDashboard, baseTitle, operator, started
   const incidents = data?.incidents ?? EMPTY_INCIDENTS;
   const acks = data?.acks ?? EMPTY_ACKS;
   const suffix = operator.trim().toLocaleLowerCase('ru-RU') || 'координатор';
-  // Сохраняем совместимость с предыдущими версиями приложения.
   const declinedKey = `mi:declined-critical:${operator}`;
   const stripKey = `mi:hidden-critical-strip:${suffix}`;
   const eventsKey = `mi:global-events:${suffix}`;
@@ -98,34 +95,22 @@ function AlertRuntime({ children, outsideDashboard, baseTitle, operator, started
   const priorPending = useRef(readIds(pendingKey));
   const audioUnlocked = useRef(false);
   const lastSirenAt = useRef(0);
-  const sirenOnceKey = useRef<string | null>(null);
-  const activeCritical = useMemo(() => incidents.filter(isCriticalActive), [incidents]);
-  const pending = useMemo(() => incidents.filter(i => matchesCriticalAlert(i, preferences) && !acks[`crit:${i.id}`] && !declined.includes(i.id))
-    .sort((a,b) => Date.parse(a.submitDate) - Date.parse(b.submitDate)), [incidents, preferences, acks, declined]);
-  const pendingIds = pending.map(i => i.id).join(',');
-  const alarmOn = started && preferences.criticalModal && pending.length > 0;
-  const sirenOn = started && preferences.siren && preferences.soundEnabled && pending.length > 0;
   const soundCurrentSiren = useCallback(() => {
     if (!audioReady() || Date.now() - lastSirenAt.current < 1000) return;
     lastSirenAt.current = Date.now();
     playSiren();
   }, []);
-  const playSirenOnce = useCallback(() => {
-    if (!audioReady() || !pendingIds || sirenOnceKey.current === pendingIds) return true;
-    sirenOnceKey.current = pendingIds;
-    soundCurrentSiren();
-    return true;
-  }, [pendingIds, soundCurrentSiren]);
-  useEffect(() => {
-    if (!sirenOn || !pending.length) sirenOnceKey.current = null;
-  }, [sirenOn, pending.length]);
+  const activeCritical = useMemo(() => incidents.filter(isCriticalActive), [incidents]);
+  const pending = useMemo(() => incidents.filter(i => matchesCriticalAlert(i, preferences) && !acks[`crit:${i.id}`] && !declined.includes(i.id))
+    .sort((a,b) => Date.parse(a.submitDate) - Date.parse(b.submitDate)), [incidents, preferences, acks, declined]);
+  const alarmOn = started && preferences.criticalModal && pending.length > 0;
+  const sirenOn = started && preferences.siren && preferences.soundEnabled && pending.length > 0;
+  const pendingIds = pending.map(i => i.id).join(',');
   const strips = started && preferences.criticalBanner ? activeCritical.filter(i => !hidden.includes(i.id)) : [];
 
   const closeToast = useCallback((id: string) => {
     setToasts(old => old.filter(t => t.id !== id));
   }, []);
-  // Скрываем только текущие всплывающие сообщения, не подтверждая инциденты.
-  // Сохранение сразу исключает восстановление закрытой стопки при смене страницы.
   const closeAllToasts = useCallback(() => {
     save(toastsKey, []);
     setToasts([]);
@@ -141,7 +126,6 @@ function AlertRuntime({ children, outsideDashboard, baseTitle, operator, started
   };
   useEffect(() => { save(toastsKey, toasts); }, [toastsKey, toasts]);
 
-  // Решение, удаление или понижение приоритета сбрасывает личный отказ/скрытие.
   useEffect(() => {
     if (!data) return;
     const ids = new Set(incidents.filter(i => i.priorityId === 4 && i.stateId !== STATE.resolved && i.stateId !== STATE.closed).map(i => i.id));
@@ -155,8 +139,6 @@ function AlertRuntime({ children, outsideDashboard, baseTitle, operator, started
     });
   }, [data, incidents, declined, hidden, declinedKey, stripKey, pending]);
 
-  // Обрабатываем ленту из общего кэша: и WebSocket, и резервный HTTP-опрос.
-  // При переходе на другую страницу cursor и ещё живые toast остаются в sessionStorage.
   useEffect(() => {
     if (!data || !started) return;
     const old = seen.current;
@@ -186,15 +168,13 @@ function AlertRuntime({ children, outsideDashboard, baseTitle, operator, started
         push({ ...common, kind: 'handoff', title: `Передан в «${e.to ?? 'команду'}»`, text: where, ttl: 7000 });
       } else if (e.type === 'mail') {
         const mail = data.mail.find(m => m.id === e.mailId);
-        const potential = Boolean(mail?.analysis?.isPotential && !mail?.incidentId);
-        if (mail?.folder === 'spam' || (e.level !== 'warn' && !potential)) continue;
+        if (mail?.folder === 'spam' || (e.level !== 'warn' && !mail?.analysis?.isPotential)) continue;
         const mailHref = e.mailId ? `/cabinet/mail/${encodeURIComponent(e.mailId)}` : href;
-        const title = potential ? 'Потенциальный инцидент в почте' : 'Важное письмо';
+        const title = mail?.analysis?.isPotential ? 'Потенциальный инцидент в почте' : 'Важное письмо';
         if (preferences.mailToasts) { push({ ...common, kind: 'mail', title, text: e.text.replace(/^Письмо: /, ''), mailId: e.mailId, ttl: 10000 }); sound ??= 'soft'; }
         if (preferences.desktopOther && preferences.mailToasts) desktop(title, e.text, mailHref);
       } else if (e.type === 'priority_changed' && e.level === 'warn') sound ??= 'soft';
     }
-    // Срабатывает также при входе в выбранный статус/команду (не только critical_new).
     for (const i of pending) {
       if (priorPending.current.includes(i.id)) continue;
       const text = `${i.id} · ${i.productName}: ${i.header}`;
@@ -219,33 +199,22 @@ function AlertRuntime({ children, outsideDashboard, baseTitle, operator, started
         void unlockAudio().then(() => {
           if (!active || !audioReady()) return;
           audioUnlocked.current = true;
-          if (sirenOn) {
-            if (preferences.sirenRepeatSeconds === 0) playSirenOnce();
-            else soundCurrentSiren();
-          }
+          if (sirenOn) soundCurrentSiren();
         }).catch(() => {});
       } catch { /* браузер блокирует звук */ }
     };
     window.addEventListener('pointerdown', resume);
     window.addEventListener('keydown', resume);
     return () => { active = false; window.removeEventListener('pointerdown', resume); window.removeEventListener('keydown', resume); };
-  }, [started, sirenOn, preferences.sirenRepeatSeconds, playSirenOnce, soundCurrentSiren]);
+  }, [started, sirenOn, soundCurrentSiren]);
   useEffect(() => {
     if (!sirenOn) return;
-    // После «Начать смену» AudioContext может асинхронно перейти в running.
-    // Даже при режиме без повторов ждём этого перехода, но не создаём звук без жеста.
-    const repeatSeconds = preferences.sirenRepeatSeconds;
-    const initial = () => {
-      if (!audioReady()) return false;
-      audioUnlocked.current = true;
-      if (repeatSeconds === 0) playSirenOnce(); else soundCurrentSiren();
-      return true;
-    };
+    const initial = () => { if (audioReady()) { audioUnlocked.current = true; soundCurrentSiren(); return true; } return false; };
     let firstTimer: ReturnType<typeof setInterval> | undefined;
     if (!initial()) firstTimer = setInterval(() => { if (initial()) clearInterval(firstTimer); }, 250);
-    const timer = repeatSeconds > 0 ? setInterval(soundCurrentSiren, repeatSeconds * 1000) : undefined;
+    const timer = preferences.sirenRepeatSeconds ? setInterval(soundCurrentSiren, preferences.sirenRepeatSeconds * 1000) : undefined;
     return () => { clearInterval(firstTimer); clearInterval(timer); };
-  }, [sirenOn, pendingIds, preferences.sirenRepeatSeconds, playSirenOnce, soundCurrentSiren]);
+  }, [sirenOn, pendingIds, preferences.sirenRepeatSeconds, soundCurrentSiren]);
   useEffect(() => {
     document.title = baseTitle;
     if (!started || !preferences.blinkTitle || !pending.length) return;

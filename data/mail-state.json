@@ -1578,5 +1578,29 @@
       "source": "rules",
       "analyzedAt": "2026-11-22T05:22:20.392Z"
     }
+  },
+  "MSG-SPB9GBT2": {
+    "hash": "7ec7ae9a95242d038bde07a6a29c8c00cce7636cbc6cd89f5eb23d57dab2c5b8",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-22T09:42:51.914Z"
+    }
+  },
+  "MSG-8UWUMWG4": {
+    "hash": "28c63e0bc25a525e4b2667aa60aa107664c442d86bc49bed2b8eea90c042feb8",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-22T09:43:23.428Z"
+    }
   }
 }

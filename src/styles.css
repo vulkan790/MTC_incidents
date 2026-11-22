@@ -1,3 +1,7 @@
+/* Пульт координатора МИ. Стиль по образцу сайта, который дал координатор: серый фон, белые карточки
+   с крупным скруглением, тёмный текст, красные основные кнопки, явная белая шапка, шрифт Manrope.
+   Цвет только у важного: красный — критический и просрочка, синий — нужно действие координатора,
+   янтарный — угроза сроку, зелёный — решено. Иконки категорий цветные на светлой подложке. */
 :root {
   --bg: #f2f3f7;
   --header: #ffffff;
@@ -30,12 +34,14 @@
   --radius-btn: 12px;
   --kpi-h: 10rem;
   --side-min: 17rem;
+  /* Отступы: между частями интерфейса крупные, внутри частей плотнее */
   --pad-x: 1.5rem;
   --gap: 1.25rem;
   --gap-in: 0.9rem;
   color-scheme: light;
 }
 
+/* Тёмная тема: тот же стиль на графите */
 :root[data-theme='dark'] {
   --bg: #1f1f1f;
   --header: #2a2a2a;
@@ -78,8 +84,10 @@ button { cursor: pointer; }
 
 .boot { display: grid; place-items: center; height: 100vh; color: var(--muted); padding: 16px; text-align: center; }
 
+/* ---------- Каркас ---------- */
 .app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
+/* Явная шапка: белая полоса на всю ширину с мягкой тенью */
 .topbar {
   position: relative; z-index: 5;
   display: flex; align-items: center; gap: 1.6rem; min-height: 4.6rem;
@@ -94,6 +102,7 @@ button { cursor: pointer; }
 .brand b { display: block; font-weight: 800; font-size: 1.3rem; line-height: 1.15; letter-spacing: -0.01em; }
 .brand span { color: var(--muted); font-size: 0.85rem; }
 
+/* Линейные иконки: размер задаёт font-size родителя */
 .icon { width: 1.15em; height: 1.15em; flex: none; display: block; }
 
 .conn { margin-left: auto; display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.85rem; font-weight: 500; }
@@ -103,6 +112,7 @@ button { cursor: pointer; }
 .conn-offline .conn-dot { background: var(--risk); animation: blink 1s steps(2) infinite; }
 .clock { font-weight: 800; font-size: 1.6rem; font-variant-numeric: tabular-nums; min-width: 7.5ch; text-align: right; letter-spacing: -0.01em; }
 
+/* Переключатель темы */
 .theme-switch {
   display: inline-flex; padding: 4px; gap: 2px;
   background: var(--surface-3); border-radius: var(--radius-btn);
@@ -114,6 +124,7 @@ button { cursor: pointer; }
 .theme-switch button:hover { color: var(--text); }
 .theme-switch button[aria-pressed='true'] { background: var(--text); color: var(--header); }
 
+/* Панель фильтров под шапкой */
 .toolbar { display: flex; align-items: center; gap: 0.7rem; padding: 0 var(--pad-x) var(--gap); flex-wrap: wrap; }
 .search, .toolbar select {
   background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius-btn);
@@ -130,6 +141,7 @@ button { cursor: pointer; }
 .spacer { flex: 1; }
 .operator { color: var(--muted); font-size: 0.9rem; font-weight: 500; }
 
+/* Кнопки как на образце: без рамки, скругление 12–16px, вес 500–600 */
 .btn {
   border: 0; border-radius: var(--radius-btn); padding: 0.55rem 1rem; min-height: 2.75rem;
   background: var(--surface-3); color: var(--text); font-weight: 600;
@@ -146,6 +158,7 @@ button { cursor: pointer; }
   background: var(--risk-tint); color: var(--risk-ink); font-weight: 500;
 }
 
+/* Каждому критическому инциденту соответствует своя красная полоса и свой крестик. */
 .crit-strips {
   display: flex; flex-direction: column; gap: 0.35rem;
   margin: 0 var(--pad-x) var(--gap);
@@ -183,18 +196,23 @@ button { cursor: pointer; }
 
 @keyframes blink { 50% { opacity: 0.25; } }
 
+/* ---------- Доска ---------- */
 .board {
   flex: 1; min-height: 0;
   display: grid; gap: var(--gap); padding: 0 var(--pad-x) var(--gap);
+  /* Порядок и ширину колонок задаёт раскладка, которую координатор собрал перетаскиванием */
   grid-template-columns: var(--cols, minmax(0, 1.12fr) repeat(3, minmax(0, 1fr)) minmax(var(--side-min), 0.85fr));
 }
 
+/* Колонка группы: сверху отдельный блок с крупным числом, под ним очередь карточек */
 .lane { display: flex; flex-direction: column; gap: var(--gap-in); min-height: 0; }
 
+/* Перетаскивание колонок */
 .lane, .sidebar { border-radius: var(--radius); transition: opacity 0.15s; }
 .is-dragging { opacity: 0.4; }
 .is-drop { outline: 2px dashed var(--blue); outline-offset: 6px; }
 
+/* ---------- Крупные числа ---------- */
 .kpi {
   position: relative; flex: none; height: var(--kpi-h);
   display: flex; flex-direction: column; justify-content: space-between;
@@ -224,6 +242,7 @@ button { cursor: pointer; }
 .kpi-sub { font-size: 0.88rem; color: var(--muted); line-height: 1.3; font-weight: 500; }
 .kpi-sub.is-warn { color: var(--risk-ink); font-weight: 700; }
 
+/* Цветные иконки категорий */
 .lane-critical .kpi-icon { background: var(--crit-tint); color: var(--crit); }
 .lane-coord .kpi-icon { background: var(--blue-tint); color: var(--blue); }
 .lane-high .kpi-icon { background: var(--risk-tint); color: var(--risk-ink); }
@@ -232,6 +251,7 @@ button { cursor: pointer; }
 
 .lane.is-calm .kpi-value { color: var(--faint); }
 
+/* Активный критический: блок целиком красный, его нельзя не заметить */
 .lane-critical.is-alert .kpi { background: var(--crit); border-color: var(--crit); box-shadow: none; }
 .lane-critical.is-alert .kpi-label,
 .lane-critical.is-alert .kpi-value,
@@ -240,10 +260,12 @@ button { cursor: pointer; }
 .lane-critical.is-alert .kpi-sub { font-weight: 700; }
 .lane-critical.is-alert .kpi-icon { background: rgb(255 255 255 / 0.22); color: #fff; }
 
+/* На координаторах есть неподтверждённые: синяя рамка и синее число */
 .lane-coord.is-alert .kpi { box-shadow: inset 0 0 0 2px var(--blue), var(--shadow-card); }
 .lane-coord.is-alert .kpi-value { color: var(--blue); }
 .lane-coord.is-alert .kpi-sub { color: var(--blue-ink); font-weight: 700; }
 
+/* Контроль сроков в боковой колонке */
 .kpi-head { display: flex; flex-direction: column; gap: 0.15rem; padding-right: 1.2rem; }
 .kpi-head .kpi-label { white-space: nowrap; }
 .kpi-head > .kpi-sub { font-size: 0.8rem; padding-left: 2.95rem; }
@@ -265,6 +287,7 @@ button { cursor: pointer; }
 .kpi-pair .is-warn .kpi-value { color: var(--risk); }
 .kpi-pair .is-warn .kpi-sub { color: var(--risk-ink); font-weight: 700; }
 
+/* ---------- Очередь: белые карточки прямо на сером фоне ---------- */
 .lane-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .lane-hint { margin: 0; padding: 0 0.35rem 0.55rem; color: var(--muted); font-size: 0.82rem; font-weight: 500; }
 .lane-note { margin: 0 0.35rem 0.5rem; font-size: 0.8rem; color: var(--risk-ink); font-weight: 600; }
@@ -279,6 +302,7 @@ button { cursor: pointer; }
   background: var(--surface-2); border-radius: var(--radius-card); box-shadow: var(--shadow-card);
 }
 
+/* ---------- Карточка ---------- */
 .card {
   position: relative; flex: none;
   background: var(--surface-2); border: 1px solid var(--card-line); border-radius: var(--radius-card);
@@ -365,6 +389,7 @@ button { cursor: pointer; }
 .handoff li.muted { padding: 0.45rem 0.55rem; font-size: 0.86rem; }
 .handoff-error { color: var(--crit-ink); margin: 0.3rem 0.5rem; font-size: 0.82rem; }
 
+/* ---------- Боковая колонка ---------- */
 .sidebar { display: flex; flex-direction: column; gap: var(--gap-in); min-height: 0; }
 .side-block {
   flex: 1; min-height: 0; display: flex; flex-direction: column;
@@ -394,6 +419,7 @@ button { cursor: pointer; }
 .mail-subject { color: var(--text-2); }
 .mail-body { color: var(--faint); font-size: 0.76rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 
+/* ---------- Решены, но не закрыты ---------- */
 .resolved {
   display: flex; flex-direction: column; align-items: stretch; gap: .55rem; padding: 0.7rem var(--pad-x) 0.8rem;
   min-height: 3.8rem; background: var(--header); box-shadow: 0 -1px 0 var(--line);
@@ -437,6 +463,7 @@ button { cursor: pointer; }
 .resolved-column .resolved-chip:hover { box-shadow:0 6px 20px rgb(29 32 35 / .1); }
 .resolved-column .card,.resolved-column .compact-incident { border-right:4px solid var(--ok); }
 
+/* ---------- Тревога: общая тема панели, красная индикация опасности ---------- */
 .alarm { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; }
 .alarm-bg {
   --pulse: 0;
@@ -470,10 +497,13 @@ button { cursor: pointer; }
 .alarm-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
 .btn-alarm { background: var(--crit); color: var(--on-accent); font-size: 1.15rem; font-weight: 700; padding: 0.85rem 1.6rem; border-radius: 16px; min-height: 3.2rem; }
 .btn-ghost-light { background: var(--surface-3); color: var(--text); font-size: 1.05rem; padding: 0.85rem 1.3rem; border-radius: 16px; min-height: 3.2rem; }
+/* Личное закрытие тревоги: инцидент остаётся неподтверждённым на сервере. */
 .alarm-hint { margin: 1rem 0 0; color: var(--muted); font-size: 0.88rem; }
 .app.has-alarm .board { filter: saturate(0.4) blur(1px); }
 
+/* ---------- Уведомления ---------- */
 .toasts { position: fixed; right: var(--pad-x); bottom: 5.2rem; z-index: 60; display: flex; flex-direction: column-reverse; gap: 0.7rem; width: min(26rem, calc(100vw - 32px)); }
+/* Единственная кнопка над всей стопкой: order учитывает column-reverse. */
 .toasts-hide-all {
   order: 1; align-self: flex-end; flex: none;
   padding: .45rem 1.15rem; min-height: 2.35rem;
@@ -507,6 +537,7 @@ button { cursor: pointer; }
 .toast-mail { color: var(--risk); }
 .toast-mail b { color: var(--risk-ink); }
 
+/* ---------- Начало смены ---------- */
 .start { position: fixed; inset: 0; z-index: 120; display: grid; place-items: center; padding: 16px; background: var(--overlay); backdrop-filter: blur(6px); }
 .start-panel { width: min(30rem, 100%); background: var(--surface-2); border-radius: var(--radius); padding: 2rem; display: flex; flex-direction: column; gap: 1rem; box-shadow: var(--shadow); }
 .start-panel h1 { margin: 0; font-weight: 800; font-size: 1.75rem; letter-spacing: -0.01em; }
@@ -515,6 +546,7 @@ button { cursor: pointer; }
 .start-panel input { background: var(--surface-3); border: 1px solid var(--line); border-radius: var(--radius-btn); padding: 0.7rem 0.85rem; color: var(--text); }
 .btn-start { background: var(--crit); color: #fff; font-weight: 700; font-size: 1.05rem; padding: 0.8rem; min-height: 3.2rem; border-radius: 16px; }
 
+/* ---------- Имитация ITSM ---------- */
 .demo {
   position: fixed; left: var(--pad-x); bottom: 5.2rem; z-index: 70; width: min(27rem, calc(100vw - 32px));
   background: var(--surface-2); border-radius: 20px; padding: 1.1rem;
@@ -532,6 +564,7 @@ button { cursor: pointer; }
 .demo-log { margin: 0 0 0.6rem; font-size: 0.8rem; color: var(--muted); }
 .demo .btn-quiet { width: 100%; font-size: 0.84rem; background: var(--surface-3); }
 
+/* ---------- Адаптивность ---------- */
 @media (max-width: 1500px) {
   :root { --side-min: 15rem; --pad-x: 1.1rem; --gap: 1rem; --gap-in: 0.75rem; }
   .facts div { grid-template-columns: 1fr; gap: 0; }
@@ -575,6 +608,7 @@ button { cursor: pointer; }
   .crit-strip .crit-strip-incident::before, .conn-offline .conn-dot, .alarm-beacon { animation: none; }
 }
 
+/* ---------- Однострочный минималистичный вид ---------- */
 .lane-list.is-compact-list { gap: 6px; padding: 3px 2px 12px; }
 .compact-incident {
   flex: none; min-width: 0; background: var(--surface-2);
@@ -621,6 +655,7 @@ button { cursor: pointer; }
 .compact-handoff { margin: 0 6px 6px; }
 .compact-handoff .handoff input, .compact-handoff .handoff li button { font-size: max(14px, .9rem); }
 .compact-error { margin: 0 10px 8px; color: var(--crit-ink); font-size: 14px; overflow-wrap: anywhere; }
+/* При нехватке ширины расширяем сами категории, а не уменьшаем шрифт строки. */
 @media (min-width: 1101px) and (max-width: 1500px) {
   .app:has(.board.is-compact-board) { height: auto; min-height: 100vh; overflow: visible; }
   .board.is-compact-board { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; }
@@ -629,6 +664,8 @@ button { cursor: pointer; }
   .board.is-compact-board .side-block { max-height: 22rem; }
 }
 
+/* ---------- Компактные сводки и раскрытие инцидентов ---------- */
+/* 10rem / 1,5: уменьшаем высоту сводок, а не масштаб всего интерфейса. */
 .board.is-compact-board .kpi {
   height: auto; min-height: calc(10rem / 1.5);
   padding: .65rem .85rem; border-radius: 16px; gap: .3rem;
@@ -658,6 +695,7 @@ button { cursor: pointer; }
 }
 .compact-main[aria-expanded='true'] .compact-chevron { transform: rotate(180deg); color: var(--blue-ink); }
 .compact-main[aria-expanded='true'] .compact-product-name { color: var(--blue-ink); }
+/* Раскрытая выжимка: читаемые группы, без обрезания команды и исполнителя. */
 .compact-details {
   padding: 13px 14px 15px; border-top: 1px solid var(--line);
   display: grid; gap: 12px; min-width: 0;
@@ -702,6 +740,7 @@ button { cursor: pointer; }
 .compact-open-itsm:hover { text-decoration: underline; }
 @media (prefers-reduced-motion: reduce) { .compact-chevron { transition: none; } }
 
+/* ---------- Перестановка блоков правой панели ---------- */
 .side-reorder-panel { min-width: 0; transition: opacity .15s, outline-color .15s; }
 .side-panel-head { display: flex; align-items: flex-start; gap: .3rem; padding: .85rem .75rem .5rem 1rem; }
 .side-panel-head h2 { flex: 1; min-width: 0; padding: .2rem 0; flex-wrap: wrap; gap: .35rem .5rem; }
@@ -716,6 +755,7 @@ button { cursor: pointer; }
 .side-reorder-panel.side-panel-drop { outline: 2px dashed var(--blue); outline-offset: -2px; }
 @media (prefers-reduced-motion: reduce) { .side-reorder-panel { transition: none; } }
 
+/* Общие тревоги на страницах кабинета, настроек и ITSM. */
 .global-critical-strips { position: sticky; top: 0; z-index: 75; padding: .6rem 0; background: var(--bg); box-shadow: var(--shadow-header); }
 .global-critical-strips .crit-strips { margin-bottom: 0; max-height: 35vh; overflow-y: auto; }
 .global-critical-strips .crit-strip { flex-shrink: 0; }
@@ -723,6 +763,7 @@ button { cursor: pointer; }
 .toast-critical b { color: var(--crit-ink); }
 body.is-itsm .toasts { color: var(--text); }
 
+/* ---------- Персональная высота боковых окон и закрепление инцидентов ---------- */
 .sidebar-resizable { overflow-y: auto; overscroll-behavior-y: contain; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
 .sidebar-resizable .side-reorder-panel { flex: none; min-height: 0; max-height: none; overflow: hidden; }
 .sidebar-resizable .side-reorder-panel:not([style]) { flex: 1; }
@@ -750,10 +791,42 @@ body.is-itsm .toasts { color: var(--text); }
 .side-resize-step:disabled { opacity: .35; cursor: default; }
 .side-resize-step:focus-visible { outline-offset: -2px; }
 
+/* Общий переключатель в шапках приложения. */
 .theme-switch { flex: none; align-items: center; }
 .theme-switch button { white-space: nowrap; }
 .cabinet-topbar .theme-switch, .settings-header .theme-switch, .it-bar .theme-switch { max-width: 100%; }
 @media (max-width: 900px) {
   .cabinet-topbar .theme-switch, .settings-header .theme-switch, .it-bar .theme-switch { gap: 2px; padding: 3px; }
   .cabinet-topbar .theme-switch button, .settings-header .theme-switch button, .it-bar .theme-switch button { min-height: 40px; padding: 7px 10px; font-size: .78rem; }
+}
+
+/* Кому принадлежит подтверждение критического инцидента: общая отметка с сервера. */
+.card-critical-owner { margin-top: .55rem; }
+.critical-accepted-badge {
+  display: inline-flex; align-items: center; gap: .4rem; max-width: 100%;
+  vertical-align: middle; padding: .32rem .6rem; border-radius: 9px;
+  font-size: .81rem; font-weight: 650; line-height: 1.4;
+  border: 1px solid transparent; overflow: hidden;
+}
+.critical-accepted-badge.is-accepted {
+  background: var(--ok-tint); color: var(--ok-ink);
+  border-color: color-mix(in srgb, var(--ok) 24%, transparent);
+}
+.critical-accepted-badge.is-pending {
+  background: var(--surface-3); color: var(--muted); border-color: var(--line);
+}
+.critical-accepted-mark { flex: none; font-size: .98em; font-weight: 900; }
+.critical-accepted-name { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; min-width: 0; }
+.critical-accepted-at { flex: none; opacity: .8; font-weight: 500; font-size: .9em; white-space: nowrap; }
+/* В свёрнутом компактном режиме сохраняем одну строку. */
+.compact-line > .critical-accepted-badge.is-compact {
+  flex: 0 1 11rem; min-width: 0; max-width: 40%;
+  padding: .28rem .38rem; gap: .2rem; font-size: .72rem; border-radius: 7px;
+}
+.critical-accepted-badge.is-compact .critical-accepted-at { display: none; }
+.compact-detail-owner { margin: 0 0 .65rem; }
+.it-critical-accepted { margin: .7rem 0 .85rem; }
+@media (max-width: 600px) {
+  .compact-line > .critical-accepted-badge.is-compact { max-width: 35%; font-size: .7rem; }
+  .critical-accepted-badge:not(.is-compact) { flex-wrap: wrap; gap: .25rem .4rem; }
 }

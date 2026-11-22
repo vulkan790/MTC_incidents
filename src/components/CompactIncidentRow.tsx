@@ -1,10 +1,9 @@
-// Минималистичный вид: одна строка, продукт, срок и действия без лишнего текста.
-// По нажатию на строку раскрываются подробности; действия используют существующие API.
 import { memo, useId, useState } from 'react';
 import type { CardProps } from './IncidentCard';
 import { Handoff } from './IncidentCard';
 import { Icon } from './Icon';
 import { PinButton } from './PinButton';
+import { CriticalAcceptedBadge } from './CriticalAcceptedBadge';
 import { ack } from '../lib/live';
 import { COORD_GROUP, STATE, fmtDuration, isActive, isCritical, openItsm, personName, serviceShort } from '../lib/model';
 
@@ -12,7 +11,7 @@ interface CompactProps extends CardProps {
   criticalUnacked?: boolean;
 }
 
-function CompactIncidentRowImpl({ inc, sla, operator, teams, unacked, criticalUnacked, pinned, pinLimitReached, onTogglePin }: CompactProps) {
+function CompactIncidentRowImpl({ inc, sla, operator, teams, unacked, criticalUnacked, criticalAck, pinned, pinLimitReached, onTogglePin }: CompactProps) {
   const [expanded, setExpanded] = useState(false);
   const detailId = useId();
   const [handoffOpen, setHandoffOpen] = useState(false);
@@ -22,14 +21,12 @@ function CompactIncidentRowImpl({ inc, sla, operator, teams, unacked, criticalUn
   const onCoord = inc.assignedGroupName === COORD_GROUP && inc.stateId !== STATE.closed;
   const canTransfer = inc.stateId !== STATE.closed && inc.stateId !== STATE.resolved;
   const product = inc.productName || 'Без продукта';
-  // Для длинных сроков используем короткие обозначения дней и часов.
   const compactDuration = (ms: number) => fmtDuration(ms, true).replace(' дн ', 'д ').replace(' ч', 'ч');
   const deadlineLabel = inc.stateId === STATE.research ? 'Разбор'
     : !active ? 'Решён'
       : sla.left === null || !Number.isFinite(sla.left) ? '—'
         : sla.left <= 0 ? `−${compactDuration(-sla.left)}` : compactDuration(sla.left);
-  const details = `${inc.id}: ${inc.header}\nПродукт: ${product}\nСервис: ${serviceShort(inc) || '—'}\nСтатус: ${inc.state}\nОтветственный: ${personName(inc.assignedEmployee) || 'Не назначен'}\nКоманда: ${inc.assignedGroupName}`;
-  // Краткая выжимка вместо полного описания и повторения всех атрибутов.
+  const details = `${inc.id}: ${inc.header}\nПродукт: ${product}\nСервис: ${serviceShort(inc) || '—'}\nСтатус: ${inc.state}\nИсполнитель: ${personName(inc.assignedEmployee) || 'Не назначен'}\nКоманда: ${inc.assignedGroupName}`;
   const summary = [inc.shortDescription, inc.header, inc.description]
     .map((value) => (value || '').replace(/\s+/g, ' ').trim())
     .find(Boolean) || 'Описание отсутствует';
@@ -64,6 +61,9 @@ function CompactIncidentRowImpl({ inc, sla, operator, teams, unacked, criticalUn
           <span className="compact-product-name">{product}</span>
           <span className={`compact-deadline risk-${sla.risk}`} title={deadlineTitle} aria-label={deadlineTitle}>{deadlineLabel}</span>
         </button>
+        {isCritical(inc) && active && criticalAck && (
+          <CriticalAcceptedBadge ack={criticalAck} compact />
+        )}
         <div className="compact-actions" aria-label={`Действия с ${inc.id}`}>
           {criticalUnacked && (
             <button type="button" className="compact-action compact-action-critical" disabled={accepting !== null}
@@ -95,6 +95,9 @@ function CompactIncidentRowImpl({ inc, sla, operator, teams, unacked, criticalUn
             </button>
             <span className={`state state-${inc.stateId}`}>{inc.state}</span>
           </div>
+          {isCritical(inc) && active && (
+            <div className="compact-detail-owner"><CriticalAcceptedBadge ack={criticalAck} showPending /></div>
+          )}
           <div className="compact-detail-problem">
             <span className="compact-detail-label">Суть проблемы</span>
             <p className="compact-detail-summary">{brief}</p>
@@ -105,7 +108,7 @@ function CompactIncidentRowImpl({ inc, sla, operator, teams, unacked, criticalUn
               <dd>{team}</dd>
             </div>
             <div>
-              <dt className="compact-detail-label">Ответственный</dt>
+              <dt className="compact-detail-label">Исполнитель</dt>
               <dd>{assignee}</dd>
             </div>
           </dl>
