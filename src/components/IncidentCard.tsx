@@ -181,10 +181,10 @@ function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, cha
           <Icon name="check" />
           <span><b>Взято на контроль</b><small>Ответственный: {personName(inc.assignedEmployee)}</small></span>
         </div>
-      ) : onCoord ? (
+      ) : active ? (
         <div className="responsibility-status is-pending" role="status">
           <Icon name="coord" />
-          <span><b>Ожидает принятия</b><small>Ответственный ещё не назначен</small></span>
+          <span><b>{onCoord ? 'Ожидает принятия' : 'Не взято на контроль'}</b><small>Ответственный ещё не назначен</small></span>
         </div>
       ) : null}
 
