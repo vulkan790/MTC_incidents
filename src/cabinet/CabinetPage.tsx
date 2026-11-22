@@ -2,7 +2,7 @@
 // Анализ помечает письмо, но НИКОГДА не создаёт ITSM: это отдельное подтверждённое действие.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Letter } from '../types';
-import { useConnection, useLiveState } from '../lib/live';
+import { refreshLiveState, useConnection, useLiveState } from '../lib/live';
 import { fmtTime, openItsm } from '../lib/model';
 import { Icon } from '../components/Icon';
 import { useMobileLayout } from '../lib/mobile';
@@ -21,6 +21,7 @@ async function request(url: string, method: 'PATCH' | 'POST', body?: object) {
   });
   const result = await response.json();
   if (!response.ok) throw new Error(result.error ?? `Ошибка ${response.status}`);
+  refreshLiveState();
   return result;
 }
 

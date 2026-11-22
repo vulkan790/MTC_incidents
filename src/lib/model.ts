@@ -52,18 +52,19 @@ export function matchesDeadline(i: Incident, now: number, filter: DeadlineFilter
   return filter === 'all' || deadlineRisk(i, now) === filter;
 }
 
-// Контроль сроков охватывает только активные инциденты основных категорий.
-// Инцидент в нескольких категориях учитывается один раз; вне доски данные не меняются.
+// Контроль сроков охватывает активные карточки основных категорий.
+// Если инцидент входит в несколько категорий, он учитывается в каждой из них,
+// так же как отображается на доске.
 export function dashboardDeadlineSummary(incidents: Incident[], now: number) {
   let active = 0, overdue = 0, risk = 0;
-  const seen = new Set<string>();
   for (const i of incidents) {
-    if (!isActive(i) || groupsOf(i, now).length === 0 || seen.has(i.id)) continue;
-    seen.add(i.id);
-    active++;
-    const state = deadlineRisk(i, now);
-    if (state === 'overdue') overdue++;
-    else if (state === 'risk') risk++;
+    if (!isActive(i)) continue;
+    for (const _group of groupsOf(i, now)) {
+      active++;
+      const state = deadlineRisk(i, now);
+      if (state === 'overdue') overdue++;
+      else if (state === 'risk') risk++;
+    }
   }
   return { active, overdue, risk };
 }

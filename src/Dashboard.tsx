@@ -218,7 +218,7 @@ export function Dashboard() {
         </div>
         <div className={`conn conn-${connection}`}>
           <span className="conn-dot" />
-          {connection === 'online' ? `Онлайн, данные от ${fmtClock(data.updatedAt)}` : connection === 'offline' ? 'Нет связи, переподключаюсь' : 'Подключаюсь'}
+          {connection === 'online' ? `Подключение успешно · данные от ${fmtClock(data.updatedAt)}` : connection === 'offline' ? 'Нет связи, переподключаюсь' : 'Подключаюсь'}
         </div>
         <div className="theme-switch" role="group" aria-label="Тема оформления">
           <button aria-pressed={theme === 'light'} onClick={() => switchTheme('light')}>Светлая</button>

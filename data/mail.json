@@ -214,39 +214,39 @@
     "receivedAt": "2026-11-21T18:13:04Z",
     "fromName": "Пятачок (piglet)",
     "fromAddress": "piglet@corp.local",
-    "subject": "Вопрос по INC000021936363 (Страхование хомячков)",
+    "subject": "Требуется проверка: Вопрос по (Страхование хомячков)",
     "body": "Подскажите, кто сейчас отвечает за Датчик хвоста? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021936363",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-YBIPLMPM",
     "receivedAt": "2026-11-21T18:12:48Z",
     "fromName": "Лисичка-сестричка (lisichka)",
     "fromAddress": "lisichka@corp.local",
-    "subject": "Re: INC000021938960 Неисправность: Кэш кадров",
+    "subject": "Требуется проверка: Неисправность: Кэш кадров",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021938960",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-8PB67OH3",
     "receivedAt": "2026-11-21T18:12:40Z",
     "fromName": "Медведь Барсик (barsik)",
     "fromAddress": "barsik@corp.local",
-    "subject": "Вопрос по INC000021942371 (Страхование хомячков)",
+    "subject": "Требуется проверка: Вопрос по (Страхование хомячков)",
     "body": "Подскажите, кто сейчас отвечает за Сирена? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021942371",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-DZXZZG99",
     "receivedAt": "2026-11-21T18:12:16Z",
     "fromName": "Мониторинг 9го королевства",
     "fromAddress": "monitoring@corp.local",
-    "subject": "[ALERT] Летающий ковер: Катушка недоступен",
+    "subject": "Требуется проверка: [ALERT] Летающий ковер: Катушка недоступен",
     "body": "Сработали пороги доступности по сервису [Летающий ковер] Магнитный двигатель. Зарегистрирован INC000021942442.",
-    "incidentId": "INC000021942442",
+    "incidentId": null,
     "important": true
   },
   {
@@ -254,9 +254,9 @@
     "receivedAt": "2026-11-21T18:12:01Z",
     "fromName": "Мониторинг 9го королевства",
     "fromAddress": "monitoring@corp.local",
-    "subject": "[ALERT] Летающий ковер: Нити недоступен",
+    "subject": "Требуется проверка: [ALERT] Летающий ковер: Нити недоступен",
     "body": "Сработали пороги доступности по сервису [Летающий ковер] Ткань ковра. Зарегистрирован INC000021942394.",
-    "incidentId": "INC000021942394",
+    "incidentId": null,
     "important": true
   },
   {
@@ -264,29 +264,29 @@
     "receivedAt": "2026-11-21T17:47:47Z",
     "fromName": "Змей Горыныч (zmej)",
     "fromAddress": "zmej@corp.local",
-    "subject": "Вопрос по INC000021933291 (Автопросматриватель TicTok)",
+    "subject": "Требуется проверка: Вопрос по (Автопросматриватель TicTok)",
     "body": "Подскажите, кто сейчас отвечает за Подсветка? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021933291",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-WVYXLJUP",
     "receivedAt": "2026-11-21T17:44:51Z",
     "fromName": "Медведь Барсик (barsik)",
     "fromAddress": "barsik@corp.local",
-    "subject": "Вопрос по INC000021942249 (Акваланг для муравьев)",
+    "subject": "Требуется проверка: Вопрос по (Акваланг для муравьев)",
     "body": "Подскажите, кто сейчас отвечает за Клапан? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021942249",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-JMS559EO",
     "receivedAt": "2026-11-21T17:44:03Z",
     "fromName": "Мониторинг 9го королевства",
     "fromAddress": "monitoring@corp.local",
-    "subject": "[ALERT] Автопросматриватель TicTok: Объектив недоступен",
+    "subject": "Требуется проверка: [ALERT] Автопросматриватель TicTok: Объектив недоступен",
     "body": "Сработали пороги доступности по сервису [Автопросматриватель TicTok] Камера-сканер. Зарегистрирован INC000021942282.",
-    "incidentId": "INC000021942282",
+    "incidentId": null,
     "important": true
   },
   {
@@ -294,39 +294,39 @@
     "receivedAt": "2026-11-21T17:43:23Z",
     "fromName": "Буратино (buratino)",
     "fromAddress": "buratino@corp.local",
-    "subject": "Re: INC000021940779 Неисправность: Батарейка",
+    "subject": "Требуется проверка: Неисправность: Батарейка",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021940779",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-IEDZZEYK",
     "receivedAt": "2026-11-21T17:42:27Z",
     "fromName": "Кощей Бессмертный (koschei)",
     "fromAddress": "koschei@corp.local",
-    "subject": "Re: INC000021938764 Отказ Нити (Ткань ковра)",
+    "subject": "Требуется проверка: Отказ Нити (Ткань ковра)",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021938764",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-LPHEBPLU",
     "receivedAt": "2026-11-21T17:42:11Z",
     "fromName": "Лисичка-сестричка (lisichka)",
     "fromAddress": "lisichka@corp.local",
-    "subject": "Re: INC000021938960 Неисправность: Кэш кадров",
+    "subject": "Требуется проверка: Неисправность: Кэш кадров",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021938960",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-QZBNZC5T",
     "receivedAt": "2026-11-21T17:41:39Z",
     "fromName": "Мониторинг 9го королевства",
     "fromAddress": "monitoring@corp.local",
-    "subject": "[ALERT] Страхование хомячков: Сирена недоступен",
+    "subject": "Требуется проверка: [ALERT] Страхование хомячков: Сирена недоступен",
     "body": "Сработали пороги доступности по сервису [Страхование хомячков] Аварийный сигнал. Зарегистрирован INC000021942217.",
-    "incidentId": "INC000021942217",
+    "incidentId": null,
     "important": true
   },
   {
@@ -334,119 +334,119 @@
     "receivedAt": "2026-11-21T17:40:51Z",
     "fromName": "Синяя Борода (bluebeard)",
     "fromAddress": "bluebeard@corp.local",
-    "subject": "Вопрос по INC000021940033 (Летающий ковер)",
+    "subject": "Требуется проверка: Вопрос по (Летающий ковер)",
     "body": "Подскажите, кто сейчас отвечает за Магнит? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021940033",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-OP70W076",
     "receivedAt": "2026-11-21T17:40:11Z",
     "fromName": "Муми-Тролль (mumitroll)",
     "fromAddress": "mumitroll@corp.local",
-    "subject": "Вопрос по INC000021932868 (Акваланг для муравьев)",
+    "subject": "Требуется проверка: Вопрос по (Акваланг для муравьев)",
     "body": "Подскажите, кто сейчас отвечает за Фильтр? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021932868",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-FIPJKCD2",
     "receivedAt": "2026-11-21T17:39:07Z",
     "fromName": "Змей Горыныч (zmej)",
     "fromAddress": "zmej@corp.local",
-    "subject": "Re: INC000021933291 Сбой Подсветка на Экран-зеркало",
+    "subject": "Требуется проверка: Сбой Подсветка на Экран-зеркало",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021933291",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-AVHV340M",
     "receivedAt": "2026-11-21T17:38:11Z",
     "fromName": "Алиса в Стране Чудес (alice)",
     "fromAddress": "alice@corp.local",
-    "subject": "Вопрос по INC000021941916 (Страхование хомячков)",
+    "subject": "Требуется проверка: Вопрос по (Страхование хомячков)",
     "body": "Подскажите, кто сейчас отвечает за Датчик хвоста? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021941916",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-B78EFAMF",
     "receivedAt": "2026-11-21T17:37:55Z",
     "fromName": "Василиса Премудрая (vasilisa)",
     "fromAddress": "vasilisa@corp.local",
-    "subject": "INC000021936852: статус работ",
+    "subject": "Требуется проверка: статус работ",
     "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
-    "incidentId": "INC000021936852",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-B2PUXSLN",
     "receivedAt": "2026-11-21T17:37:47Z",
     "fromName": "Дядя Фёдор (unclefedor)",
     "fromAddress": "unclefedor@corp.local",
-    "subject": "INC000021941988: статус работ",
+    "subject": "Требуется проверка: статус работ",
     "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
-    "incidentId": "INC000021941988",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-4ZISSKP0",
     "receivedAt": "2026-11-21T17:35:23Z",
     "fromName": "Лисичка-сестричка (lisichka)",
     "fromAddress": "lisichka@corp.local",
-    "subject": "Re: INC000021941999 Деградация Датчик хвоста",
+    "subject": "Требуется проверка: Деградация Датчик хвоста",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021941999",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-YPLIZCAL",
     "receivedAt": "2026-11-21T17:35:15Z",
     "fromName": "Кот Матроскин (matrosov_kot)",
     "fromAddress": "matrosov_kot@corp.local",
-    "subject": "Re: INC000021932868 Отказ Фильтр (Трубка)",
+    "subject": "Требуется проверка: Отказ Фильтр (Трубка)",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021932868",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-P4Q3U9T2",
     "receivedAt": "2026-11-21T17:35:07Z",
     "fromName": "Пятачок (piglet)",
     "fromAddress": "piglet@corp.local",
-    "subject": "Вопрос по INC000021941647 (Акваланг для муравьев)",
+    "subject": "Требуется проверка: Вопрос по (Акваланг для муравьев)",
     "body": "Подскажите, кто сейчас отвечает за Фильтр? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021941647",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-QZ3WQX3P",
     "receivedAt": "2026-11-21T17:34:59Z",
     "fromName": "Василиса Премудрая (vasilisa)",
     "fromAddress": "vasilisa@corp.local",
-    "subject": "Re: INC000021941647 Неисправность: Фильтр",
+    "subject": "Требуется проверка: Неисправность: Фильтр",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021941647",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-UA3F3ELP",
     "receivedAt": "2026-11-21T17:34:35Z",
     "fromName": "Синяя Борода (bluebeard)",
     "fromAddress": "bluebeard@corp.local",
-    "subject": "INC000021936852: статус работ",
+    "subject": "Требуется проверка: статус работ",
     "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
-    "incidentId": "INC000021936852",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-RXQ1R7PV",
     "receivedAt": "2026-11-21T17:32:59Z",
     "fromName": "Буратино (buratino)",
     "fromAddress": "buratino@corp.local",
-    "subject": "Вопрос по INC000021942067 (Акваланг для муравьев)",
+    "subject": "Требуется проверка: Вопрос по (Акваланг для муравьев)",
     "body": "Подскажите, кто сейчас отвечает за Клапан? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021942067",
+    "incidentId": null,
     "important": true
   },
   {
@@ -454,19 +454,19 @@
     "receivedAt": "2026-11-21T17:31:54Z",
     "fromName": "Красная Шапочка (redriding)",
     "fromAddress": "redriding@corp.local",
-    "subject": "Вопрос по INC000021933097 (Летающий ковер)",
+    "subject": "Требуется проверка: Вопрос по (Летающий ковер)",
     "body": "Подскажите, кто сейчас отвечает за Кнопка? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021933097",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-TL605J2H",
     "receivedAt": "2026-11-21T17:28:19Z",
     "fromName": "Алиса в Стране Чудес (alice)",
     "fromAddress": "alice@corp.local",
-    "subject": "INC000021942067: статус работ",
+    "subject": "Требуется проверка: статус работ",
     "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
-    "incidentId": "INC000021942067",
+    "incidentId": null,
     "important": true
   },
   {
@@ -474,29 +474,29 @@
     "receivedAt": "2026-11-21T17:28:11Z",
     "fromName": "Буратино (buratino)",
     "fromAddress": "buratino@corp.local",
-    "subject": "INC000021941916: статус работ",
+    "subject": "Требуется проверка: статус работ",
     "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
-    "incidentId": "INC000021941916",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-WZLWQ70C",
     "receivedAt": "2026-11-21T17:27:47Z",
     "fromName": "Дядя Фёдор (unclefedor)",
     "fromAddress": "unclefedor@corp.local",
-    "subject": "INC000021933290: статус работ",
+    "subject": "Требуется проверка: статус работ",
     "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
-    "incidentId": "INC000021933290",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-HKZ9706R",
     "receivedAt": "2026-11-21T17:26:51Z",
     "fromName": "Мониторинг 9го королевства",
     "fromAddress": "monitoring@corp.local",
-    "subject": "[ALERT] Акваланг для муравьев: Клапан недоступен",
+    "subject": "Требуется проверка: [ALERT] Акваланг для муравьев: Клапан недоступен",
     "body": "Сработали пороги доступности по сервису [Акваланг для муравьев] Баллон с воздухом. Зарегистрирован INC000021942067.",
-    "incidentId": "INC000021942067",
+    "incidentId": null,
     "important": true
   },
   {
@@ -504,39 +504,39 @@
     "receivedAt": "2026-11-21T17:26:43Z",
     "fromName": "Карлсон (karlsson)",
     "fromAddress": "karlsson@corp.local",
-    "subject": "Вопрос по INC000021938770 (Вечная зажигалка)",
+    "subject": "Требуется проверка: Вопрос по (Вечная зажигалка)",
     "body": "Подскажите, кто сейчас отвечает за Футляр? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021938770",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-WRW75VKN",
     "receivedAt": "2026-11-21T17:25:47Z",
     "fromName": "Кот Матроскин (matrosov_kot)",
     "fromAddress": "matrosov_kot@corp.local",
-    "subject": "Re: INC000021940003 Аномалия в Ремешок",
+    "subject": "Требуется проверка: Аномалия в Ремешок",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021940003",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-0XNCGCSX",
     "receivedAt": "2026-11-21T17:25:15Z",
     "fromName": "Кеплер (kepler)",
     "fromAddress": "kepler@corp.local",
-    "subject": "Вопрос по INC000021938435 (Автопросматриватель TicTok)",
+    "subject": "Требуется проверка: Вопрос по (Автопросматриватель TicTok)",
     "body": "Подскажите, кто сейчас отвечает за Матрица пикселей? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021938435",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-XYNOLRDY",
     "receivedAt": "2026-11-21T17:25:07Z",
     "fromName": "Мониторинг 9го королевства",
     "fromAddress": "monitoring@corp.local",
-    "subject": "[ALERT] Летающий ковер: Узор недоступен",
+    "subject": "Требуется проверка: [ALERT] Летающий ковер: Узор недоступен",
     "body": "Сработали пороги доступности по сервису [Летающий ковер] Ткань ковра. Зарегистрирован INC000021942029.",
-    "incidentId": "INC000021942029",
+    "incidentId": null,
     "important": true
   },
   {
@@ -544,39 +544,39 @@
     "receivedAt": "2026-11-21T17:24:03Z",
     "fromName": "Алиса в Стране Чудес (alice)",
     "fromAddress": "alice@corp.local",
-    "subject": "Re: INC000021930935 Аномалия в Кремниевый камень",
+    "subject": "Требуется проверка: Аномалия в Кремниевый камень",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021930935",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-1RRHW3AX",
     "receivedAt": "2026-11-21T17:23:39Z",
     "fromName": "Кот Матроскин (matrosov_kot)",
     "fromAddress": "matrosov_kot@corp.local",
-    "subject": "Re: INC000021932868 Отказ Фильтр (Трубка)",
+    "subject": "Требуется проверка: Отказ Фильтр (Трубка)",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021932868",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-YNW5JDJA",
     "receivedAt": "2026-11-21T17:23:15Z",
     "fromName": "Кощей Бессмертный (koschei)",
     "fromAddress": "koschei@corp.local",
-    "subject": "Re: INC000021938764 Отказ Нити (Ткань ковра)",
+    "subject": "Требуется проверка: Отказ Нити (Ткань ковра)",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021938764",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-204L12VJ",
     "receivedAt": "2026-11-21T17:22:27Z",
     "fromName": "Иван Царевич (ivan_carevich)",
     "fromAddress": "ivan_carevich@corp.local",
-    "subject": "INC000021941966: статус работ",
+    "subject": "Требуется проверка: статус работ",
     "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
-    "incidentId": "INC000021941966",
+    "incidentId": null,
     "important": true
   },
   {
@@ -584,19 +584,19 @@
     "receivedAt": "2026-11-21T17:22:11Z",
     "fromName": "Кот Матроскин (matrosov_kot)",
     "fromAddress": "matrosov_kot@corp.local",
-    "subject": "Вопрос по INC000021933233 (Страхование хомячков)",
+    "subject": "Требуется проверка: Вопрос по (Страхование хомячков)",
     "body": "Подскажите, кто сейчас отвечает за Шифр-замок? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021933233",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-QTVVX5IR",
     "receivedAt": "2026-11-21T17:21:47Z",
     "fromName": "Мониторинг 9го королевства",
     "fromAddress": "monitoring@corp.local",
-    "subject": "[ALERT] Автопросматриватель TicTok: Датчик движения недоступен",
+    "subject": "Требуется проверка: [ALERT] Автопросматриватель TicTok: Датчик движения недоступен",
     "body": "Сработали пороги доступности по сервису [Автопросматриватель TicTok] Камера-сканер. Зарегистрирован INC000021941966.",
-    "incidentId": "INC000021941966",
+    "incidentId": null,
     "important": true
   },
   {
@@ -604,9 +604,9 @@
     "receivedAt": "2026-11-21T17:21:07Z",
     "fromName": "Мониторинг 9го королевства",
     "fromAddress": "monitoring@corp.local",
-    "subject": "[ALERT] Страхование хомячков: Экран счётчика недоступен",
+    "subject": "Требуется проверка: [ALERT] Страхование хомячков: Экран счётчика недоступен",
     "body": "Сработали пороги доступности по сервису [Страхование хомячков] Счётчик хомячков. Зарегистрирован INC000021941937.",
-    "incidentId": "INC000021941937",
+    "incidentId": null,
     "important": true
   },
   {
@@ -614,29 +614,29 @@
     "receivedAt": "2026-11-21T17:20:43Z",
     "fromName": "Алиса в Стране Чудес (alice)",
     "fromAddress": "alice@corp.local",
-    "subject": "Re: INC000021930935 Аномалия в Кремниевый камень",
+    "subject": "Требуется проверка: Аномалия в Кремниевый камень",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021930935",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-3HQDDYI4",
     "receivedAt": "2026-11-21T17:19:15Z",
     "fromName": "Кот Матроскин (matrosov_kot)",
     "fromAddress": "matrosov_kot@corp.local",
-    "subject": "Re: INC000021940003 Аномалия в Ремешок",
+    "subject": "Требуется проверка: Аномалия в Ремешок",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021940003",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-G36Z2Q0E",
     "receivedAt": "2026-11-21T17:18:43Z",
     "fromName": "Мониторинг 9го королевства",
     "fromAddress": "monitoring@corp.local",
-    "subject": "[ALERT] Вечная зажигалка: Футляр недоступен",
+    "subject": "Требуется проверка: [ALERT] Вечная зажигалка: Футляр недоступен",
     "body": "Сработали пороги доступности по сервису [Вечная зажигалка] Кресло-зажигалка. Зарегистрирован INC000021941898.",
-    "incidentId": "INC000021941898",
+    "incidentId": null,
     "important": true
   },
   {
@@ -644,19 +644,19 @@
     "receivedAt": "2026-11-21T17:18:27Z",
     "fromName": "Дядя Фёдор (unclefedor)",
     "fromAddress": "unclefedor@corp.local",
-    "subject": "INC000021938435: статус работ",
+    "subject": "Требуется проверка: статус работ",
     "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
-    "incidentId": "INC000021938435",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-CBV6VZIC",
     "receivedAt": "2026-11-21T17:00:19Z",
     "fromName": "Мониторинг 9го королевства",
     "fromAddress": "monitoring@corp.local",
-    "subject": "[ALERT] Автопросматриватель TicTok: Объектив недоступен",
+    "subject": "Требуется проверка: [ALERT] Автопросматриватель TicTok: Объектив недоступен",
     "body": "Сработали пороги доступности по сервису [Автопросматриватель TicTok] Камера-сканер. Зарегистрирован INC000021941881.",
-    "incidentId": "INC000021941881",
+    "incidentId": null,
     "important": true
   },
   {
@@ -664,9 +664,9 @@
     "receivedAt": "2026-11-21T16:41:40Z",
     "fromName": "Мониторинг 9го королевства",
     "fromAddress": "monitoring@corp.local",
-    "subject": "[ALERT] Страхование хомячков: Ячейка данных недоступен",
+    "subject": "Требуется проверка: [ALERT] Страхование хомячков: Ячейка данных недоступен",
     "body": "Сработали пороги доступности по сервису [Страхование хомячков] Полис-хранилище. Зарегистрирован INC000021941857.",
-    "incidentId": "INC000021941857",
+    "incidentId": null,
     "important": true
   },
   {
@@ -674,9 +674,9 @@
     "receivedAt": "2026-11-21T13:31:07Z",
     "fromName": "Мониторинг 9го королевства",
     "fromAddress": "monitoring@corp.local",
-    "subject": "[ALERT] Летающий ковер: Узор недоступен",
+    "subject": "Требуется проверка: [ALERT] Летающий ковер: Узор недоступен",
     "body": "Сработали пороги доступности по сервису [Летающий ковер] Ткань ковра. Зарегистрирован INC000021941837.",
-    "incidentId": "INC000021941837",
+    "incidentId": null,
     "important": true
   },
   {
@@ -704,9 +704,9 @@
     "receivedAt": "2026-11-21T13:11:24Z",
     "fromName": "Мониторинг 9го королевства",
     "fromAddress": "monitoring@corp.local",
-    "subject": "[ALERT] Автопросматриватель TicTok: Объектив недоступен",
+    "subject": "Требуется проверка: [ALERT] Автопросматриватель TicTok: Объектив недоступен",
     "body": "Сработали пороги доступности по сервису [Автопросматриватель TicTok] Камера-сканер. Зарегистрирован INC000021941835.",
-    "incidentId": "INC000021941835",
+    "incidentId": null,
     "important": true
   },
   {
@@ -714,30 +714,30 @@
     "receivedAt": "2026-11-21T12:24:12Z",
     "fromName": "Дядя Фёдор (unclefedor)",
     "fromAddress": "unclefedor@corp.local",
-    "subject": "Re: INC000021941816 Неисправность: Экран счётчика",
+    "subject": "Требуется проверка: Неисправность: Экран счётчика",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021941816",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-5LBO5IMJ",
     "receivedAt": "2026-11-21T12:04:27Z",
     "fromName": "Кощей Бессмертный (koschei)",
     "fromAddress": "koschei@corp.local",
-    "subject": "Вопрос по INC000021941658 (Летающий ковер)",
+    "subject": "Требуется проверка: Вопрос по (Летающий ковер)",
     "body": "Подскажите, кто сейчас отвечает за Нити? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021941658",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-KFJV0X6A",
     "receivedAt": "2026-11-21T12:00:04Z",
     "fromName": "Кеплер (kepler)",
     "fromAddress": "kepler@corp.local",
-    "subject": "INC000021941647: статус работ",
+    "subject": "Требуется проверка: статус работ",
     "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
-    "incidentId": "INC000021941647",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-JEJKZ9IQ",
@@ -754,59 +754,59 @@
     "receivedAt": "2026-11-21T06:14:22Z",
     "fromName": "Буратино (buratino)",
     "fromAddress": "buratino@corp.local",
-    "subject": "Re: INC000021940779 Неисправность: Батарейка",
+    "subject": "Требуется проверка: Неисправность: Батарейка",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021940779",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-F2UPPUR9",
     "receivedAt": "2026-11-21T05:54:03Z",
     "fromName": "Лисичка-сестричка (lisichka)",
     "fromAddress": "lisichka@corp.local",
-    "subject": "Re: INC000021938960 Неисправность: Кэш кадров",
+    "subject": "Требуется проверка: Неисправность: Кэш кадров",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021938960",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-ODRPXJ1O",
     "receivedAt": "2026-11-21T05:23:31Z",
     "fromName": "Кот Матроскин (matrosov_kot)",
     "fromAddress": "matrosov_kot@corp.local",
-    "subject": "Re: INC000021940003 Аномалия в Ремешок",
+    "subject": "Требуется проверка: Аномалия в Ремешок",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021940003",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-BE9Y8L5R",
     "receivedAt": "2026-11-21T04:48:42Z",
     "fromName": "Шарик (sharik_dog)",
     "fromAddress": "sharik_dog@corp.local",
-    "subject": "Re: INC000021938770 Неисправность: Футляр",
+    "subject": "Требуется проверка: Неисправность: Футляр",
     "body": "Проблема повторяется, пользователи продолжают жаловаться. Есть ли оценка сроков восстановления?",
-    "incidentId": "INC000021938770",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-SP8E3745",
     "receivedAt": "2026-11-21T04:23:46Z",
     "fromName": "Змей Горыныч (zmej)",
     "fromAddress": "zmej@corp.local",
-    "subject": "Вопрос по INC000021940033 (Летающий ковер)",
+    "subject": "Требуется проверка: Вопрос по (Летающий ковер)",
     "body": "Подскажите, кто сейчас отвечает за Магнит? Наши клиенты тоже затронуты.",
-    "incidentId": "INC000021940033",
-    "important": false
+    "incidentId": null,
+    "important": true
   },
   {
     "id": "MSG-F4CR4S42",
     "receivedAt": "2026-11-21T01:30:50Z",
     "fromName": "Голубая птица (bluebird)",
     "fromAddress": "bluebird@corp.local",
-    "subject": "INC000021939297: статус работ",
+    "subject": "Требуется проверка: статус работ",
     "body": "Взяли в работу, локализуем причину. Следующее обновление через 30 минут.",
-    "incidentId": "INC000021939297",
-    "important": false
+    "incidentId": null,
+    "important": true
   }
 ]

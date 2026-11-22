@@ -230,7 +230,8 @@ export function Sidebar({ events, mail, now, summary, deadlineFilter, onDeadline
     return `side-block side-reorder-panel${dragging === panel ? ' side-panel-dragging' : over === panel ? ' side-panel-drop' : ''}${resizing === panel ? ' is-resizing' : ''}`;
   }
 
-  const candidates = mail.filter((m) => m.folder === 'inbox' && m.analysis?.isPotential)
+  // На дашборде показываем только новые потенциальные письма без уже созданной связи с ITSM.
+  const candidates = mail.filter((m) => m.folder === 'inbox' && !m.incidentId && m.analysis?.isPotential)
     .sort((a, b) => Date.parse(b.receivedAt) - Date.parse(a.receivedAt));
   return (
     <aside ref={aside} id={mobile ? 'mobile-side' : undefined} className={`sidebar ${mobile ? 'sidebar-mobile' : 'sidebar-resizable'} ${dnd?.className ?? ''}`} data-col="side" {...dnd?.zone}>
@@ -240,7 +241,7 @@ export function Sidebar({ events, mail, now, summary, deadlineFilter, onDeadline
             <span className="kpi-icon"><Icon name="clock" /></span>
             <h2 className="kpi-label">Контроль сроков</h2>
           </div>
-          <span className="kpi-sub" title="Уникальные активные инциденты четырёх основных категорий">из {summary.active} на доске</span>
+          <span className="kpi-sub" title="Активные карточки четырёх основных категорий, включая повторы">из {summary.active} карточек на доске</span>
           {dnd && <span className="kpi-grip" aria-hidden>⠿</span>}
         </div>
         <div className="kpi-pair" role="group" aria-label="Фильтры по дедлайну">

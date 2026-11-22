@@ -20,15 +20,28 @@ export function seed({ quiet = false } = {}) {
   });
   incidents.sort((a, b) => Date.parse(b.submitDate) - Date.parse(a.submitDate));
 
-  // Немного писем по инцидентам, которые требуют внимания.
+  // Небольшая часть писем уже связана с ITSM, остальные остаются входящими
+  // потенциальными инцидентами для ручной классификации координатором.
   const mail = [];
   const interesting = incidents.filter(
     (i) => isActive(i) || Number(i.stateId) === 20 || i.assignedGroupName === COORD_GROUP,
   );
-  for (const inc of interesting.slice(0, 9)) {
+  for (const inc of interesting.slice(0, 4)) {
     const from = Date.parse(inc.submitDate);
     const at = from + Math.random() * Math.max(0, Math.min(now, from + 6 * 3600e3) - from);
     mail.push(makeLetter({ ...randomLetter(inc), receivedAt: at }));
+  }
+  for (const inc of interesting.slice(4, 20)) {
+    const from = inc.initiatorName || inc.assignedEmployee || 'Дежурная смена';
+    const at = Date.parse(inc.submitDate) + Math.random() * 6 * 3600e3;
+    mail.push(makeLetter({
+      from,
+      subject: `Требуется проверка: ${inc.productName} — ${inc.scenarioName}`,
+      body: `Поступила жалоба на работу сервиса ${inc.productName}. Пользователи сообщают о сбое, нужна проверка и классификация координатором.`,
+      incidentId: null,
+      important: Number(inc.priorityId) >= 3,
+      receivedAt: at,
+    }));
   }
   mail.push(makeLetter({
     from: 'Мониторинг 9го королевства',

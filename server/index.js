@@ -136,7 +136,13 @@ function refresh(kinds = ['incidents', 'mail']) {
 load('incidents', { initial: true });
 load('mail', { initial: true });
 cleanupAcks();
-setMailUpdateListener(() => broadcast({ type: 'state', state: snapshot(), events: [] }));
+setMailUpdateListener(() => {
+  // Изменения метаданных почты должны быть видны HTTP-клиентам так же быстро,
+  // как WebSocket-клиентам: меняем версию перед рассылкой нового снимка.
+  state.version += 1;
+  state.updatedAt = iso(Date.now());
+  broadcast({ type: 'state', state: snapshot(), events: [] });
+});
 void analyzeInbox(state.mail);
 
 // Изменения файла ловим двумя способами: fs.watch (мгновенно) и опросом mtime (надёжно для любых редакторов и сетевых дисков).
@@ -168,6 +174,15 @@ const app = express();
 app.use(express.json());
 
 app.get('/api/state', (_req, res) => res.json(snapshot()));
+// Резервный endpoint для окружений, где WebSocket недоступен (например, через Passenger).
+// Клиент передаёт версию состояния: без изменений сервер отвечает 204,
+// при изменениях возвращает новый снимок.
+app.get('/api/stage', (req, res) => {
+  const since = Number(req.query.since);
+  res.set('Cache-Control', 'no-store');
+  if (Number.isFinite(since) && since === state.version) return res.status(204).end();
+  return res.json(snapshot());
+});
 
 app.post('/api/incidents/:id', (req, res) => {
   const allowed = ['stateId', 'priorityId', 'assignedGroupName', 'assignedEmployee', 'deadline', 'solution', 'isNeedUp'];
