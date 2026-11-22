@@ -173,7 +173,7 @@ function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, cri
         {mailCount > 0 && <span className="mail-badge" title="Письма по инциденту">✉ {mailCount}</span>}
       </div>
 
-      {criticalActive && <div className="card-critical-owner"><CriticalAcceptedBadge ack={criticalAck} showPending /></div>}
+      {criticalActive && <div className="card-critical-owner"><CriticalAcceptedBadge ack={criticalAck} showPending minimal /></div>}
 
       <h3 className="card-title">{inc.header}</h3>
       <p className="product"><b>{inc.productName}</b> {serviceShort(inc)}</p>

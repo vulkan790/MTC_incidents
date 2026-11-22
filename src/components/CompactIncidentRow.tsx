@@ -62,7 +62,7 @@ function CompactIncidentRowImpl({ inc, sla, operator, teams, unacked, criticalUn
           <span className={`compact-deadline risk-${sla.risk}`} title={deadlineTitle} aria-label={deadlineTitle}>{deadlineLabel}</span>
         </button>
         {isCritical(inc) && active && criticalAck && (
-          <CriticalAcceptedBadge ack={criticalAck} compact />
+          <CriticalAcceptedBadge ack={criticalAck} compact minimal />
         )}
         <div className="compact-actions" aria-label={`Действия с ${inc.id}`}>
           {criticalUnacked && (
