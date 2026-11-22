@@ -381,15 +381,15 @@ button { cursor: pointer; }
 .mail-body { color: var(--faint); font-size: 0.76rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 
 .resolved {
-  display: flex; flex-direction: row; align-items: center; gap: var(--gap); padding: 0.7rem var(--pad-x) 0.8rem;
+  display: flex; flex-direction: column; align-items: stretch; gap: .55rem; padding: 0.7rem var(--pad-x) 0.8rem;
   min-height: 3.8rem; background: var(--header); box-shadow: 0 -1px 0 var(--line);
 }
-.resolved-head { display:contents; }
-.resolved-title { flex: none; max-width:17rem; min-width:0; display: flex; align-items: center; gap: 0.5rem; border:0; padding:0; background:transparent; color: var(--muted); font-size: 0.88rem; font-weight: 500; text-align:left; }
+.resolved-head { display:flex; align-items:center; justify-content:space-between; gap:1rem; min-width:0; }
+.resolved-title { flex:1; min-width:0; display: flex; align-items: center; gap: 0.5rem; border:0; padding:0; background:transparent; color: var(--muted); font-size: 0.88rem; font-weight: 500; text-align:left; }
 .resolved-title .icon { color: var(--ok); font-size: 1.3rem; }
 .resolved-title b { color: var(--text); font-weight: 800; font-size: 1.4rem; margin-right: 0.3rem; }
 .resolved-title span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.resolved-actions { display:flex; gap:.4rem; flex:none; order:3; }
+.resolved-actions { display:flex; gap:.4rem; flex:none; }
 .resolved-actions button,.resolved-column-action { border:1px solid var(--line); border-radius:9px; padding:.38rem .65rem; background:var(--surface-3); color:var(--muted); font-size:.74rem; font-weight:700; white-space:nowrap; }
 .resolved-actions button:hover,.resolved-column-action:hover { color:var(--text); background:var(--surface-2); }
 .resolved-list { display: flex; flex:1; gap: 0.6rem; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--line) transparent; padding-bottom: 2px; min-width:0; }
