@@ -26,6 +26,19 @@ interface Filters {
   deadline: DeadlineFilter;
 }
 const NO_FILTERS: Filters = { q: '', product: '', serviceType: '', deadline: 'all' };
+type ResolvedPlacement = 'footer' | 'column';
+
+function ResolvedItems({ items, now }: { items: Incident[]; now: number }) {
+  return <div className="resolved-list">
+    {items.map((i) => (
+      <button key={i.id} className={`resolved-chip ${isCritical(i) ? 'is-crit' : ''}`} onClick={() => openItsm(i.id)}>
+        <b>{i.productName}</b>
+        <span>{i.id}, решён {i.completionDate ? fmtAgo(i.completionDate, now) : ''}</span>
+        {i.isNeedUp && <em>нужно устранить последствия</em>}
+      </button>
+    ))}
+  </div>;
+}
 
 function matches(i: Incident, f: Filters) {
   if (f.product && i.productName !== f.product) return false;
@@ -49,9 +62,27 @@ export function Dashboard() {
   const mobile = useMobileLayout();
   const [mobileGroup, setMobileGroup] = useState<GroupKey>('critical');
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [resolvedPlacement, setResolvedPlacement] = useState<ResolvedPlacement>('footer');
+  const [resolvedCollapsed, setResolvedCollapsed] = useState(false);
   const mobileTabs = useRef<HTMLElement>(null);
   const touch = useRef<{ x: number; y: number } | null>(null);
   const mobileIndex = GROUPS.findIndex((group) => group.key === mobileGroup);
+  const resolvedSettingsKey = `mi:resolved-layout:v1:${operator.trim().toLocaleLowerCase('ru-RU') || 'координатор'}`;
+  useEffect(() => {
+    setResolvedPlacement(store.get(`${resolvedSettingsKey}:placement`, 'footer') === 'column' ? 'column' : 'footer');
+    setResolvedCollapsed(store.get(`${resolvedSettingsKey}:collapsed`, '0') === '1');
+  }, [resolvedSettingsKey]);
+  const changeResolvedPlacement = (placement: ResolvedPlacement) => {
+    setResolvedPlacement(placement);
+    store.set(`${resolvedSettingsKey}:placement`, placement);
+  };
+  const toggleResolvedCollapsed = () => {
+    setResolvedCollapsed((old) => {
+      const next = !old;
+      store.set(`${resolvedSettingsKey}:collapsed`, next ? '1' : '0');
+      return next;
+    });
+  };
 
   function selectMobileGroup(key: GroupKey) {
     setMobileGroup(key);
@@ -134,6 +165,8 @@ export function Dashboard() {
       .sort((a, b) => Date.parse(b.completionDate ?? '0') - Date.parse(a.completionDate ?? '0')),
     [incidents],
   );
+  const resolvedInColumn = resolvedPlacement === 'column' && !mobile;
+  const boardColumns = resolvedInColumn ? `${layout.columns} minmax(15rem, .85fr)` : layout.columns;
 
   const products = useMemo(() => [...new Set(incidents.map((i) => i.productName))].sort(), [incidents]);
 
@@ -249,7 +282,7 @@ export function Dashboard() {
 
       <CriticalStrips />
 
-      <main className={`board ${preferences.incidentViewMode === 'compact' ? 'is-compact-board' : ''} ${mobile ? 'is-mobile-board' : ''}`} ref={board} style={{ '--cols': layout.columns } as CSSProperties}
+      <main className={`board ${preferences.incidentViewMode === 'compact' ? 'is-compact-board' : ''} ${mobile ? 'is-mobile-board' : ''}`} ref={board} style={{ '--cols': boardColumns } as CSSProperties}
         data-mobile-group={mobile ? mobileGroup : undefined} onTouchStart={beginSwipe} onTouchEnd={endSwipe} onTouchCancel={() => { touch.current = null; }}>
         {mobile && <nav className="mobile-category-nav" ref={mobileTabs} aria-label="Категории инцидентов">
           <div className="mobile-category-head"><b>Инциденты</b><span>{mobileIndex + 1} / {GROUPS.length} · свайп ← →</span></div>
@@ -292,22 +325,28 @@ export function Dashboard() {
             />
           );
         })}
+        {resolvedInColumn && <section className={`resolved-column ${resolvedCollapsed ? 'is-collapsed' : ''}`} data-col="resolved" aria-label="Решены, но не закрыты">
+          <header className="resolved-column-head">
+            <button className="resolved-column-title" type="button" onClick={toggleResolvedCollapsed} aria-expanded={!resolvedCollapsed}>
+              <Icon name="check" /><b>{resolvedOpen.length}</b><span>Решены, но не закрыты</span>
+            </button>
+            <button className="resolved-column-action" type="button" onClick={() => changeResolvedPlacement('footer')}>В нижнюю полосу</button>
+          </header>
+          {!resolvedCollapsed && <ResolvedItems items={resolvedOpen} now={now} />}
+        </section>}
       </main>
 
-      {!deadlineFiltering && <footer className="resolved">
-        <span className="resolved-title">
-          <Icon name="check" />
-          <b>{resolvedOpen.length}</b> решены, но не закрыты. К ним могут вернуться
-        </span>
-        <div className="resolved-list">
-          {resolvedOpen.map((i) => (
-            <button key={i.id} className={`resolved-chip ${isCritical(i) ? 'is-crit' : ''}`} onClick={() => openItsm(i.id)}>
-              <b>{i.productName}</b>
-              <span>{i.id}, решён {i.completionDate ? fmtAgo(i.completionDate, now) : ''}</span>
-              {i.isNeedUp && <em>нужно устранить последствия</em>}
-            </button>
-          ))}
+      {!deadlineFiltering && !resolvedInColumn && <footer className={`resolved ${resolvedCollapsed ? 'is-collapsed' : ''}`}>
+        <div className="resolved-head">
+          <button className="resolved-title" type="button" onClick={toggleResolvedCollapsed} aria-expanded={!resolvedCollapsed}>
+            <Icon name="check" /><b>{resolvedOpen.length}</b><span>Решены, но не закрыты. К ним могут вернуться</span>
+          </button>
+          <div className="resolved-actions">
+            <button type="button" onClick={() => changeResolvedPlacement('column')}>В колонку</button>
+            <button type="button" onClick={toggleResolvedCollapsed}>{resolvedCollapsed ? 'Развернуть' : 'Свернуть'}</button>
+          </div>
         </div>
+        {!resolvedCollapsed && <ResolvedItems items={resolvedOpen} now={now} />}
       </footer>}
 
       {demoOpen && <DemoPanel auto={data.auto} onClose={() => setDemoOpen(false)} />}
