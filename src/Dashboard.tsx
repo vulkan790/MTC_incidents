@@ -101,6 +101,7 @@ export function Dashboard() {
             mailCount: mailCount[inc.id] ?? 0,
             unacked: inc.assignedGroupName === COORD_GROUP && !acks[`coord:${inc.id}`],
             criticalUnacked: isCriticalActive(inc) && !acks[`crit:${inc.id}`],
+            criticalAck: acks[`crit:${inc.id}`], 
             changedAt: changes[inc.id],
           };
         })
@@ -286,7 +287,6 @@ export function Dashboard() {
               viewMode={preferences.incidentViewMode}
               note={g.key === 'critical' && filtering && !deadlineFiltering ? 'Фильтры не скрывают критические инциденты' : undefined}
               filtered={deadlineFiltering}
-              filterKey={filters.deadline}
               dnd={mobile ? undefined : layout.dnd(g.key)}
               position={position}
             />

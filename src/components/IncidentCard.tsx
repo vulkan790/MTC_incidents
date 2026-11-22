@@ -1,6 +1,7 @@
 import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import type { Incident } from '../types';
+import type { Incident, Ack } from '../types';
+import { CriticalAcceptedBadge } from './CriticalAcceptedBadge';
 import {
   type GroupKey, type Sla, COORD_GROUP, STATE, fmtAgo, fmtDuration, fmtTime, isActive, isCritical,
   openItsm, personName, serviceShort,
@@ -24,6 +25,7 @@ export interface CardProps {
   now: number;
   mailCount: number;
   unacked: boolean;
+  criticalAck?: Ack;
   changedAt?: number;
   operator: string;
   teams: string[];
@@ -115,7 +117,7 @@ export function Handoff({ inc, teams, onDone }: { inc: Incident; teams: string[]
   );
 }
 
-function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, changedAt, operator, teams, pinned, pinLimitReached, onTogglePin }: CardProps) {
+function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, criticalAck, changedAt, operator, teams, pinned, pinLimitReached, onTogglePin }: CardProps) {
   const ref = useRef<HTMLElement>(null);
   const flash = useRef<HTMLSpanElement>(null);
   const glow = useRef<HTMLSpanElement>(null);
@@ -126,13 +128,11 @@ function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, cha
   const resolved = !active && inc.stateId !== STATE.research;
   const onCoord = inc.assignedGroupName === COORD_GROUP && inc.stateId !== STATE.closed;
 
-  // Подсветка карточки, когда в ITSM что-то поменялось (статус, срок, приоритет, команда).
   useEffect(() => {
     if (!changedAt || !flash.current || reducedMotion()) return;
     gsap.fromTo(flash.current, { opacity: 0.9 }, { opacity: 0, duration: 2.4, ease: 'power2.out' });
   }, [changedAt]);
 
-  // Активный критический «дышит» красным, пока его не решат.
   useLayoutEffect(() => {
     if (!criticalActive || !glow.current || reducedMotion()) return;
     const tw = gsap.fromTo(glow.current, { opacity: 0.25 }, { opacity: 1, duration: 0.9, repeat: -1, yoyo: true, ease: 'sine.inOut' });
@@ -171,6 +171,8 @@ function IncidentCardImpl({ inc, lane, groups, sla, now, mailCount, unacked, cha
         {critical && resolved && <span className="stamp">Решён</span>}
         {mailCount > 0 && <span className="mail-badge" title="Письма по инциденту">✉ {mailCount}</span>}
       </div>
+
+      {criticalActive && <div className="card-critical-owner"><CriticalAcceptedBadge ack={criticalAck} showPending /></div>}
 
       <h3 className="card-title">{inc.header}</h3>
       <p className="product"><b>{inc.productName}</b> {serviceShort(inc)}</p>

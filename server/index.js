@@ -136,13 +136,7 @@ function refresh(kinds = ['incidents', 'mail']) {
 load('incidents', { initial: true });
 load('mail', { initial: true });
 cleanupAcks();
-setMailUpdateListener(() => {
-  // Изменения метаданных почты должны быть видны HTTP-клиентам так же быстро,
-  // как WebSocket-клиентам: меняем версию перед рассылкой нового снимка.
-  state.version += 1;
-  state.updatedAt = iso(Date.now());
-  broadcast({ type: 'state', state: snapshot(), events: [] });
-});
+setMailUpdateListener(() => broadcast({ type: 'state', state: snapshot(), events: [] }));
 void analyzeInbox(state.mail);
 
 // Изменения файла ловим двумя способами: fs.watch (мгновенно) и опросом mtime (надёжно для любых редакторов и сетевых дисков).
@@ -174,15 +168,6 @@ const app = express();
 app.use(express.json());
 
 app.get('/api/state', (_req, res) => res.json(snapshot()));
-// Резервный endpoint для окружений, где WebSocket недоступен (например, через Passenger).
-// Клиент передаёт версию состояния: без изменений сервер отвечает 204,
-// при изменениях возвращает новый снимок.
-app.get('/api/stage', (req, res) => {
-  const since = Number(req.query.since);
-  res.set('Cache-Control', 'no-store');
-  if (Number.isFinite(since) && since === state.version) return res.status(204).end();
-  return res.json(snapshot());
-});
 
 app.post('/api/incidents/:id', (req, res) => {
   const allowed = ['stateId', 'priorityId', 'assignedGroupName', 'assignedEmployee', 'deadline', 'solution', 'isNeedUp'];
@@ -277,6 +262,8 @@ app.post('/api/mail/:id/incident', (req, res) => {
 app.post('/api/ack', (req, res) => {
   const { key, by } = req.body ?? {};
   if (!/^(crit|coord):[\w-]+$/.test(key ?? '')) return res.status(400).json({ error: 'Неверный ключ подтверждения' });
+  // Первое подтверждение сохраняется за первым принявшим, даже если другой клиент отправил ACK позднее.
+  if (state.acks[key]) return res.json({ ok: true, alreadyAcknowledged: true, ack: state.acks[key] });
   state.acks[key] = { by: String(by || 'Координатор').slice(0, 60), at: iso(Date.now()) };
   saveAcks();
   state.version += 1;
