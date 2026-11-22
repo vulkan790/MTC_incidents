@@ -317,6 +317,7 @@ export function Dashboard() {
               viewMode={preferences.incidentViewMode}
               note={g.key === 'critical' && filtering && !deadlineFiltering ? 'Фильтры не скрывают критические инциденты' : undefined}
               filtered={deadlineFiltering}
+              filterKey={filters.deadline}
               dnd={mobile ? undefined : layout.dnd(g.key)}
               position={position}
             />
