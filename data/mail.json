@@ -1,5 +1,15 @@
 [
   {
+    "id": "MSG-WZFAROM5",
+    "receivedAt": "2026-11-22T05:22:20Z",
+    "fromName": "Мониторинг 9го королевства",
+    "fromAddress": "monitoring@corp.local",
+    "subject": "[ALERT] Летающий ковер: Нити недоступен",
+    "body": "Сработали пороги доступности по сервису [Летающий ковер] Ткань ковра. Зарегистрирован INC000021942737.",
+    "incidentId": "INC000021942737",
+    "important": true
+  },
+  {
     "id": "MSG-OV4WK85I",
     "receivedAt": "2026-11-21T18:56:22Z",
     "fromName": "Лисичка-сестричка (lisichka)",

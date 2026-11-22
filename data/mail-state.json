@@ -8,7 +8,7 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T14:49:07.359Z"
+      "analyzedAt": "2026-11-22T05:19:54.737Z"
     },
     "aiAttempted": true
   },
@@ -21,9 +21,9 @@
       "confidence": 0.95,
       "reason": "Обнаружены признаки сбоя или недоступности сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T16:03:31.946Z"
+      "analyzedAt": "2026-11-22T05:19:54.747Z"
     },
-    "aiAttempted": false
+    "aiAttempted": true
   },
   "MSG-DEMO-INFO": {
     "hash": "969173c9610a8a8632f074fa12788bf118c2fe489f4740bdb752d3a1a26fcd4f",
@@ -34,7 +34,7 @@
       "confidence": 0.64,
       "reason": "В тексте нет явных признаков технического инцидента",
       "source": "rules",
-      "analyzedAt": "2026-11-21T14:49:07.379Z"
+      "analyzedAt": "2026-11-22T05:19:54.759Z"
     },
     "aiAttempted": true
   },
@@ -47,7 +47,7 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T14:49:07.389Z"
+      "analyzedAt": "2026-11-22T05:19:54.768Z"
     },
     "aiAttempted": true
   },
@@ -60,7 +60,7 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T14:49:07.399Z"
+      "analyzedAt": "2026-11-22T05:19:54.778Z"
     },
     "aiAttempted": true
   },
@@ -73,7 +73,7 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T14:49:07.410Z"
+      "analyzedAt": "2026-11-22T05:19:54.788Z"
     },
     "aiAttempted": true
   },
@@ -86,7 +86,7 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T14:49:07.418Z"
+      "analyzedAt": "2026-11-22T05:19:54.797Z"
     },
     "aiAttempted": true
   },
@@ -99,7 +99,7 @@
       "confidence": 0.91,
       "reason": "Плановое или административное сообщение, без признаков нового сбоя",
       "source": "rules",
-      "analyzedAt": "2026-11-21T14:49:07.427Z"
+      "analyzedAt": "2026-11-22T05:19:54.807Z"
     },
     "aiAttempted": true
   },
@@ -112,7 +112,7 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T14:49:07.435Z"
+      "analyzedAt": "2026-11-22T05:19:54.816Z"
     },
     "aiAttempted": true
   },
@@ -125,7 +125,7 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T14:49:07.445Z"
+      "analyzedAt": "2026-11-22T05:19:54.834Z"
     },
     "aiAttempted": true
   },
@@ -138,7 +138,7 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T14:49:07.453Z"
+      "analyzedAt": "2026-11-22T05:19:54.846Z"
     },
     "aiAttempted": true
   },
@@ -151,7 +151,7 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T14:49:07.463Z"
+      "analyzedAt": "2026-11-22T05:19:54.856Z"
     },
     "aiAttempted": true
   },
@@ -164,7 +164,7 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T14:49:07.471Z"
+      "analyzedAt": "2026-11-22T05:19:54.866Z"
     },
     "aiAttempted": true
   },
@@ -177,7 +177,7 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T14:49:07.479Z"
+      "analyzedAt": "2026-11-22T05:19:54.876Z"
     },
     "aiAttempted": true
   },
@@ -718,8 +718,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T16:41:40.690Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.725Z"
+    },
+    "aiAttempted": true
   },
   "MSG-CBV6VZIC": {
     "hash": "3812cde2bfc0c85bd29c02e3d72feae39e8695ca55164c6919c05c8af3d3043c",
@@ -730,8 +731,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:00:19.576Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.712Z"
+    },
+    "aiAttempted": true
   },
   "MSG-ROQ3D1PQ": {
     "hash": "3e7c197572fa992152f082ef63d65d3978ec1f2e305aa612eb28d94eaf825151",
@@ -742,8 +744,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:18:27.249Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.700Z"
+    },
+    "aiAttempted": true
   },
   "MSG-G36Z2Q0E": {
     "hash": "e4e9b154b3f798eeb69d019033d48fe1f14664dbb6292e37b16eb8ab19131c66",
@@ -754,8 +757,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:18:43.264Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.687Z"
+    },
+    "aiAttempted": true
   },
   "MSG-3HQDDYI4": {
     "hash": "6bbbacc425a5c2a372e32653f35974b4df8a8e3b7dac3d3897e8c56f18081d62",
@@ -766,8 +770,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:19:15.271Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.676Z"
+    },
+    "aiAttempted": true
   },
   "MSG-Q1YU2VW9": {
     "hash": "246638e29586a14bd904ddbbdc6e4b1a916a89d67d039d6d8f2aac1dc397e9fe",
@@ -778,8 +783,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:20:43.327Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.663Z"
+    },
+    "aiAttempted": true
   },
   "MSG-YQMCOLKN": {
     "hash": "554d9fa91f922074b9ef822712e9a282999a2f0dfb2f62bc0a196565cc24120e",
@@ -790,8 +796,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:21:07.348Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.654Z"
+    },
+    "aiAttempted": true
   },
   "MSG-QTVVX5IR": {
     "hash": "7749b34fbd3824ead15f7c4f44927b62d1a9ce0e911d525ee300a6e669cf11a1",
@@ -802,8 +809,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:21:47.386Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.644Z"
+    },
+    "aiAttempted": true
   },
   "MSG-3SHLM9ZK": {
     "hash": "c61f5cf193b59546054281a75a31c4cbe6727800eeabe8fd5cfaf0d296b4aa33",
@@ -814,8 +822,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:22:11.394Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.633Z"
+    },
+    "aiAttempted": true
   },
   "MSG-204L12VJ": {
     "hash": "7bd8825b513e57253153f6197acb3d680895b9e3063346043a4e99330d1eba4b",
@@ -826,8 +835,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:22:27.398Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.622Z"
+    },
+    "aiAttempted": true
   },
   "MSG-YNW5JDJA": {
     "hash": "81f2b45fe53f4682febe813b8cfbe3b7519d426c29c004b30901e4626f7ec66e",
@@ -838,8 +848,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:23:15.423Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.610Z"
+    },
+    "aiAttempted": true
   },
   "MSG-1RRHW3AX": {
     "hash": "fa35ffdcc524248d9e4f45e12d58890c01e579005bc4bd336a9b5f19d5751b2a",
@@ -850,8 +861,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:23:39.442Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.599Z"
+    },
+    "aiAttempted": true
   },
   "MSG-90ZRK6GC": {
     "hash": "246638e29586a14bd904ddbbdc6e4b1a916a89d67d039d6d8f2aac1dc397e9fe",
@@ -862,8 +874,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:24:03.455Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.588Z"
+    },
+    "aiAttempted": true
   },
   "MSG-XYNOLRDY": {
     "hash": "63338a8deed7560e62a4b4b4ddbb3d59cd1ef400772ba17bce1db3461405e7e2",
@@ -874,8 +887,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:25:07.528Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.576Z"
+    },
+    "aiAttempted": true
   },
   "MSG-0XNCGCSX": {
     "hash": "76dc48b0cb749f8a5a14be6f695d37bfceaa02d9ae049dcacfe9f626f9e0353c",
@@ -886,8 +900,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:25:15.532Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.565Z"
+    },
+    "aiAttempted": true
   },
   "MSG-WRW75VKN": {
     "hash": "6bbbacc425a5c2a372e32653f35974b4df8a8e3b7dac3d3897e8c56f18081d62",
@@ -898,8 +913,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:25:47.561Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.551Z"
+    },
+    "aiAttempted": true
   },
   "MSG-3VVMM8GG": {
     "hash": "943bde55f63220a2a3714782054395af34342333c9ea6fad9835ee977e626e08",
@@ -910,8 +926,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:26:43.604Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.539Z"
+    },
+    "aiAttempted": true
   },
   "MSG-HKZ9706R": {
     "hash": "5e172093b06f1a7b541a93434cc00a385d7e1ad1a8440fc721aa54da4ebc1259",
@@ -922,8 +939,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:26:51.614Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.527Z"
+    },
+    "aiAttempted": true
   },
   "MSG-WZLWQ70C": {
     "hash": "179a18f5d2eb8e6cc10b91a44f407b9f945904fa91faefe5eef9fc7a3a88efdc",
@@ -934,8 +952,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:27:47.650Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.515Z"
+    },
+    "aiAttempted": true
   },
   "MSG-MUY32LX2": {
     "hash": "183be5c6daaaa2479eae625a562a17999a205e4e7c21b8accb6fe12e7e169b20",
@@ -946,8 +965,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:28:11.695Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.502Z"
+    },
+    "aiAttempted": true
   },
   "MSG-TL605J2H": {
     "hash": "47cee623909f1136b9ae65a1bc45bb0e61d0a5e19ef1081d937ce94b9b289fab",
@@ -958,8 +978,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:28:19.691Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.491Z"
+    },
+    "aiAttempted": true
   },
   "MSG-RV1W0VX6": {
     "hash": "139753a1e83d0aedcd0f7329f09f92d620fd5e9d7116113b55daa843c677596c",
@@ -970,8 +991,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:31:54.936Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.477Z"
+    },
+    "aiAttempted": true
   },
   "MSG-RXQ1R7PV": {
     "hash": "21877e91a8034ab2208baa52684bb3d720ab010254c50e0af3f4091b449bdad1",
@@ -982,8 +1004,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:32:59.018Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.466Z"
+    },
+    "aiAttempted": true
   },
   "MSG-UA3F3ELP": {
     "hash": "8bc743c4f8712fadfb2b31e7ff8bae58d5aa50eef55f05682028227dd4e8b8b7",
@@ -994,8 +1017,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:34:35.108Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.454Z"
+    },
+    "aiAttempted": true
   },
   "MSG-QZ3WQX3P": {
     "hash": "31919d6a7a09e4bf7c8b370e62f7d6f7bd3c7342cf2f0627e42cf2751bfe3082",
@@ -1006,8 +1030,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:34:59.111Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.443Z"
+    },
+    "aiAttempted": true
   },
   "MSG-P4Q3U9T2": {
     "hash": "407efaacce5aec3753d4425f0b1c71a62c9197cd7f0fe0a2277942855632b33f",
@@ -1018,8 +1043,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:35:07.122Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.432Z"
+    },
+    "aiAttempted": true
   },
   "MSG-YPLIZCAL": {
     "hash": "fa35ffdcc524248d9e4f45e12d58890c01e579005bc4bd336a9b5f19d5751b2a",
@@ -1030,8 +1056,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:35:15.123Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.419Z"
+    },
+    "aiAttempted": true
   },
   "MSG-4ZISSKP0": {
     "hash": "2a4205f56c8bf0aa135233f2bb47f84cfdb0b7109f968327e049fedb11eeb42d",
@@ -1042,8 +1069,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:35:23.128Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.406Z"
+    },
+    "aiAttempted": true
   },
   "MSG-B2PUXSLN": {
     "hash": "cc8c6b8437a5976e390747cb9f6a2cccff94d91d1ca94ad8c61ec6497c637754",
@@ -1054,8 +1082,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:37:47.230Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.393Z"
+    },
+    "aiAttempted": true
   },
   "MSG-B78EFAMF": {
     "hash": "dbea08322737fe08619f133084ea9254e2a3410abd77d9ce4c187c152b83448e",
@@ -1066,8 +1095,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:37:55.243Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.380Z"
+    },
+    "aiAttempted": true
   },
   "MSG-AVHV340M": {
     "hash": "78bb08ce84e58d4069e4ae0eaae644305470ff3657a3ed7f93d01fc627b75570",
@@ -1078,8 +1108,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:38:11.262Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.369Z"
+    },
+    "aiAttempted": true
   },
   "MSG-FIPJKCD2": {
     "hash": "1e22c6604d4ae2b3a78835b8c1468a01a58f18d21cc662f66cbb69bde749d988",
@@ -1090,8 +1121,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:39:07.300Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.357Z"
+    },
+    "aiAttempted": true
   },
   "MSG-OP70W076": {
     "hash": "bab4562824056f6f638769a422b82be8464f99d8fb6620078f57d5928497d8cc",
@@ -1102,8 +1134,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:40:11.363Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.345Z"
+    },
+    "aiAttempted": true
   },
   "MSG-VHB86JWF": {
     "hash": "dc9c3fce398d6978869beacc43a22d0ae58f9121ab20b629e789505d520746b7",
@@ -1114,8 +1147,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:40:51.409Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.335Z"
+    },
+    "aiAttempted": true
   },
   "MSG-QZBNZC5T": {
     "hash": "afe2cc295aae2be845bdb4b9975dee0b40b8d678414a106a0cf8cb51f5174181",
@@ -1126,8 +1160,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:41:39.453Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.324Z"
+    },
+    "aiAttempted": true
   },
   "MSG-LPHEBPLU": {
     "hash": "9757e98026869390e600f15d8cac53d6ab5569b4bc18435092f08b8d398a76f7",
@@ -1138,8 +1173,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:42:11.486Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.312Z"
+    },
+    "aiAttempted": true
   },
   "MSG-IEDZZEYK": {
     "hash": "81f2b45fe53f4682febe813b8cfbe3b7519d426c29c004b30901e4626f7ec66e",
@@ -1150,8 +1186,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:42:27.502Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.301Z"
+    },
+    "aiAttempted": true
   },
   "MSG-OHBWPAUS": {
     "hash": "8a448dde4e8f6521d30671fb74c4df6dd2aa3ea927d6865809b6630ac9da9b2d",
@@ -1162,8 +1199,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:43:23.553Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.290Z"
+    },
+    "aiAttempted": true
   },
   "MSG-JMS559EO": {
     "hash": "2008232774b25323bdb950470de1546d6817863e2f3657027d3a91225a17a7b2",
@@ -1174,8 +1212,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:44:03.588Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.276Z"
+    },
+    "aiAttempted": true
   },
   "MSG-WVYXLJUP": {
     "hash": "460929d8972064c29892915baad49cdc5e6c0c76482f0adbc578ade66b00b1e3",
@@ -1186,8 +1225,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:44:51.612Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.260Z"
+    },
+    "aiAttempted": true
   },
   "MSG-TD5MUNRT": {
     "hash": "20023b8cc169a214d7686437341f76981ae1a18df557dbf45f5074b7319dc3a3",
@@ -1198,8 +1238,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T17:47:47.755Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.250Z"
+    },
+    "aiAttempted": true
   },
   "MSG-QPYBK6WJ": {
     "hash": "a28e93d66d4024c6913cf1a83a5cc671b24fec63dd16aea59ce076a978b03a5d",
@@ -1210,8 +1251,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:12:01.669Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.238Z"
+    },
+    "aiAttempted": true
   },
   "MSG-DZXZZG99": {
     "hash": "85f9028eed2d14d4a24f08c52d55eebcc090102b0db955c0a0f3bc292adfc7ef",
@@ -1222,8 +1264,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:12:16.763Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.226Z"
+    },
+    "aiAttempted": true
   },
   "MSG-8PB67OH3": {
     "hash": "a87787e3e5333133c2ba088efb3c48da6106f9b118d2f78f4e46e37c6019c3e0",
@@ -1234,8 +1277,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:12:40.761Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.215Z"
+    },
+    "aiAttempted": true
   },
   "MSG-YBIPLMPM": {
     "hash": "9757e98026869390e600f15d8cac53d6ab5569b4bc18435092f08b8d398a76f7",
@@ -1246,8 +1290,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:12:48.757Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.203Z"
+    },
+    "aiAttempted": true
   },
   "MSG-3P89RBVW": {
     "hash": "693b5fa1c655f1e638d779f8daf6dfcea2c960035ab98a7e73a1d109875b4c7e",
@@ -1258,8 +1303,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:13:04.769Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.191Z"
+    },
+    "aiAttempted": true
   },
   "MSG-66NS4VUL": {
     "hash": "8d1bbaa934173f025b57e5fab1219e2ef4b0b65f130dcffa2001257c2f4a87e2",
@@ -1270,8 +1316,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:13:12.771Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.178Z"
+    },
+    "aiAttempted": true
   },
   "MSG-XA0QJZR9": {
     "hash": "212d7268761213c14c484f4bd5b10db8d7bb525c77e88c1caa4fe5111078c702",
@@ -1282,8 +1329,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:13:28.786Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.166Z"
+    },
+    "aiAttempted": true
   },
   "MSG-LCVUILNN": {
     "hash": "e52867ebf0af72decb216ae23424575a8b6eafb7723b8af36dcd848b0bfb0a68",
@@ -1294,8 +1342,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:13:44.807Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.154Z"
+    },
+    "aiAttempted": true
   },
   "MSG-3P3UDPYG": {
     "hash": "436b7d96b9056d193617e779cdf49c75e1c770a7d18c302cdc2d9a2f008079d8",
@@ -1306,8 +1355,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:14:24.851Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.142Z"
+    },
+    "aiAttempted": true
   },
   "MSG-Z8VZI94C": {
     "hash": "731567d47168d6f3a0f8b24312560265d7364edd7b99423aebceec2089d5d5cb",
@@ -1318,8 +1368,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:16:08.919Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.131Z"
+    },
+    "aiAttempted": true
   },
   "MSG-HW5DXUN6": {
     "hash": "b44db85285500ad896a92240c14e224b594dfbd4b0fcfb57226f0a453d50fd90",
@@ -1330,8 +1381,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:42:15.754Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.118Z"
+    },
+    "aiAttempted": true
   },
   "MSG-3XQSW7EO": {
     "hash": "802023b3de6307b4a6ac1f6947da4a888be34e2f9c44372323f36f8ef7a09a5d",
@@ -1342,8 +1394,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:42:28.311Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.103Z"
+    },
+    "aiAttempted": true
   },
   "MSG-YZRV2MBB": {
     "hash": "d9790e759842f4cc81c94d3a696e6b6e590135cacb7853e0ebb47047438f2587",
@@ -1354,8 +1407,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:46:46.117Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.085Z"
+    },
+    "aiAttempted": true
   },
   "MSG-CBG31GY5": {
     "hash": "b28d5319fb33a3652eafb790538f22e2c15653eb7a85927ea295f32257e4d65c",
@@ -1366,8 +1420,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:47:26.151Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.070Z"
+    },
+    "aiAttempted": true
   },
   "MSG-G8REF1SP": {
     "hash": "d7ea3baf3d372b43b24d2aa198ed413c8c224e27499ea44737ea5b932ff0f565",
@@ -1378,8 +1433,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:48:46.206Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.055Z"
+    },
+    "aiAttempted": true
   },
   "MSG-L60VHBYI": {
     "hash": "58b7aec97b782cda26be27f9d4df61a2b9a8c6171eb5c42bbd47bf06914741ff",
@@ -1390,8 +1446,9 @@
       "confidence": 0.95,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:49:02.205Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.039Z"
+    },
+    "aiAttempted": true
   },
   "MSG-S5NTKL47": {
     "hash": "adcb0960a70efadc3b8bacbe0b437ca1be258ff3d2601628bb15bc94f23dee98",
@@ -1402,8 +1459,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:50:14.269Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.023Z"
+    },
+    "aiAttempted": true
   },
   "MSG-D3A2621I": {
     "hash": "01c4e367f7fae4441cee98c4a5ec9b8b35b16feb851ac3483d29e49acd75b58a",
@@ -1414,8 +1472,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:51:18.320Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:54.006Z"
+    },
+    "aiAttempted": true
   },
   "MSG-SMXKBBER": {
     "hash": "23609c78097f5b1da5025f9650fe7f8a45a9f44fc28b8f375d9e6fadaf60ba6e",
@@ -1426,8 +1485,9 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:51:26.319Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:53.990Z"
+    },
+    "aiAttempted": true
   },
   "MSG-QQF0IGHM": {
     "hash": "bb8eff7aa44c7c01403cf8a4736e0389fb7f4779473141f6998bd35a48f15305",
@@ -1438,67 +1498,85 @@
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:51:42.333Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:53.965Z"
+    },
+    "aiAttempted": true
   },
   "MSG-D1F4E1AN": {
     "hash": "410f05a6ceae1eaa178cd0d6d5a04f437aed21bf6cf9433b8217d05629296d3f",
     "folder": "inbox",
-    "read": false,
+    "read": true,
     "analysis": {
       "isPotential": true,
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:51:58.345Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:53.947Z"
+    },
+    "aiAttempted": true
   },
   "MSG-VOW7CSZ7": {
     "hash": "7190e5ef8038db34f24a06f174c269ef48dae47b2da8b79c19ab52a13b1157dc",
     "folder": "inbox",
-    "read": false,
+    "read": true,
     "analysis": {
       "isPotential": true,
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:52:54.377Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:53.930Z"
+    },
+    "aiAttempted": true
   },
   "MSG-ATZM7Z6B": {
     "hash": "de82efc31bd7b48df1edca21b1e1da3d388c3cc3a081618c49b19f229fc6e6a0",
     "folder": "inbox",
-    "read": false,
+    "read": true,
     "analysis": {
       "isPotential": true,
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:53:18.404Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:53.912Z"
+    },
+    "aiAttempted": true
   },
   "MSG-9IVOI2RZ": {
     "hash": "6ccb31e704c6d1393dc95b15dd0ecf461004fc0a561181ba7787054cf583e80a",
     "folder": "inbox",
-    "read": false,
+    "read": true,
     "analysis": {
       "isPotential": true,
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:55:58.549Z"
-    }
+      "analyzedAt": "2026-11-22T05:19:53.895Z"
+    },
+    "aiAttempted": true
   },
   "MSG-OV4WK85I": {
     "hash": "7d96f8d64f21a76ac609d1e9fa5e657e6a543841a2ab010fa14d0ceb24ced8ce",
     "folder": "inbox",
-    "read": false,
+    "read": true,
     "analysis": {
       "isPotential": true,
       "confidence": 0.86,
       "reason": "Упоминание инцидента или жалоба на работу сервиса",
       "source": "rules",
-      "analyzedAt": "2026-11-21T18:56:22.563Z"
+      "analyzedAt": "2026-11-22T05:19:53.878Z"
+    },
+    "aiAttempted": true
+  },
+  "MSG-WZFAROM5": {
+    "hash": "a41c2f5567614b3bec9f71e285ed76d807c994ec1713d4c0ea43247c634a3987",
+    "folder": "inbox",
+    "read": true,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-22T05:22:20.392Z"
     }
   }
 }
