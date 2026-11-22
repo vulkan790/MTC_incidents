@@ -1,4 +1,4 @@
-import { type CSSProperties, type TouchEvent, useMemo, useRef, useState } from 'react';
+import { type CSSProperties, type TouchEvent, useEffect, useMemo, useRef, useState } from 'react';
 import type { Incident } from './types';
 import {
   GROUPS, GROUP_RULES, type GroupKey, COORD_GROUP, fmtClock, fmtAgo, groupsOf, isActive,
@@ -27,6 +27,15 @@ interface Filters {
 }
 const NO_FILTERS: Filters = { q: '', product: '', serviceType: '', deadline: 'all' };
 type ResolvedPlacement = 'footer' | 'column';
+
+const store = {
+  get(key: string, fallback: string) {
+    try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; }
+  },
+  set(key: string, value: string) {
+    try { localStorage.setItem(key, value); } catch { /* приватный режим */ }
+  },
+};
 
 function ResolvedItems({ items, now }: { items: Incident[]; now: number }) {
   return <div className="resolved-list">
