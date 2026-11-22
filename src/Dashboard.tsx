@@ -57,15 +57,18 @@ function ResolvedColumn({ items, now, collapsed, onToggle, onMoveToFooter, dnd }
   onMoveToFooter: () => void;
   dnd: ColumnDnd;
 }) {
-  return <section className={`resolved-column ${collapsed ? 'is-collapsed' : ''} ${dnd.className}`} data-col="resolved" aria-label="Решены, но не закрыты" {...dnd.zone}>
-    <header className="resolved-column-head">
-      <button className="resolved-column-title" type="button" onClick={onToggle} aria-expanded={!collapsed}>
-        <Icon name="check" /><b>{items.length}</b><span>Решены, но не закрыты</span>
-      </button>
-      <button className="resolved-column-drag" type="button" {...dnd.handle} aria-label="Перетащить колонку решённых инцидентов">⠿</button>
-      <button className="resolved-column-action" type="button" onClick={onMoveToFooter}>Вернуть</button>
+  return <section className={`lane resolved-column ${collapsed ? 'is-collapsed' : ''} ${dnd.className}`} data-col="resolved" aria-label="Решены, но не закрыты" {...dnd.zone}>
+    <header className="kpi resolved-column-kpi">
+      <div className="kpi-title"><span className="kpi-icon"><Icon name="check" /></span><h2 className="kpi-label">Решены, но не закрыты</h2></div>
+      <span className="kpi-value">{items.length}</span>
+      <span className="kpi-sub">К ним могут вернуться</span>
+      <div className="resolved-column-actions">
+        <button className="resolved-column-drag" type="button" {...dnd.handle} aria-label="Перетащить колонку решённых инцидентов">⠿</button>
+        <button className="resolved-column-action" type="button" onClick={onMoveToFooter}>Вернуть</button>
+        <button className="resolved-column-action" type="button" onClick={onToggle} aria-expanded={!collapsed}>{collapsed ? 'Развернуть' : 'Свернуть'}</button>
+      </div>
     </header>
-    {!collapsed && <ResolvedItems items={items} now={now} />}
+    {!collapsed && <div className="lane-body"><p className="lane-hint">Решённые инциденты, которые ещё не закрыты</p><ResolvedItems items={items} now={now} /></div>}
   </section>;
 }
 

@@ -401,15 +401,15 @@ button { cursor: pointer; }
 .resolved-chip.is-crit b::before { content: ''; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--crit); flex: none; }
 .resolved-chip span { color: var(--muted); }
 .resolved-chip em { font-style: normal; color: var(--risk-ink); font-size: 0.74rem; font-weight: 600; }
-.resolved-column { display:flex; flex-direction:column; min-width:0; min-height:0; max-height:100%; background:var(--header); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow-card); overflow:hidden; }
-.resolved-column-head { display:flex; align-items:center; justify-content:space-between; gap:.6rem; padding:.85rem .9rem; border-bottom:1px solid var(--line); }
-.resolved-column-title { min-width:0; display:flex; align-items:center; gap:.45rem; border:0; padding:0; background:transparent; color:var(--text); font-size:.86rem; font-weight:700; text-align:left; }
-.resolved-column-title .icon { color:var(--ok); flex:none; }
-.resolved-column-title b { font-size:1.25rem; }
-.resolved-column-title span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.resolved-column { min-width:0; min-height:0; }
+.resolved-column .kpi-icon { background:var(--ok-tint); color:var(--ok-ink); }
+.resolved-column-kpi { position:relative; }
+.resolved-column-actions { position:absolute; top:.75rem; right:.75rem; display:flex; gap:.3rem; opacity:.7; }
+.resolved-column-actions:hover,.resolved-column-actions:focus-within { opacity:1; }
 .resolved-column-drag { flex:none; width:2rem; height:2rem; padding:0; border:0; border-radius:8px; background:transparent; color:var(--muted); cursor:grab; font-size:1.2rem; line-height:1; }
 .resolved-column-drag:hover,.resolved-column-drag:focus-visible { background:var(--surface-3); color:var(--text); }
-.resolved-column .resolved-list { flex:none; flex-direction:column; overflow-y:auto; overflow-x:hidden; padding:.55rem; }
+.resolved-column-action { padding:.35rem .5rem; }
+.resolved-column .resolved-list { flex:none; flex-direction:column; overflow-y:auto; overflow-x:hidden; padding:.55rem 0 0; }
 .resolved-column .resolved-chip { width:100%; }
 
 .alarm { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; }
