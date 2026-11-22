@@ -136,7 +136,13 @@ function refresh(kinds = ['incidents', 'mail']) {
 load('incidents', { initial: true });
 load('mail', { initial: true });
 cleanupAcks();
-setMailUpdateListener(() => broadcast({ type: 'state', state: snapshot(), events: [] }));
+setMailUpdateListener(() => {
+  // Изменения метаданных почты должны быть видны HTTP-клиентам так же быстро,
+  // как WebSocket-клиентам: меняем версию перед рассылкой нового снимка.
+  state.version += 1;
+  state.updatedAt = iso(Date.now());
+  broadcast({ type: 'state', state: snapshot(), events: [] });
+});
 void analyzeInbox(state.mail);
 
 // Изменения файла ловим двумя способами: fs.watch (мгновенно) и опросом mtime (надёжно для любых редакторов и сетевых дисков).
@@ -168,6 +174,15 @@ const app = express();
 app.use(express.json());
 
 app.get('/api/state', (_req, res) => res.json(snapshot()));
+// Резервный endpoint для окружений, где WebSocket недоступен (например, через Passenger).
+// Клиент передаёт версию состояния: без изменений сервер отвечает 204,
+// при изменениях возвращает новый снимок.
+app.get('/api/stage', (req, res) => {
+  const since = Number(req.query.since);
+  res.set('Cache-Control', 'no-store');
+  if (Number.isFinite(since) && since === state.version) return res.status(204).end();
+  return res.json(snapshot());
+});
 
 app.post('/api/incidents/:id', (req, res) => {
   const allowed = ['stateId', 'priorityId', 'assignedGroupName', 'assignedEmployee', 'deadline', 'solution', 'isNeedUp'];
@@ -262,15 +277,27 @@ app.post('/api/mail/:id/incident', (req, res) => {
 app.post('/api/ack', (req, res) => {
   const { key, by } = req.body ?? {};
   if (!/^(crit|coord):[\w-]+$/.test(key ?? '')) return res.status(400).json({ error: 'Неверный ключ подтверждения' });
-<<<<<<< HEAD
-  // Первое подтверждение сохраняется за первым принявшим, даже если другой клиент отправил ACK позднее.
-  if (state.acks[key]) return res.json({ ok: true, alreadyAcknowledged: true, ack: state.acks[key] });
-  state.acks[key] = { by: String(by || 'Координатор').slice(0, 60), at: iso(Date.now()) };
-=======
   const [, kind, id] = String(key).match(/^(crit|coord):([\w-]+)$/) ?? [];
   const operator = String(by || 'Координатор').trim().slice(0, 60) || 'Координатор';
   const incident = state.incidents.find((item) => item.id === id);
   if (!incident) return res.status(404).json({ error: `Инцидент ${id} не найден` });
+  // Первое подтверждение сохраняется за первым принявшим, даже если другой клиент отправил ACK позднее.
+  const existingAck = state.acks[key];
+  if (existingAck) {
+    // Миграция старых подтверждений: если ACK был сохранён до назначения,
+    // восстанавливаем ответственного по имени первого координатора.
+    if (!incident.assignedEmployee && existingAck.by) {
+      updateIncidents((list) => {
+        const target = list.find((item) => item.id === id);
+        if (target) {
+          target.assignedEmployee = existingAck.by;
+          target.assignedEmployeeLogin = String(existingAck.by).toLocaleLowerCase('ru-RU').replace(/[^\p{L}\p{N}]+/gu, '_').replace(/^_|_$/g, '').slice(0, 80) || 'coordinator';
+        }
+      });
+      refresh(['incidents']);
+    }
+    return res.json({ ok: true, alreadyAcknowledged: true, ack: existingAck, kind, incidentId: id, assignedEmployee: incident.assignedEmployee ?? existingAck.by });
+  }
   // «Беру на контроль» — это не только локальная отметка: текущий координатор
   // становится ответственным в демо-ITSM и появляется в его личном кабинете.
   updateIncidents((list) => {
@@ -282,7 +309,6 @@ app.post('/api/ack', (req, res) => {
   });
   refresh(['incidents']);
   state.acks[key] = { by: operator, at: iso(Date.now()) };
->>>>>>> 3915c2c39789b3fb1c6cb13cedb5bf1e2c675c97
   saveAcks();
   state.version += 1;
   broadcast({ type: 'state', state: snapshot(), events: [] });
