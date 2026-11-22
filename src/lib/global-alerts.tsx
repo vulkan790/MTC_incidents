@@ -101,7 +101,7 @@ function AlertRuntime({ children, outsideDashboard, baseTitle, operator, started
     playSiren();
   }, []);
   const activeCritical = useMemo(() => incidents.filter(isCriticalActive), [incidents]);
-  const pending = useMemo(() => incidents.filter(i => matchesCriticalAlert(i, preferences) && !acks[`crit:${i.id}`] && !declined.includes(i.id))
+  const pending = useMemo(() => incidents.filter(i => matchesCriticalAlert(i, preferences) && !i.assignedEmployee && !acks[`crit:${i.id}`] && !declined.includes(i.id))
     .sort((a,b) => Date.parse(a.submitDate) - Date.parse(b.submitDate)), [incidents, preferences, acks, declined]);
   const alarmOn = started && preferences.criticalModal && pending.length > 0;
   const sirenOn = started && preferences.siren && preferences.soundEnabled && pending.length > 0;

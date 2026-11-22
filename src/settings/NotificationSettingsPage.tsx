@@ -38,7 +38,7 @@ export function NotificationSettingsPage() {
     change({ criticalStatuses: statuses });
   };
   const eligible = (data?.incidents || []).filter((i) => matchesCriticalAlert(i, settings));
-  const pending = eligible.filter((i) => !data?.acks[`crit:${i.id}`]);
+  const pending = eligible.filter((i) => !i.assignedEmployee && !data?.acks[`crit:${i.id}`]);
 
   return (
     <div className="settings-page">

@@ -214,8 +214,8 @@ export function Dashboard() {
             sla,
             groups: groupsOf(inc, now),
             mailCount: mailCount[inc.id] ?? 0,
-            unacked: inc.assignedGroupName === COORD_GROUP && !acks[`coord:${inc.id}`],
-            criticalUnacked: isCriticalActive(inc) && !acks[`crit:${inc.id}`],
+            unacked: inc.assignedGroupName === COORD_GROUP && !inc.assignedEmployee && !acks[`coord:${inc.id}`],
+            criticalUnacked: isCriticalActive(inc) && !inc.assignedEmployee && !acks[`crit:${inc.id}`],
             criticalAck: acks[`crit:${inc.id}`], 
             changedAt: changes[inc.id],
           };

@@ -2,7 +2,7 @@ import { ThemeSwitch } from '../components/ThemeSwitch';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Letter } from '../types';
 import { useConnection, useLiveState } from '../lib/live';
-import { fmtTime, openItsm } from '../lib/model';
+import { fmtTime, isActive, openItsm } from '../lib/model';
 import { Icon } from '../components/Icon';
 import { useMobileLayout } from '../lib/mobile';
 import { readOperator, rememberOperator } from '../lib/operator-session';
@@ -128,6 +128,7 @@ export function CabinetPage() {
     const name = operator.trim().toLocaleLowerCase('ru-RU');
     return (data?.incidents ?? [])
       .filter((inc) => {
+        if (!isActive(inc)) return false;
         const employee = (inc.assignedEmployee ?? '').toLocaleLowerCase('ru-RU');
         const login = (inc.assignedEmployeeLogin ?? '').toLocaleLowerCase('ru-RU');
         return Boolean(name) && (employee === name || employee.startsWith(`${name} (`) || login === name);
