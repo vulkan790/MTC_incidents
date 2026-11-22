@@ -1602,5 +1602,29 @@
       "source": "rules",
       "analyzedAt": "2026-11-22T09:43:23.428Z"
     }
+  },
+  "MSG-V94BG5OK": {
+    "hash": "39f0a4d70503d3bf909a25744ea6c1252715e26bfdfa41f079bf51d624b4cc6d",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-22T10:22:48.687Z"
+    }
+  },
+  "MSG-DMGQAITL": {
+    "hash": "7024fdf1c7785268b43e2b6496825001d2b5e8c3b41eaf1d39766e3d02db5f3d",
+    "folder": "inbox",
+    "read": false,
+    "analysis": {
+      "isPotential": true,
+      "confidence": 0.95,
+      "reason": "Упоминание инцидента или жалоба на работу сервиса",
+      "source": "rules",
+      "analyzedAt": "2026-11-22T10:31:50.045Z"
+    }
   }
 }

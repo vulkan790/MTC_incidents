@@ -1,5 +1,25 @@
 [
   {
+    "id": "MSG-DMGQAITL",
+    "receivedAt": "2026-11-22T10:31:50Z",
+    "fromName": "Мониторинг 9го королевства",
+    "fromAddress": "monitoring@corp.local",
+    "subject": "[ALERT] Автопросматриватель TicTok: Датчик движения недоступен",
+    "body": "Сработали пороги доступности по сервису [Автопросматриватель TicTok] Камера-сканер. Зарегистрирован INC000021942797.",
+    "incidentId": "INC000021942797",
+    "important": true
+  },
+  {
+    "id": "MSG-V94BG5OK",
+    "receivedAt": "2026-11-22T10:22:48Z",
+    "fromName": "Мониторинг 9го королевства",
+    "fromAddress": "monitoring@corp.local",
+    "subject": "[ALERT] Страхование хомячков: Сирена недоступен",
+    "body": "Сработали пороги доступности по сервису [Страхование хомячков] Аварийный сигнал. Зарегистрирован INC000021942787.",
+    "incidentId": "INC000021942787",
+    "important": true
+  },
+  {
     "id": "MSG-8UWUMWG4",
     "receivedAt": "2026-11-22T09:43:23Z",
     "fromName": "Мониторинг 9го королевства",
