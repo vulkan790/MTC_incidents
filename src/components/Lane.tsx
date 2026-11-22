@@ -71,7 +71,9 @@ export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operato
     // При смене вида элементы пересоздаются: прежнее Flip-состояние использовать нельзя.
     const sameMode = previousViewMode.current === viewMode;
     previousViewMode.current = viewMode;
-    if (sameMode && flipState.current && !reducedMotion()) {
+    // Фильтр должен менять список сразу; анимация перестановки здесь только
+    // создаёт ощущение задержки при переключении «Просрочено/Под угрозой».
+    if (sameMode && flipState.current && !filtered && !reducedMotion()) {
       Flip.from(flipState.current, {
         targets: els,
         duration: 0.6,
@@ -81,7 +83,7 @@ export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operato
       });
     }
     flipState.current = Flip.getState(els);
-  }, [order, viewMode]);
+  }, [order, viewMode, filtered]);
 
   // Колонку перетащили на другое место: запоминаем новые позиции карточек, чтобы они не прилетали со старого.
   useLayoutEffect(() => {
@@ -89,11 +91,11 @@ export function Lane({ group, items, eligibleIds, activeCount, kpi, now, operato
   }, [position]);
 
   useLayoutEffect(() => {
-    if (prevCount.current !== activeCount && count.current && !reducedMotion()) {
+    if (prevCount.current !== activeCount && count.current && !filtered && !reducedMotion()) {
       gsap.fromTo(count.current, { scale: 1.3 }, { scale: 1, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
     }
     prevCount.current = activeCount;
-  }, [activeCount]);
+  }, [activeCount, filtered]);
 
   const calm = activeCount === 0;
   return (
