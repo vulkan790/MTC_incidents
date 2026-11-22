@@ -1,4 +1,4 @@
-// Настройки уведомлений одного координатора. Ничего не меняют в ITSM или у коллег.
+import { ThemeSwitch } from '../components/ThemeSwitch';
 import { useState } from 'react';
 import { useLiveState } from '../lib/live';
 import { readOperator } from '../lib/operator-session';
@@ -45,6 +45,7 @@ export function NotificationSettingsPage() {
       <header className="settings-header">
         <a href="/" className="settings-back">← На дашборд</a>
         <div className="settings-brand"><span className="settings-brand-dot" /> Пульт МИ <span className="settings-separator">/</span> Настройки</div>
+        <ThemeSwitch />
         <a className="settings-header-link" href="/cabinet">Личный кабинет</a>
       </header>
       <main className="settings-container">

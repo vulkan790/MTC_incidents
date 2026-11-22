@@ -14,9 +14,12 @@ import './mobile.css';
 import { LiveProvider } from './lib/live';
 import { GlobalAlertsProvider } from './lib/global-alerts';
 import { Dashboard } from './Dashboard';
+import { initializeTheme } from './lib/theme';
 import { ItsmPage } from './itsm/ItsmPage';
 import { CabinetPage } from './cabinet/CabinetPage';
 import { NotificationSettingsPage } from './settings/NotificationSettingsPage';
+
+initializeTheme();
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: true, retryDelay: 2000, refetchOnWindowFocus: false } },

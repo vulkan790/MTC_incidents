@@ -1,5 +1,4 @@
-// Муляж ITSM-системы: карточка инцидента со всеми атрибутами и действиями.
-// Действия уходят POST-запросом на сервер, тот меняет JSON, и дашборд обновляется сам.
+import { ThemeSwitch } from '../components/ThemeSwitch';
 import { useEffect, useState, type ReactNode } from 'react';
 import type { Incident } from '../types';
 import { useLiveState, useNow, patchIncident } from '../lib/live';
@@ -36,7 +35,6 @@ function Editor({ inc, teams }: { inc: Incident; teams: string[] }) {
   }));
   const [status, setStatus] = useState<string | null>(null);
 
-  // Если инцидент поменялся снаружи (другой координатор, ITSM), подтягиваем свежие значения.
   useEffect(() => {
     setForm({
       stateId: inc.stateId,
@@ -65,7 +63,6 @@ function Editor({ inc, teams }: { inc: Incident; teams: string[] }) {
       className="it-editor"
       onSubmit={(e) => {
         e.preventDefault();
-        // Отправляем только то, что координатор действительно поменял.
         const patch: Record<string, unknown> = {};
         if (Number(form.stateId) !== inc.stateId) patch.stateId = Number(form.stateId);
         if (Number(form.priorityId) !== inc.priorityId) patch.priorityId = Number(form.priorityId);
@@ -244,6 +241,7 @@ function ItsmBar() {
     <header className="it-bar">
       <b>ITSM</b>
       <span>Учебный муляж для демонстрации пульта координатора</span>
+      <ThemeSwitch />
       <a href="/">Вернуться на пульт</a>
     </header>
   );

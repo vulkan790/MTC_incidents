@@ -1,4 +1,4 @@
-import { type CSSProperties, type TouchEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { type CSSProperties, type TouchEvent, useMemo, useRef, useState } from 'react';
 import type { Incident } from './types';
 import {
   GROUPS, GROUP_RULES, type GroupKey, COORD_GROUP, fmtClock, fmtAgo, groupsOf, isActive,
@@ -14,22 +14,10 @@ import { Sidebar } from './components/Sidebar';
 import { DemoPanel } from './components/DemoPanel';
 import { StartOverlay } from './components/StartOverlay';
 import { Icon } from './components/Icon';
+import { ThemeSwitch } from './components/ThemeSwitch';
 import { readNotificationSettings, useNotificationSettings } from './lib/notification-settings';
 import { startShift } from './lib/operator-session';
 import { CriticalStrips, useGlobalAlerts } from './lib/global-alerts';
-
-const store = {
-  get(key: string, fallback: string) {
-    try { return localStorage.getItem(key) ?? fallback; } catch { return fallback; }
-  },
-  set(key: string, value: string) {
-    try { localStorage.setItem(key, value); } catch { /* приватный режим */ }
-  },
-};
-
-type Theme = 'light' | 'dark';
-// Тему выставляет скрипт в index.html до первой отрисовки, чтобы экран не мигал.
-const initialTheme = (): Theme => (document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
 
 interface Filters {
   q: string;
@@ -54,7 +42,6 @@ export function Dashboard() {
   const now = useNow(1000);
   const { operator, started, alarmOn, changes } = useGlobalAlerts();
   const { settings: preferences, update: updatePreferences } = useNotificationSettings(operator);
-  const [theme, setTheme] = useState<Theme>(initialTheme);
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   const [demoOpen, setDemoOpen] = useState(() => new URLSearchParams(location.search).has('demo'));
   const board = useRef<HTMLDivElement>(null);
@@ -68,7 +55,6 @@ export function Dashboard() {
 
   function selectMobileGroup(key: GroupKey) {
     setMobileGroup(key);
-    // При переключении после длинного списка возвращаемся к заголовку категории.
     if (mobileTabs.current && mobileTabs.current.getBoundingClientRect().top < 0) {
       mobileTabs.current.scrollIntoView({ block: 'start' });
     }
@@ -99,12 +85,10 @@ export function Dashboard() {
     return m;
   }, [data?.mail]);
 
-  // ---------- Распределение по группам ----------
   const lanes = useMemo(() => {
     const out = {} as Record<GroupKey, { items: Parameters<typeof Lane>[0]['items']; active: number; eligibleIds: Set<string> }>;
     const deadlineFiltering = filters.deadline !== 'all';
     for (const g of GROUPS) {
-      // Фильтры сроков не подменяют категории и не расширяют охват дашборда.
       const rule = GROUP_RULES[g.key];
       const eligible = incidents.filter((i) => rule(i, now));
       const rows = eligible
@@ -120,8 +104,6 @@ export function Dashboard() {
             changedAt: changes[inc.id],
           };
         })
-        // Обычные фильтры не прячут критические. Явный фильтр срока
-        // применяется ко всем категориям, включая критические.
         .filter((r) => matchesDeadline(r.inc, now, filters.deadline)
           && ((!deadlineFiltering && g.key === 'critical') || matches(r.inc, filters)));
 
@@ -134,12 +116,11 @@ export function Dashboard() {
           if (aa) return left(a) - left(b);
           return Date.parse(b.inc.completionDate ?? '0') - Date.parse(a.inc.completionDate ?? '0');
         }
-        // Исследование: сначала то, что лежит на координаторах, затем свежие.
         const ac = a.inc.assignedGroupName === COORD_GROUP, bc = b.inc.assignedGroupName === COORD_GROUP;
         if (ac !== bc) return ac ? -1 : 1;
         return Date.parse(b.inc.completionDate ?? b.inc.submitDate) - Date.parse(a.inc.completionDate ?? a.inc.submitDate);
       });
-      const active = rows.length; // Во всех категориях решённые инциденты уже исключены правилами.
+      const active = rows.length;
       out[g.key] = { items: rows, active, eligibleIds: new Set(eligible.map((i) => i.id)) };
     }
     return out;
@@ -155,14 +136,6 @@ export function Dashboard() {
   );
 
   const products = useMemo(() => [...new Set(incidents.map((i) => i.productName))].sort(), [incidents]);
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-  }, [theme]);
-  const switchTheme = (t: Theme) => {
-    setTheme(t);
-    store.set('theme', t);
-  };
 
   const start = (name: string) => {
     try { void unlockAudio().catch(() => {}); } catch { /* звук недоступен */ }
@@ -183,7 +156,6 @@ export function Dashboard() {
 
   const filtering = JSON.stringify(filters) !== JSON.stringify(NO_FILTERS);
 
-  // Крупные числа над колонками: сколько и что важно прямо сейчас.
   const crit = lanes.critical, coord = lanes.coord, high = lanes.high, research = lanes.research;
   const deadlineFiltering = filters.deadline !== 'all';
   const visibleUnackedCritical = crit.items.filter((r) => r.criticalUnacked).length;
@@ -218,12 +190,9 @@ export function Dashboard() {
         </div>
         <div className={`conn conn-${connection}`}>
           <span className="conn-dot" />
-          {connection === 'online' ? `Подключение успешно · данные от ${fmtClock(data.updatedAt)}` : connection === 'offline' ? 'Нет связи, переподключаюсь' : 'Подключаюсь'}
+          {connection === 'online' ? `Онлайн, данные от ${fmtClock(data.updatedAt)}` : connection === 'offline' ? 'Нет связи, переподключаюсь' : 'Подключаюсь'}
         </div>
-        <div className="theme-switch" role="group" aria-label="Тема оформления">
-          <button aria-pressed={theme === 'light'} onClick={() => switchTheme('light')}>Светлая</button>
-          <button aria-pressed={theme === 'dark'} onClick={() => switchTheme('dark')}>Тёмная</button>
-        </div>
+        <ThemeSwitch />
         <div className="clock">{new Date(now).toLocaleTimeString('ru-RU')}</div>
         <a className="settings-link" href="/settings" title="Персональные настройки уведомлений">⚙ Настройки</a>
         <a className="profile-link" href="/cabinet" title="Личный кабинет и почта" aria-label="Личный кабинет и почта">

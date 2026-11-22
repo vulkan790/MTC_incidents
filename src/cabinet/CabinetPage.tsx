@@ -1,8 +1,7 @@
-// Личный кабинет координатора и почтовый триаж в стиле Bitrix.
-// Анализ помечает письмо, но НИКОГДА не создаёт ITSM: это отдельное подтверждённое действие.
+import { ThemeSwitch } from '../components/ThemeSwitch';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Letter } from '../types';
-import { refreshLiveState, useConnection, useLiveState } from '../lib/live';
+import { useConnection, useLiveState } from '../lib/live';
 import { fmtTime, openItsm } from '../lib/model';
 import { Icon } from '../components/Icon';
 import { useMobileLayout } from '../lib/mobile';
@@ -21,7 +20,6 @@ async function request(url: string, method: 'PATCH' | 'POST', body?: object) {
   });
   const result = await response.json();
   if (!response.ok) throw new Error(result.error ?? `Ошибка ${response.status}`);
-  refreshLiveState();
   return result;
 }
 
@@ -75,14 +73,11 @@ export function CabinetPage() {
   const visible = mails.filter((m) => matchesFolder(m, folder) && [m.subject, m.fromName, m.fromAddress, m.body, m.incidentId ?? '']
     .some((part) => part.toLowerCase().includes(search.trim().toLowerCase())));
 
-  // Прямые ссылки из боковой панели всегда раскрывают конкретное письмо.
   useEffect(() => {
     if (!data || !selectedId) return;
     const mail = mails.find((m) => m.id === selectedId);
     if (!mail) return;
     if (!matchesFolder(mail, folder)) setFolder(mail.folder === 'inbox' && mail.analysis.isPotential ? 'potential' : mail.folder);
-  // Не сбрасываем выбранное письмо при обычной смене папки пользователем.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.version, selectedId]);
 
   useEffect(() => {
@@ -139,6 +134,7 @@ export function CabinetPage() {
         <a className="cabinet-back" href="/">← <span>На дашборд</span></a>
         <div className="cabinet-brand"><span className="cabinet-brand-dot" />Пульт МИ <span className="cabinet-brand-sep">/</span> Личный кабинет</div>
         <div className={`cabinet-connection ${connection}`}>{connection === 'online' ? '● Почта синхронизирована' : '● Подключение…'}</div>
+        <ThemeSwitch />
         <span className="cabinet-mini-avatar">{initials(operator)}</span>
       </header>
 
